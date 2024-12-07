@@ -190,7 +190,6 @@ Please ensure that your contributions adhere to the project's coding standards a
 - **Hassan Mikawi**
 - **Yehia Hatem**
 - **Mostafa Othman**
-- **Bahy Ahmed**
 
 ## License
 
