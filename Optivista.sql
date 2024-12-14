@@ -522,6 +522,13 @@ INSERT INTO meta.migrations VALUES ('202407160001', 'embeddings', '2024-12-14 04
 -- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.categories OVERRIDING SYSTEM VALUE VALUES (1, 'Sunglasses', 'Various styles of sunglasses');
+INSERT INTO public.categories OVERRIDING SYSTEM VALUE VALUES (2, 'Prescription Glasses', 'Glasses with prescription lenses');
+INSERT INTO public.categories OVERRIDING SYSTEM VALUE VALUES (34, 'Sunglasses', 'Various styles of sunglasses');
+INSERT INTO public.categories OVERRIDING SYSTEM VALUE VALUES (35, 'Prescription Glasses', 'Glasses with prescription lenses');
+INSERT INTO public.categories OVERRIDING SYSTEM VALUE VALUES (36, 'Sports Glasses', 'Glasses designed for sports activities');
+INSERT INTO public.categories OVERRIDING SYSTEM VALUE VALUES (37, 'Fashion Glasses', 'Trendy glasses for fashion enthusiasts');
+INSERT INTO public.categories OVERRIDING SYSTEM VALUE VALUES (38, 'Safety Glasses', 'Protective eyewear for safety purposes');
 
 
 --
@@ -564,6 +571,8 @@ INSERT INTO meta.migrations VALUES ('202407160001', 'embeddings', '2024-12-14 04
 -- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.products OVERRIDING SYSTEM VALUE VALUES (3, 'Aviator Sunglasses', 'Aviator', 'Black', 'Medium', 150.00, 'model_3d_1', 'Classic aviator sunglasses', 1, 'Ray-Ban');
+INSERT INTO public.products OVERRIDING SYSTEM VALUE VALUES (4, 'Round Glasses', 'Round', 'Gold', 'Small', 120.00, 'model_3d_2', 'Stylish round glasses', 2, 'Gucci');
 
 
 --
@@ -594,6 +603,58 @@ INSERT INTO meta.migrations VALUES ('202407160001', 'embeddings', '2024-12-14 04
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (5, 'johndoe', 'johndoe@example.com', 'hashed_password_1', 'Profile of John Doe', 'Preferences of John', 'auth_token_1', '2023-10-01 10:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (6, 'janedoe', 'janedoe@example.com', 'hashed_password_2', 'Profile of Jane Doe', 'Preferences of Jane', 'auth_token_2', '2023-10-02 11:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (34, 'user1', 'user1@example.com', 'hashed_password_1', 'Profile of User 1', 'Preferences of User 1', 'auth_token_1', '2023-10-01 10:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (35, 'user2', 'user2@example.com', 'hashed_password_2', 'Profile of User 2', 'Preferences of User 2', 'auth_token_2', '2023-10-02 11:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (36, 'user3', 'user3@example.com', 'hashed_password_3', 'Profile of User 3', 'Preferences of User 3', 'auth_token_3', '2023-10-03 12:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (37, 'user4', 'user4@example.com', 'hashed_password_4', 'Profile of User 4', 'Preferences of User 4', 'auth_token_4', '2023-10-04 13:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (38, 'user5', 'user5@example.com', 'hashed_password_5', 'Profile of User 5', 'Preferences of User 5', 'auth_token_5', '2023-10-05 14:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (39, 'user6', 'user6@example.com', 'hashed_password_6', 'Profile of User 6', 'Preferences of User 6', 'auth_token_6', '2023-10-06 15:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (40, 'user7', 'user7@example.com', 'hashed_password_7', 'Profile of User 7', 'Preferences of User 7', 'auth_token_7', '2023-10-07 16:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (41, 'user8', 'user8@example.com', 'hashed_password_8', 'Profile of User 8', 'Preferences of User 8', 'auth_token_8', '2023-10-08 17:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (42, 'user9', 'user9@example.com', 'hashed_password_9', 'Profile of User 9', 'Preferences of User 9', 'auth_token_9', '2023-10-09 18:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (43, 'user10', 'user10@example.com', 'hashed_password_10', 'Profile of User 10', 'Preferences of User 10', 'auth_token_10', '2023-10-10 19:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (44, 'user11', 'user11@example.com', 'hashed_password_11', 'Profile of User 11', 'Preferences of User 11', 'auth_token_11', '2023-10-11 20:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (45, 'user12', 'user12@example.com', 'hashed_password_12', 'Profile of User 12', 'Preferences of User 12', 'auth_token_12', '2023-10-12 21:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (46, 'user13', 'user13@example.com', 'hashed_password_13', 'Profile of User 13', 'Preferences of User 13', 'auth_token_13', '2023-10-13 22:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (47, 'user14', 'user14@example.com', 'hashed_password_14', 'Profile of User 14', 'Preferences of User 14', 'auth_token_14', '2023-10-14 23:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (48, 'user15', 'user15@example.com', 'hashed_password_15', 'Profile of User 15', 'Preferences of User 15', 'auth_token_15', '2023-10-15 00:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (49, 'user16', 'user16@example.com', 'hashed_password_16', 'Profile of User 16', 'Preferences of User 16', 'auth_token_16', '2023-10-16 01:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (50, 'user17', 'user17@example.com', 'hashed_password_17', 'Profile of User 17', 'Preferences of User 17', 'auth_token_17', '2023-10-17 02:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (51, 'user18', 'user18@example.com', 'hashed_password_18', 'Profile of User 18', 'Preferences of User 18', 'auth_token_18', '2023-10-18 03:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (52, 'user19', 'user19@example.com', 'hashed_password_19', 'Profile of User 19', 'Preferences of User 19', 'auth_token_19', '2023-10-19 04:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (53, 'user20', 'user20@example.com', 'hashed_password_20', 'Profile of User 20', 'Preferences of User 20', 'auth_token_20', '2023-10-20 05:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (54, 'user21', 'user21@example.com', 'hashed_password_21', 'Profile of User 21', 'Preferences of User 21', 'auth_token_21', '2023-10-21 06:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (55, 'user22', 'user22@example.com', 'hashed_password_22', 'Profile of User 22', 'Preferences of User 22', 'auth_token_22', '2023-10-22 07:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (56, 'user23', 'user23@example.com', 'hashed_password_23', 'Profile of User 23', 'Preferences of User 23', 'auth_token_23', '2023-10-23 08:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (57, 'user24', 'user24@example.com', 'hashed_password_24', 'Profile of User 24', 'Preferences of User 24', 'auth_token_24', '2023-10-24 09:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (58, 'user25', 'user25@example.com', 'hashed_password_25', 'Profile of User 25', 'Preferences of User 25', 'auth_token_25', '2023-10-25 10:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (59, 'user26', 'user26@example.com', 'hashed_password_26', 'Profile of User 26', 'Preferences of User 26', 'auth_token_26', '2023-10-26 11:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (60, 'user27', 'user27@example.com', 'hashed_password_27', 'Profile of User 27', 'Preferences of User 27', 'auth_token_27', '2023-10-27 12:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (61, 'user28', 'user28@example.com', 'hashed_password_28', 'Profile of User 28', 'Preferences of User 28', 'auth_token_28', '2023-10-28 13:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (62, 'user29', 'user29@example.com', 'hashed_password_29', 'Profile of User 29', 'Preferences of User 29', 'auth_token_29', '2023-10-29 14:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (63, 'user30', 'user30@example.com', 'hashed_password_30', 'Profile of User 30', 'Preferences of User 30', 'auth_token_30', '2023-10-30 15:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (64, 'user31', 'user31@example.com', 'hashed_password_31', 'Profile of User 31', 'Preferences of User 31', 'auth_token_31', '2023-10-31 16:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (65, 'user32', 'user32@example.com', 'hashed_password_32', 'Profile of User 32', 'Preferences of User 32', 'auth_token_32', '2023-11-01 17:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (66, 'user33', 'user33@example.com', 'hashed_password_33', 'Profile of User 33', 'Preferences of User 33', 'auth_token_33', '2023-11-02 18:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (67, 'user34', 'user34@example.com', 'hashed_password_34', 'Profile of User 34', 'Preferences of User 34', 'auth_token_34', '2023-11-03 19:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (68, 'user35', 'user35@example.com', 'hashed_password_35', 'Profile of User 35', 'Preferences of User 35', 'auth_token_35', '2023-11-04 20:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (69, 'user36', 'user36@example.com', 'hashed_password_36', 'Profile of User 36', 'Preferences of User 36', 'auth_token_36', '2023-11-05 21:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (70, 'user37', 'user37@example.com', 'hashed_password_37', 'Profile of User 37', 'Preferences of User 37', 'auth_token_37', '2023-11-06 22:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (71, 'user38', 'user38@example.com', 'hashed_password_38', 'Profile of User 38', 'Preferences of User 38', 'auth_token_38', '2023-11-07 23:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (72, 'user39', 'user39@example.com', 'hashed_password_39', 'Profile of User 39', 'Preferences of User 39', 'auth_token_39', '2023-11-08 00:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (73, 'user40', 'user40@example.com', 'hashed_password_40', 'Profile of User 40', 'Preferences of User 40', 'auth_token_40', '2023-11-09 01:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (74, 'user41', 'user41@example.com', 'hashed_password_41', 'Profile of User 41', 'Preferences of User 41', 'auth_token_41', '2023-11-10 02:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (75, 'user42', 'user42@example.com', 'hashed_password_42', 'Profile of User 42', 'Preferences of User 42', 'auth_token_42', '2023-11-11 03:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (76, 'user43', 'user43@example.com', 'hashed_password_43', 'Profile of User 43', 'Preferences of User 43', 'auth_token_43', '2023-11-12 04:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (77, 'user44', 'user44@example.com', 'hashed_password_44', 'Profile of User 44', 'Preferences of User 44', 'auth_token_44', '2023-11-13 05:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (78, 'user45', 'user45@example.com', 'hashed_password_45', 'Profile of User 45', 'Preferences of User 45', 'auth_token_45', '2023-11-14 06:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (79, 'user46', 'user46@example.com', 'hashed_password_46', 'Profile of User 46', 'Preferences of User 46', 'auth_token_46', '2023-11-15 07:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (80, 'user47', 'user47@example.com', 'hashed_password_47', 'Profile of User 47', 'Preferences of User 47', 'auth_token_47', '2023-11-16 08:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (81, 'user48', 'user48@example.com', 'hashed_password_48', 'Profile of User 48', 'Preferences of User 48', 'auth_token_48', '2023-11-17 09:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (82, 'user49', 'user49@example.com', 'hashed_password_49', 'Profile of User 49', 'Preferences of User 49', 'auth_token_49', '2023-11-18 10:00:00');
+INSERT INTO public.users OVERRIDING SYSTEM VALUE VALUES (83, 'user50', 'user50@example.com', 'hashed_password_50', 'Profile of User 50', 'Preferences of User 50', 'auth_token_50', '2023-11-19 11:00:00');
 
 
 --
@@ -613,7 +674,7 @@ SELECT pg_catalog.setval('meta.embeddings_id_seq', 1, false);
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.categories_id_seq', 1, false);
+SELECT pg_catalog.setval('public.categories_id_seq', 38, true);
 
 
 --
@@ -655,14 +716,14 @@ SELECT pg_catalog.setval('public.orderitems_id_seq', 1, false);
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.orders_id_seq', 1, false);
+SELECT pg_catalog.setval('public.orders_id_seq', 38, true);
 
 
 --
 -- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.products_id_seq', 1, false);
+SELECT pg_catalog.setval('public.products_id_seq', 33, true);
 
 
 --
@@ -697,7 +758,7 @@ SELECT pg_catalog.setval('public.useractivitylog_id_seq', 1, false);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 1, false);
+SELECT pg_catalog.setval('public.users_id_seq', 83, true);
 
 
 --
