@@ -199,8 +199,8 @@ CREATE TABLE ar_sessions (
     id               INT PRIMARY KEY AUTO_INCREMENT,
     user_id          INT NOT NULL,
     product_id       INT NOT NULL,
-    session_start    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    session_end      DATETIME NULL,
+    -- session_start    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    -- session_end      DATETIME NULL,
     snapshots        JSON     NULL,
     session_metadata JSON     NULL,
     CONSTRAINT fk_ar_sessions_user_id
