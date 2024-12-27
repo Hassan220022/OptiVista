@@ -1,0 +1,32 @@
+{
+    "name": "optivista-backend",
+    "version": "1.0.0",
+    "description": "Backend for Optivista E-Commerce Platform",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "keywords": [
+        "ecommerce",
+        "AR",
+        "Node.js",
+        "backend"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+        "bcrypt": "^5.1.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "express-validator": "^7.2.0",
+        "jsonwebtoken": "^9.0.0",
+        "minio": "^7.0.20",
+        "mysql2": "^3.2.0",
+        "nodemailer": "^6.9.3"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.22"
+    }
+}

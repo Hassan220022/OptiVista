@@ -5,3 +5,4 @@ pubspec.lock
 .gitignore
 .dart_tool
 *.zip
+/backend/src/routes/sample_index.js
