@@ -6,7 +6,9 @@
     "scripts": {
         "start": "node index.js",
         "dev": "nodemon index.js",
-        "test": "mocha tests/*.test.js"
+        "test": "mocha tests/*.test.js",
+        "lint": "eslint . --fix",
+        "prepare": "husky install"
     },
     "keywords": [
         "ecommerce",
@@ -31,6 +33,16 @@
         "chai": "^4.3.7",
         "chai-http": "^4.3.0",
         "mocha": "^10.2.0",
-        "nodemon": "^3.1.9"
+        "nodemon": "^3.1.9",
+        "eslint": "^8.51.0",
+        "husky": "^8.0.3"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm test"
+        }
     }
 }
