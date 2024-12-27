@@ -11,12 +11,12 @@ const SignIn: React.FC = () => {
     e.preventDefault();
 
     // Send a POST request to the login endpoint
-    const response = await fetch('/login.php', {// Update with your server URL
+    const response = await fetch('http://localhost:5000/api/auth/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      body: new URLSearchParams({
+      body: JSON.stringify({
         username,
         password,
       }),
@@ -74,4 +74,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn; 
+export default SignIn;
