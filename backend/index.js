@@ -1,9 +1,19 @@
-require('dotenv').config();
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const { errorHandler, notFound } = require('./src/middlewares/errorHandler');
-const rateLimiter = require('./src/middlewares/rateLimiter');
+import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import { errorHandler, notFound } from './src/middlewares/errorHandler.js';
+import rateLimiter from './src/middlewares/rateLimiter.js';
+
+import authRoutes from './src/routes/authRoutes.js';
+import arRoutes from './src/routes/arRoutes.js';
+import consultationRoutes from './src/routes/consultationRoutes.js';
+import feedbackRoutes from './src/routes/feedbackRoutes.js';
+import orderRoutes from './src/routes/orderRoutes.js';
+import productRoutes from './src/routes/productRoutes.js';
+import uploadRoutes from './src/routes/uploadRoutes.js';
 
 const app = express();
 
@@ -14,13 +24,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(rateLimiter);
 
 // Routes
-app.use('/api/auth', require('./src/routes/authRoutes'));
-app.use('/api/ar', require('./src/routes/arRoutes'));
-app.use('/api/consultations', require('./src/routes/consultationRoutes'));
-app.use('/api/feedback', require('./src/routes/feedbackRoutes'));
-app.use('/api/orders', require('./src/routes/orderRoutes'));
-app.use('/api/products', require('./src/routes/productRoutes'));
-app.use('/api/upload', require('./src/routes/uploadRoutes'));
+app.use('/api/auth', authRoutes);
+app.use('/api/ar', arRoutes);
+app.use('/api/consultations', consultationRoutes);
+app.use('/api/feedback', feedbackRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Global error handling and 404 handler
 app.use(notFound);
@@ -29,5 +39,5 @@ app.use(errorHandler);
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
