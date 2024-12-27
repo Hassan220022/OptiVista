@@ -14,7 +14,7 @@ const App = () => {
       <Routes>
         <Route path="/signin" element={<SignIn />} />
         <Route path="/register" element={<RegisterUser />} />
-        <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+        <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} bypassAuth={true} />}>
           <Route path="/dashboard" element={<DashboardView />} />
           <Route path="/user-dashboard" element={<UserDashboardView />} />
         </Route>
