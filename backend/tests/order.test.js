@@ -22,7 +22,7 @@ describe('Order API', () => {
         res.body.should.have.property('success').eql(true);
         res.body.should.have.property('orderId');
         done();
-      });
+      }); 
   });
 
   it('should get orders for a user', (done) => {
