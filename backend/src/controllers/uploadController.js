@@ -1,14 +1,16 @@
-const uploadService = require('../services/uploadService');
+const minioClient = require('../config/minio');
 const config = require('../config/appConfig');
+const fs = require('fs').promises;
 
-exports.uploadFile = async (req, res) => {
-  const filePath = req.file.path;
-  const objectName = req.file.originalname;
-
+exports.uploadFileToMinio = async (filePath, fileName) => {
   try {
-    const url = await uploadService.uploadFile(config.minioBucket, filePath, objectName);
-    res.json({ success: true, url });
+    await minioClient.fPutObject(config.minioBucket, fileName, filePath);
+
+    // Delete the file from local storage after upload
+    await fs.unlink(filePath);
+
+    return `http://${config.MINIO_ENDPOINT}:${config.MINIO_PORT}/${config.minioBucket}/${fileName}`;
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    throw new Error('Error uploading file to MinIO: ' + error.message);
   }
 };
