@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = 'http://localhost:3000'; // Update if necessary
-chai.should();
+chai.should(); // Initialize the should interface
 
 chai.use(chaiHttp);
 
