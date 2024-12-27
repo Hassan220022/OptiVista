@@ -1,12 +1,13 @@
-const express = require('express');
+import express from 'express';
+import { scheduleConsultation, getConsultationsByUser } from '../controllers/consultationController.js';
+import { authenticate } from '../middlewares/authMiddleware.js';
+
 const router = express.Router();
-const consultationController = require('../controllers/consultationController');
-const { authenticate } = require('../middlewares/authMiddleware');
 
 // Schedule a consultation
-router.post('/', authenticate, consultationController.scheduleConsultation);
+router.post('/', authenticate, scheduleConsultation);
 
 // Get consultations for a user
-router.get('/:userId', authenticate, consultationController.getConsultationsByUser);
+router.get('/:userId', authenticate, getConsultationsByUser);
 
-module.exports = router;
+export default router;

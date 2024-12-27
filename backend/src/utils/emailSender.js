@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Send an email
-exports.sendEmail = async (to, subject, text, html) => {
+export constsendEmail = async (to, subject, text, html) => {
   const mailOptions = {
     from: '"Optivista" <no-reply@example.com>', // Sender address
     to,

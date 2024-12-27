@@ -1,10 +1,10 @@
-const User = require('../models/User');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const config = require('../config/appConfig');
+import { findByEmail, createUser } from '../models/User.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import config from '../config/appConfig.js';
 
-exports.login = async (email, password) => {
-  const user = await User.findByEmail(email);
+export const login = async (email, password) => {
+  const user = await findByEmail(email);
 
   if (!user || !bcrypt.compareSync(password, user.password_hash)) {
     throw new Error('Invalid email or password');
@@ -15,7 +15,7 @@ exports.login = async (email, password) => {
   });
 };
 
-exports.register = async (username, email, password, role = 'customer') => {
+export const register = async (username, email, password, role = 'customer') => {
   const hashedPassword = bcrypt.hashSync(password, 10);
-  return await User.createUser(username, email, hashedPassword, role);
+  return await createUser(username, email, hashedPassword, role);
 };

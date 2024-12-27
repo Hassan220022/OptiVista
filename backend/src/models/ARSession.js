@@ -1,6 +1,6 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
-exports.createSession = async (userId, productId, snapshots, sessionMetadata) => {
+export const createSession = async (userId, productId, snapshots, sessionMetadata) => {
   const [result] = await db.query(
     `INSERT INTO ar_sessions (user_id, product_id, snapshots, session_metadata) 
      VALUES (?, ?, ?, ?)`,
@@ -9,7 +9,7 @@ exports.createSession = async (userId, productId, snapshots, sessionMetadata) =>
   return result.insertId;
 };
 
-exports.getSessionsByUser = async (userId) => {
+export const getSessionsByUser = async (userId) => {
   const [rows] = await db.query(
     `SELECT * FROM ar_sessions WHERE user_id = ?`,
     [userId]

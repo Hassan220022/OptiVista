@@ -1,7 +1,7 @@
-const Order = require('../models/Order');
-const OrderItem = require('../models/OrderItem');
+import { createOrder as createOrderModel, getOrdersByUser as getOrdersByUserModel } from '../models/Order.js';
+import { addOrderItem } from '../models/OrderItem.js';
 
-exports.createOrder = async (req, res) => {
+export const createOrder = async (req, res) => {
   const { userId, items, shippingAddress, paymentMethod } = req.body;
 
   try {
@@ -10,10 +10,10 @@ exports.createOrder = async (req, res) => {
       totalPrice += item.price * item.quantity;
     });
 
-    const orderId = await Order.createOrder(userId, totalPrice, shippingAddress, paymentMethod);
+    const orderId = await createOrderModel(userId, totalPrice, shippingAddress, paymentMethod);
 
     for (const item of items) {
-      await OrderItem.addOrderItem(orderId, item.productId, item.quantity, item.price);
+      await addOrderItem(orderId, item.productId, item.quantity, item.price);
     }
 
     res.json({ success: true, orderId });
@@ -22,10 +22,10 @@ exports.createOrder = async (req, res) => {
   }
 };
 
-exports.getOrdersByUser = async (req, res) => {
+export const getOrdersByUser = async (req, res) => {
   const { userId } = req.params;
   try {
-    const orders = await Order.getOrdersByUser(userId);
+    const orders = await getOrdersByUserModel(userId);
     res.json({ success: true, orders });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

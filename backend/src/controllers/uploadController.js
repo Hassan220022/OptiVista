@@ -1,8 +1,8 @@
-const minioClient = require('../config/minio');
-const config = require('../config/appConfig');
-const fs = require('fs').promises;
+import minioClient from '../config/minio.js';
+import config from '../config/appConfig.js';
+import fs from 'fs/promises';
 
-exports.uploadFileToMinio = async (filePath, fileName) => {
+export const uploadFileToMinio = async (filePath, fileName) => {
   try {
     await minioClient.fPutObject(config.minioBucket, fileName, filePath);
 

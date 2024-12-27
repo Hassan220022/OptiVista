@@ -1,19 +1,19 @@
-const Feedback = require('../models/Feedback');
+import { addFeedback as addFeedbackModel, getFeedbackForProduct as getFeedbackForProductModel } from '../models/Feedback.js';
 
-exports.addFeedback = async (req, res) => {
+export const addFeedback = async (req, res) => {
   const { userId, productId, rating, review } = req.body;
   try {
-    await Feedback.addFeedback(userId, productId, rating, review);
+    await addFeedbackModel(userId, productId, rating, review);
     res.json({ success: true, message: 'Feedback added successfully' });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-exports.getFeedbackForProduct = async (req, res) => {
+export const getFeedbackForProduct = async (req, res) => {
   const { productId } = req.params;
   try {
-    const feedback = await Feedback.getFeedbackForProduct(productId);
+    const feedback = await getFeedbackForProductModel(productId);
     res.json({ success: true, feedback });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

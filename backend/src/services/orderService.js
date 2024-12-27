@@ -1,21 +1,21 @@
-const Order = require('../models/Order');
-const OrderItem = require('../models/OrderItem');
+import { createOrder as createOrderModel, getOrdersByUser as getOrdersByUserModel } from '../models/Order.js';
+import { addOrderItem } from '../models/OrderItem.js';
 
-exports.createOrder = async (userId, items, shippingAddress, paymentMethod) => {
+export const createOrder = async (userId, items, shippingAddress, paymentMethod) => {
   let totalPrice = 0;
   items.forEach((item) => {
     totalPrice += item.price * item.quantity;
   });
 
-  const orderId = await Order.createOrder(userId, totalPrice, shippingAddress, paymentMethod);
+  const orderId = await createOrderModel(userId, totalPrice, shippingAddress, paymentMethod);
 
   for (const item of items) {
-    await OrderItem.addOrderItem(orderId, item.productId, item.quantity, item.price);
+    await addOrderItem(orderId, item.productId, item.quantity, item.price);
   }
 
   return orderId;
 };
 
-exports.getOrdersByUser = async (userId) => {
-  return await Order.getOrdersByUser(userId);
+export const getOrdersByUser = async (userId) => {
+  return await getOrdersByUserModel(userId);
 };

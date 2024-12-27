@@ -1,12 +1,18 @@
-const Minio = require('minio');
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Load .env configuration from the project root
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+
+import { Client } from 'minio';
 
 // Initialize MinIO client
-const minioClient = new Minio.Client({
+const minioClient = new Client({
   endPoint: process.env.MINIO_ENDPOINT,
   port: parseInt(process.env.MINIO_PORT, 10),
-  useSSL: false, // Update to `true` if SSL is enabled
+  useSSL: false,
   accessKey: process.env.MINIO_ACCESS_KEY,
   secretKey: process.env.MINIO_SECRET_KEY,
 });
 
-module.exports = minioClient;
+export default minioClient;

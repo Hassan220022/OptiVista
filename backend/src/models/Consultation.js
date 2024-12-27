@@ -1,17 +1,19 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
-exports.scheduleConsultation = async (userId, consultantId, date, details, status = 'scheduled') => {
+// Rename `createSession` to `scheduleConsultation` for consistency
+export const scheduleConsultation = async (userId, productId, snapshots, sessionMetadata) => {
   const [result] = await db.query(
-    `INSERT INTO consultations (user_id, consultant_id, consultation_date, details, status) 
-     VALUES (?, ?, ?, ?, ?)`,
-    [userId, consultantId, date, details, status]
+    `INSERT INTO ar_sessions (user_id, product_id, snapshots, session_metadata) 
+     VALUES (?, ?, ?, ?)`,
+    [userId, productId, JSON.stringify(snapshots), JSON.stringify(sessionMetadata)]
   );
   return result.insertId;
 };
 
-exports.getConsultationsByUser = async (userId) => {
+// Rename `getSessionsByUser` to `getConsultationsByUser`
+export const getConsultationsByUser = async (userId) => {
   const [rows] = await db.query(
-    `SELECT * FROM consultations WHERE user_id = ?`,
+    `SELECT * FROM ar_sessions WHERE user_id = ?`,
     [userId]
   );
   return rows;

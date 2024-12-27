@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const config = require('../config/appConfig');
+import jwt from 'jsonwebtoken';
+import config from '../config/appConfig.js';
 
-exports.authenticate = (req, res, next) => {
+export const authenticate = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -18,7 +18,7 @@ exports.authenticate = (req, res, next) => {
   }
 };
 
-exports.authorize = (roles = []) => {
+export const authorize = (roles = []) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({ success: false, message: 'Access denied' });

@@ -1,15 +1,19 @@
-const Product = require('../models/Product');
+import { 
+  getAllProducts as getAllProductsModel, 
+  getProductById as getProductByIdModel, 
+  updateStock as updateStockModel 
+} from '../models/Product.js';
 
-exports.getAllProducts = async () => {
-  return await Product.getAllProducts();
+export const getAllProducts = async () => {
+  return await getAllProductsModel();
 };
 
-exports.getProductById = async (id) => {
-  const product = await Product.getProductById(id);
+export const getProductById = async (id) => {
+  const product = await getProductByIdModel(id);
   if (!product) throw new Error('Product not found');
   return product;
 };
 
-exports.updateStock = async (id, stock) => {
-  await Product.updateStock(id, stock);
+export const updateStock = async (id, stock) => {
+  await updateStockModel(id, stock);
 };

@@ -1,6 +1,6 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
-exports.addFeedback = async (userId, productId, rating, review) => {
+export const addFeedback = async (userId, productId, rating, review) => {
   await db.query(
     `INSERT INTO feedback (user_id, product_id, rating, review) 
      VALUES (?, ?, ?, ?)`,
@@ -8,7 +8,7 @@ exports.addFeedback = async (userId, productId, rating, review) => {
   );
 };
 
-exports.getFeedbackForProduct = async (productId) => {
+export const getFeedbackForProduct = async (productId) => {
   const [rows] = await db.query(
     `SELECT * FROM feedback WHERE product_id = ?`,
     [productId]

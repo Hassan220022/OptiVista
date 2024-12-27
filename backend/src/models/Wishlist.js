@@ -1,6 +1,6 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
-exports.addToWishlist = async (userId, productId) => {
+export const addToWishlist = async (userId, productId) => {
   await db.query(
     `INSERT INTO wishlist (user_id, product_id) 
      VALUES (?, ?)`,
@@ -8,7 +8,7 @@ exports.addToWishlist = async (userId, productId) => {
   );
 };
 
-exports.getWishlistByUser = async (userId) => {
+export const getWishlistByUser = async (userId) => {
   const [rows] = await db.query(
     `SELECT * FROM wishlist WHERE user_id = ?`,
     [userId]

@@ -14,6 +14,6 @@ const writeLog = (level, message) => {
 };
 
 // Export logging functions
-exports.info = (message) => writeLog('INFO', message);
-exports.warn = (message) => writeLog('WARN', message);
-exports.error = (message) => writeLog('ERROR', message);
+export constinfo = (message) => writeLog('INFO', message);
+export constwarn = (message) => writeLog('WARN', message);
+export consterror = (message) => writeLog('ERROR', message);

@@ -1,6 +1,6 @@
-const db = require('../config/database');
+import db from '../config/database.js';
 
-exports.createOrder = async (userId, totalPrice, shippingAddress, paymentMethod) => {
+export const createOrder = async (userId, totalPrice, shippingAddress, paymentMethod) => {
   const [result] = await db.query(
     `INSERT INTO orders (user_id, total_price, shipping_address, payment_method) 
      VALUES (?, ?, ?, ?)`,
@@ -9,7 +9,7 @@ exports.createOrder = async (userId, totalPrice, shippingAddress, paymentMethod)
   return result.insertId;
 };
 
-exports.getOrdersByUser = async (userId) => {
+export const getOrdersByUser = async (userId) => {
   const [rows] = await db.query(
     `SELECT * FROM orders WHERE user_id = ?`,
     [userId]

@@ -1,6 +1,6 @@
-const ARSession = require('../models/ARSession');
+import * as ARSession from '../models/ARSession.js';
 
-exports.createSession = async (req, res) => {
+export const createSession = async (req, res) => {
   const { userId, productId, snapshots, sessionMetadata } = req.body;
   try {
     const sessionId = await ARSession.createSession(userId, productId, snapshots, sessionMetadata);
@@ -10,7 +10,7 @@ exports.createSession = async (req, res) => {
   }
 };
 
-exports.getSessionsByUser = async (req, res) => {
+export const getSessionsByUser = async (req, res) => {
   const { userId } = req.params;
   try {
     const sessions = await ARSession.getSessionsByUser(userId);

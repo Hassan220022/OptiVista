@@ -1,10 +1,10 @@
-const express = require('express');
-const router = express.Router();
-const multer = require('multer');
-const { authenticate } = require('../middlewares/authMiddleware');
-const minioClient = require('../config/minio');
-const config = require('../config/appConfig');
+import express from 'express';
+import multer from 'multer';
+import { authenticate } from '../middlewares/authMiddleware.js';
+import minioClient from '../config/minio.js';
+import config from '../config/appConfig.js';
 
+const router = express.Router();
 const upload = multer();
 
 router.post('/', authenticate, upload.single('file'), async (req, res) => {
@@ -22,4 +22,4 @@ router.post('/', authenticate, upload.single('file'), async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

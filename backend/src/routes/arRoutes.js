@@ -1,12 +1,13 @@
-const express = require('express');
+import express from 'express';
+import { createSession, getSessionsByUser } from '../controllers/arController.js';
+import { authenticate } from '../middlewares/authMiddleware.js';
+
 const router = express.Router();
-const arController = require('../controllers/arController');
-const { authenticate } = require('../middlewares/authMiddleware');
 
 // Create an AR session
-router.post('/', authenticate, arController.createSession);
+router.post('/', authenticate, createSession);
 
 // Get AR sessions for a user
-router.get('/:userId', authenticate, arController.getSessionsByUser);
+router.get('/:userId', authenticate, getSessionsByUser);
 
-module.exports = router;
+export default router;

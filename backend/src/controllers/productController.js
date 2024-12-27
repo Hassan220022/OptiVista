@@ -1,18 +1,19 @@
-const Product = require('../models/Product');
+// Example: backend/src/controllers/productController.js
+import { getAllProducts, getProductById } from '../services/productService.js';
 
-exports.getAllProducts = async (req, res) => {
+export const getAllProductsController = async (req, res) => {
   try {
-    const products = await Product.getAllProducts();
+    const products = await getAllProducts();
     res.json({ success: true, products });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 };
 
-exports.getProductById = async (req, res) => {
+export const getProductByIdController = async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await Product.getProductById(id);
+    const product = await getProductById(id);
     if (!product) throw new Error('Product not found');
     res.json({ success: true, product });
   } catch (error) {

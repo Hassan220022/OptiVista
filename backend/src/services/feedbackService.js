@@ -1,9 +1,9 @@
-const Feedback = require('../models/Feedback');
+import { addFeedback as addFeedbackModel, getFeedbackForProduct as getFeedbackForProductModel } from '../models/Feedback.js';
 
-exports.addFeedback = async (userId, productId, rating, review) => {
-  await Feedback.addFeedback(userId, productId, rating, review);
+export const addFeedback = async (userId, productId, rating, review) => {
+  await addFeedbackModel(userId, productId, rating, review);
 };
 
-exports.getFeedbackForProduct = async (productId) => {
-  return await Feedback.getFeedbackForProduct(productId);
+export const getFeedbackForProduct = async (productId) => {
+  return await getFeedbackForProductModel(productId);
 };

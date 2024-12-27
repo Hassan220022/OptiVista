@@ -1,5 +1,5 @@
 // Generic error handler
-exports.errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, req, res, next) => {
     console.error(err.stack); // Log the error for debugging
   
     const statusCode = err.statusCode || 500;
@@ -9,7 +9,7 @@ exports.errorHandler = (err, req, res, next) => {
   };
   
   // Not Found middleware
-  exports.notFound = (req, res, next) => {
+  export const notFound = (req, res, next) => {
     res.status(404).json({ success: false, message: 'Resource not found' });
   };
 

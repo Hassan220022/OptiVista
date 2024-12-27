@@ -1,9 +1,9 @@
-const Consultation = require('../models/Consultation');
+import { scheduleConsultation, getConsultationsByUser } from '../models/Consultation.js';
 
-exports.scheduleConsultation = async (userId, consultantId, date, details) => {
-  return await Consultation.scheduleConsultation(userId, consultantId, date, details);
+export const scheduleConsultationService = async (userId, productId, snapshots, sessionMetadata) => {
+  return await scheduleConsultation(userId, productId, snapshots, sessionMetadata);
 };
 
-exports.getConsultationsByUser = async (userId) => {
-  return await Consultation.getConsultationsByUser(userId);
+export const getConsultationsByUserService = async (userId) => {
+  return await getConsultationsByUser(userId);
 };

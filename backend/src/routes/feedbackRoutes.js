@@ -1,12 +1,13 @@
-const express = require('express');
+import express from 'express';
+import { addFeedback, getFeedbackForProduct } from '../controllers/feedbackController.js';
+import { authenticate } from '../middlewares/authMiddleware.js';
+
 const router = express.Router();
-const feedbackController = require('../controllers/feedbackController');
-const { authenticate } = require('../middlewares/authMiddleware');
 
 // Add feedback for a product
-router.post('/', authenticate, feedbackController.addFeedback);
+router.post('/', authenticate, addFeedback);
 
 // Get feedback for a product
-router.get('/:productId', feedbackController.getFeedbackForProduct);
+router.get('/:productId', getFeedbackForProduct);
 
-module.exports = router;
+export default router;

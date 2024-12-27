@@ -2,12 +2,12 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/appConfig');
 
 // Generate a JWT
-exports.generateToken = (payload) => {
+export constgenerateToken = (payload) => {
   return jwt.sign(payload, config.jwtSecret, { expiresIn: config.jwtExpiresIn });
 };
 
 // Verify a JWT
-exports.verifyToken = (token) => {
+export constverifyToken = (token) => {
   try {
     return jwt.verify(token, config.jwtSecret);
   } catch (error) {

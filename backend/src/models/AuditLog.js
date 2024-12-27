@@ -1,6 +1,6 @@
 const db = require('../config/database');
 
-exports.createLog = async (userId, action, details) => {
+export const createLog = async (userId, action, details) => {
   await db.query(
     `INSERT INTO audit_logs (user_id, action, details) 
      VALUES (?, ?, ?)`,
@@ -8,7 +8,7 @@ exports.createLog = async (userId, action, details) => {
   );
 };
 
-exports.getLogsByUser = async (userId) => {
+export const getLogsByUser = async (userId) => {
   const [rows] = await db.query(
     `SELECT * FROM audit_logs WHERE user_id = ?`,
     [userId]
