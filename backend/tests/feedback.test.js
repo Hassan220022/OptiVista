@@ -17,6 +17,7 @@ describe('Feedback API', () => {
         review: 'Great product!',
       })
       .end((err, res) => {
+        if (err) return done(err);
         res.should.have.status(200);
         res.body.should.have.property('success').eql(true);
         res.body.should.have.property('message').eql('Feedback added successfully');
@@ -29,6 +30,7 @@ describe('Feedback API', () => {
       .request(server)
       .get('/api/feedback/1')
       .end((err, res) => {
+        if (err) return done(err);
         res.should.have.status(200);
         res.body.should.have.property('success').eql(true);
         res.body.should.have.property('feedback').be.an('array');

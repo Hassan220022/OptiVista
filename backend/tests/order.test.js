@@ -17,6 +17,7 @@ describe('Order API', () => {
         paymentMethod: 'credit_card',
       })
       .end((err, res) => {
+        if (err) return done(err);
         res.should.have.status(200);
         res.body.should.have.property('success').eql(true);
         res.body.should.have.property('orderId');
@@ -29,6 +30,7 @@ describe('Order API', () => {
       .request(server)
       .get('/api/orders/1')
       .end((err, res) => {
+        if (err) return done(err);
         res.should.have.status(200);
         res.body.should.have.property('success').eql(true);
         res.body.should.have.property('orders').be.an('array');

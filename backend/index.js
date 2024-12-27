@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { errorHandler, notFound } = require('./src/middlewares/errorHandler');
+const rateLimiter = require('./src/middlewares/rateLimiter');
 
 const app = express();
 
@@ -10,6 +11,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(rateLimiter);
 
 // Routes
 app.use('/api/auth', require('./src/routes/authRoutes'));

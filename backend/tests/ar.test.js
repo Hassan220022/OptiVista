@@ -17,6 +17,7 @@ describe('AR Session API', () => {
         sessionMetadata: { device: 'iPhone' },
       })
       .end((err, res) => {
+        if (err) return done(err);
         res.should.have.status(200);
         res.body.should.have.property('success').eql(true);
         res.body.should.have.property('sessionId');
@@ -29,6 +30,7 @@ describe('AR Session API', () => {
       .request(server)
       .get('/api/ar/1')
       .end((err, res) => {
+        if (err) return done(err);
         res.should.have.status(200);
         res.body.should.have.property('success').eql(true);
         res.body.should.have.property('sessions').be.an('array');

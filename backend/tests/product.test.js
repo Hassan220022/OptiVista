@@ -11,6 +11,7 @@ describe('Product API', () => {
       .request(server)
       .get('/api/products')
       .end((err, res) => {
+        if (err) return done(err);
         res.should.have.status(200);
         res.body.should.have.property('success').eql(true);
         res.body.should.have.property('products').be.an('array');
@@ -23,6 +24,7 @@ describe('Product API', () => {
       .request(server)
       .get('/api/products/1')
       .end((err, res) => {
+        if (err) return done(err);
         res.should.have.status(200);
         res.body.should.have.property('success').eql(true);
         res.body.should.have.property('product').be.an('object');

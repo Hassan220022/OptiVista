@@ -17,6 +17,7 @@ describe('Auth API', () => {
         role: 'customer',
       })
       .end((err, res) => {
+        if (err) return done(err);
         res.should.have.status(200);
         res.body.should.have.property('success').eql(true);
         res.body.should.have.property('user');
@@ -33,6 +34,7 @@ describe('Auth API', () => {
         password: 'StrongPassword123',
       })
       .end((err, res) => {
+        if (err) return done(err);
         res.should.have.status(200);
         res.body.should.have.property('success').eql(true);
         res.body.should.have.property('token');
