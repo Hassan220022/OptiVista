@@ -1,0 +1,3 @@
+@tailwind base;        /* Add this line */
+@tailwind components;  /* Keep this line */
+@tailwind utilities;   /* Keep this line */
