@@ -10,31 +10,28 @@ const SignIn: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Send a POST request to the login endpoint
-    const response = await fetch('http://localhost:5000/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    });
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    const data = await response.json(); // Parse JSON response
+      const data = await response.json();
 
-    if (data.status === 'success') {
-      // Successful login
-      console.log("Login successful"); // Log success
-      if (data.role === 'admin') {
-        navigate('/dashboard'); // Redirect to admin dashboard
+      if (data.status === 'success') {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('isAuthenticated', 'true');
+        // Store user role if needed
+        localStorage.setItem('userRole', data.user.role);
+        navigate('/dashboard');
       } else {
-        navigate('/user-dashboard'); // Redirect to user dashboard
+        setError(data.message);
       }
-    } else {
-      // Handle errors
-      setError(data.message);
+    } catch (err) {
+      setError('An error occurred. Please try again.');
     }
   };
 
