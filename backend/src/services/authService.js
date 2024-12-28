@@ -9,7 +9,7 @@ export const login = async (email, password) => {
   if (!user || !bcrypt.compareSync(password, user.password_hash)) {
     throw new Error('Invalid email or password');
   }
-  console.log('User logged in successfully');
+  
   return jwt.sign({ id: user.id, role: user.role }, config.jwtSecret, {
     expiresIn: config.jwtExpiresIn,
   });
