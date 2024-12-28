@@ -1,26 +1,22 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const server = 'http://192.168.1.84:3000'; // Update if necessary
-chai.should(); // Initialize the should interface
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { expect } from 'chai';
+import chaiHttp from 'chai-http';
+import app from '../index.js';
 
 chai.use(chaiHttp);
 
-describe('AR Session API', () => {
-  it('should create an AR session', (done) => {
-    chai
-      .request(server)
-      .post('/api/ar')
-      .send({
-        userId: 1,
-        productId: 1,
-        snapshots: ['snapshot1.jpg', 'snapshot2.jpg'],
-        sessionMetadata: { device: 'iPhone' },
-      })
+describe('AR API', () => {
+  it('should create a new AR session', (done) => {
+    chai.request(app)
+      .post('/api/ar/')
+      .set('Authorization', `Bearer your_jwt_token`)
+      .send({ /* AR session data */ })
       .end((err, res) => {
-        if (err) return done(err);
-        res.should.have.status(200);
-        res.body.should.have.property('success').eql(true);
-        res.body.should.have.property('sessionId');
+        expect(res).to.have.status(201);
+        expect(res.body).to.have.property('success', true);
+        expect(res.body.data).to.be.an('object');
         done();
       });
   });

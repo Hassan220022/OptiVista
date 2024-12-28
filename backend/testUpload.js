@@ -8,8 +8,8 @@ const __dirname = path.dirname(__filename);
 
 const testUpload = async () => {
   // Specify the local file path and desired file name
-  const filePath = path.resolve(__dirname, 'testImage.png'); // Update with your image file path
-  const fileName = 'testImage.png'; // Desired file name in MinIO
+  const filePath = path.resolve(__dirname, 'test-image.png'); // Update with your image file path
+  const fileName = 'test-image.png'; // Desired file name in MinIO
 
   try {
     const uploadedFileUrl = await uploadFileToMinio(filePath, fileName);

@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+import testRoutes from './src/routes/testRoutes.js';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { errorHandler, notFound } from './src/middlewares/errorHandler.js';
@@ -16,6 +17,8 @@ import productRoutes from './src/routes/productRoutes.js';
 import uploadRoutes from './src/routes/uploadRoutes.js';
 
 const app = express();
+app.use(express.json());
+app.use('/api/test', testRoutes);
 
 // Middlewares
 app.use(cors());
