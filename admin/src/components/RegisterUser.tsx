@@ -1,32 +1,62 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const RegisterUser: React.FC = () => {
+const Register: React.FC = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const role = 'consultant';
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Basic validation
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      setError('Passwords do not match!');
       return;
     }
 
-    // Here you would typically send the data to your backend for registration
-    console.log("Registering:", { email, password });
+    try {
+      const response = await fetch('http://196.221.151.195:3000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password, role }),
+      });
 
-    // Redirect to sign-in screen after successful registration
-    navigate('/signin');
+      const data = await response.json();
+
+      if (response.ok && data.status === 'success') {
+        alert('Registration successful! Please sign in.');
+        navigate('/signin'); // Redirect to sign-in page
+      } else {
+        setError(data.message || 'Registration failed.');
+      }
+    } catch (err) {
+      setError('An error occurred while registering. Please try again.');
+    }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-96">
         <h2 className="text-2xl mb-4">Register</h2>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">Username</label>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          />
+        </div>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700">Email</label>
           <input
@@ -68,4 +98,4 @@ const RegisterUser: React.FC = () => {
   );
 };
 
-export default RegisterUser; 
+export default Register;
