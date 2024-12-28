@@ -11,10 +11,3 @@ const config = {
 };
 
 export default config;
-
-
-
-
-// jwtSecret: 'your_jwt_secret',
-// jwtExpiresIn: '1h',
-// minioBucket: 'optivista',
