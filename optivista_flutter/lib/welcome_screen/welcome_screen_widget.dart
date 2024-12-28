@@ -64,24 +64,22 @@ class _WelcomeScreenWidgetState extends State<WelcomeScreenWidget> {
                       SizedBox(height: 180.0),
                       Text(
                         'Welcome',
-                        style: FlutterFlowTheme.of(context)
-                            .displaySmall
-                            .override(
-                              fontFamily: 'Inter Tight',
-                              color: Colors.black,
-                              letterSpacing: 0.0,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style:
+                            FlutterFlowTheme.of(context).displaySmall.override(
+                                  fontFamily: 'Inter Tight',
+                                  color: Colors.black,
+                                  letterSpacing: 0.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                       SizedBox(height: 16.0),
                       Text(
                         'Try Before You Buy',
-                        style: FlutterFlowTheme.of(context)
-                            .headlineSmall
-                            .override(
-                              fontFamily: 'Inter Tight',
-                              color: Colors.black,
-                            ),
+                        style:
+                            FlutterFlowTheme.of(context).headlineSmall.override(
+                                  fontFamily: 'Inter Tight',
+                                  color: Colors.black,
+                                ),
                       ),
                       SizedBox(height: 24.0),
                       FFButtonWidget(
@@ -93,13 +91,12 @@ class _WelcomeScreenWidgetState extends State<WelcomeScreenWidget> {
                           width: double.infinity,
                           height: 56.0,
                           color: FlutterFlowTheme.of(context).primary,
-                          textStyle: FlutterFlowTheme.of(context)
-                              .titleMedium
-                              .override(
-                                fontFamily: 'Inter Tight',
-                                color: Colors.white,
-                                letterSpacing: 0.0,
-                              ),
+                          textStyle:
+                              FlutterFlowTheme.of(context).titleMedium.override(
+                                    fontFamily: 'Inter Tight',
+                                    color: Colors.white,
+                                    letterSpacing: 0.0,
+                                  ),
                           elevation: 3.0,
                           borderRadius: BorderRadius.circular(28.0),
                         ),
@@ -114,12 +111,11 @@ class _WelcomeScreenWidgetState extends State<WelcomeScreenWidget> {
                           width: double.infinity,
                           height: 56.0,
                           color: Colors.transparent,
-                          textStyle: FlutterFlowTheme.of(context)
-                              .titleMedium
-                              .override(
-                                fontFamily: 'Inter Tight',
-                                color: Colors.white,
-                              ),
+                          textStyle:
+                              FlutterFlowTheme.of(context).titleMedium.override(
+                                    fontFamily: 'Inter Tight',
+                                    color: Colors.white,
+                                  ),
                           elevation: 0.0,
                           borderSide: BorderSide(
                             color: Colors.white,
@@ -157,12 +153,11 @@ class _WelcomeScreenWidgetState extends State<WelcomeScreenWidget> {
                           ),
                           Text(
                             ' and ',
-                            style: FlutterFlowTheme.of(context)
-                                .bodySmall
-                                .override(
-                                  fontFamily: 'Inter',
-                                  color: Colors.white70,
-                                ),
+                            style:
+                                FlutterFlowTheme.of(context).bodySmall.override(
+                                      fontFamily: 'Inter',
+                                      color: Colors.white70,
+                                    ),
                           ),
                           GestureDetector(
                             onTap: () {

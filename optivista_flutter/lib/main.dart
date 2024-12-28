@@ -8,6 +8,14 @@ import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/nav/nav.dart';
 import 'index.dart';
 
+import 'package:provider/provider.dart';
+import 'providers/auth_provider.dart';
+import 'providers/cart_provider.dart';
+import 'providers/product_provider.dart';
+import 'providers/order_provider.dart';
+import 'providers/feedback_provider.dart';
+import 'providers/ar_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GoRouter.optionURLReflectsImperativeAPIs = true;
@@ -15,7 +23,32 @@ void main() async {
 
   await FlutterFlowTheme.initialize();
 
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProvider>(
+          create: (_) => AuthProvider(),
+        ),
+        ChangeNotifierProvider<CartProvider>(
+          create: (_) => CartProvider(),
+        ),
+        ChangeNotifierProvider<ProductProvider>(
+          create: (_) => ProductProvider(),
+        ),
+        ChangeNotifierProvider<OrderProvider>(
+          create: (_) => OrderProvider(),
+        ),
+        ChangeNotifierProvider<FeedbackProvider>(
+          create: (_) => FeedbackProvider(),
+        ),
+        ChangeNotifierProvider<ARProvider>(
+          create: (_) => ARProvider(),
+        ),
+        // Add other providers here if necessary
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {

@@ -1,52 +1,164 @@
-import '/flutter_flow/flutter_flow_theme.dart';
-import '/flutter_flow/flutter_flow_util.dart';
-import '/flutter_flow/flutter_flow_widgets.dart';
-import 'dart:ui';
-import 'sign_up_screen_widget.dart' show SignUpScreenWidget;
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
-class SignUpScreenModel extends FlutterFlowModel<SignUpScreenWidget> {
-  ///  State fields for stateful widgets in this page.
+class SignUpScreenModel extends ChangeNotifier {
+  // Controllers for input fields
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode1;
-  TextEditingController? textController1;
-  String? Function(BuildContext, String?)? textController1Validator;
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode2;
-  TextEditingController? textController2;
-  String? Function(BuildContext, String?)? textController2Validator;
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode3;
-  TextEditingController? textController3;
-  late bool passwordVisibility1;
-  String? Function(BuildContext, String?)? textController3Validator;
-  // State field(s) for TextField widget.
-  FocusNode? textFieldFocusNode4;
-  TextEditingController? textController4;
-  late bool passwordVisibility2;
-  String? Function(BuildContext, String?)? textController4Validator;
+  // FocusNodes for input fields (optional)
+  final FocusNode nameFocusNode = FocusNode();
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode confirmPasswordFocusNode = FocusNode();
 
-  @override
-  void initState(BuildContext context) {
-    passwordVisibility1 = false;
-    passwordVisibility2 = false;
-  }
+  // Password visibility toggles
+  bool passwordVisibility = false;
+  bool confirmPasswordVisibility = false;
 
+  // Loading and error states
+  bool isLoading = false;
+  String? errorMessage;
+
+  // Dispose controllers and focus nodes
   @override
   void dispose() {
-    textFieldFocusNode1?.dispose();
-    textController1?.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
 
-    textFieldFocusNode2?.dispose();
-    textController2?.dispose();
+    nameFocusNode.dispose();
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
+    confirmPasswordFocusNode.dispose();
 
-    textFieldFocusNode3?.dispose();
-    textController3?.dispose();
-
-    textFieldFocusNode4?.dispose();
-    textController4?.dispose();
+    super.dispose();
   }
+
+  // Toggle password visibility
+  void togglePasswordVisibility() {
+    passwordVisibility = !passwordVisibility;
+    notifyListeners();
+  }
+
+  void toggleConfirmPasswordVisibility() {
+    confirmPasswordVisibility = !confirmPasswordVisibility;
+    notifyListeners();
+  }
+
+  // Validate input fields
+  bool validateInputs() {
+    if (nameController.text.trim().isEmpty) {
+      errorMessage = 'Please enter your full name.';
+      notifyListeners();
+      return false;
+    }
+
+    if (emailController.text.trim().isEmpty) {
+      errorMessage = 'Please enter your email address.';
+      notifyListeners();
+      return false;
+    }
+
+    // Simple email regex
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    if (!emailRegex.hasMatch(emailController.text.trim())) {
+      errorMessage = 'Please enter a valid email address.';
+      notifyListeners();
+      return false;
+    }
+
+    if (passwordController.text.isEmpty) {
+      errorMessage = 'Please enter a password.';
+      notifyListeners();
+      return false;
+    }
+
+    if (passwordController.text.length < 6) {
+      errorMessage = 'Password must be at least 6 characters long.';
+      notifyListeners();
+      return false;
+    }
+
+    if (passwordController.text != confirmPasswordController.text) {
+      errorMessage = 'Passwords do not match.';
+      notifyListeners();
+      return false;
+    }
+
+    errorMessage = null;
+    notifyListeners();
+    return true;
+  }
+
+  // Handle sign-up action
+  Future<bool> signUp(BuildContext context) async {
+    if (!validateInputs()) {
+      return false;
+    }
+
+    isLoading = true;
+    notifyListeners();
+
+    try {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      bool success = await authProvider.register(
+        username: nameController.text.trim(),
+        email: emailController.text.trim(),
+        password: passwordController.text,
+      );
+
+      isLoading = false;
+      notifyListeners();
+
+      if (success) {
+        // Registration successful
+        return true;
+      } else {
+        // Registration failed with unknown error
+        errorMessage = 'Registration failed. Please try again.';
+        notifyListeners();
+        return false;
+      }
+    } catch (e) {
+      isLoading = false;
+      errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  // Optionally, handle Google Sign-In
+  // Future<bool> signUpWithGoogle(BuildContext context) async {
+  //   isLoading = true;
+  //   notifyListeners();
+
+  //   try {
+  //     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+  //     bool success = await authProvider.signInWithGoogle();
+
+  //     isLoading = false;
+  //     notifyListeners();
+
+  //     if (success) {
+  //       // Sign-In successful
+  //       return true;
+  //     } else {
+  //       // Sign-In failed with unknown error
+  //       errorMessage = 'Google Sign-In failed. Please try again.';
+  //       notifyListeners();
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     isLoading = false;
+  //     errorMessage = e.toString();
+  //     notifyListeners();
+  //     return false;
+  //   }
+  // }
 }
