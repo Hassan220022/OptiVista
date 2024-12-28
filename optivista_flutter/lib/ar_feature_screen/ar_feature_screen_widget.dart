@@ -1,8 +1,11 @@
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'ar_feature_screen_model.dart';
 export 'ar_feature_screen_model.dart';
 
@@ -234,9 +237,34 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xFF1A1A40),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 24.0,
+            ),
+            onPressed: () {
+              // Add navigation logic or back functionality here
+               context.go('/productDetailsScreen');
+            },
+          ),
+          title: Text(
+            'AR Try-On',
+            style: FlutterFlowTheme.of(context).title1.override(
+                  fontFamily: 'Inter',
+                  color: Colors.white,
+                ),
+          ),
+          actions: [],
+          centerTitle: true,
+          elevation: 0.0,
+        ),
         key: scaffoldKey,
         backgroundColor: Colors.black,
-        body: SizedBox(
+        body: Container(
           width: MediaQuery.sizeOf(context).width * 1.0,
           height: MediaQuery.sizeOf(context).height * 1.0,
           child: Stack(
@@ -244,7 +272,7 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
               Container(
                 width: MediaQuery.sizeOf(context).width * 1.0,
                 height: MediaQuery.sizeOf(context).height * 1.0,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.black,
                 ),
                 child: Image.network(
@@ -257,7 +285,7 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
               Container(
                 width: MediaQuery.sizeOf(context).width * 1.0,
                 height: MediaQuery.sizeOf(context).height * 1.0,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [Colors.transparent, Color(0x99000000)],
                     stops: [0.0, 1.0],
@@ -267,7 +295,7 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                 ),
                 child: Padding(
                   padding:
-                      const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+                      EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -279,8 +307,8 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                           FlutterFlowIconButton(
                             borderRadius: 24.0,
                             buttonSize: 48.0,
-                            fillColor: const Color(0x33FFFFFF),
-                            icon: const Icon(
+                            fillColor: Color(0x33FFFFFF),
+                            icon: Icon(
                               Icons.close,
                               color: Colors.white,
                               size: 24.0,
@@ -295,8 +323,8 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                               FlutterFlowIconButton(
                                 borderRadius: 24.0,
                                 buttonSize: 48.0,
-                                fillColor: const Color(0x33FFFFFF),
-                                icon: const Icon(
+                                fillColor: Color(0x33FFFFFF),
+                                icon: Icon(
                                   Icons.flip_camera_ios,
                                   color: Colors.white,
                                   size: 24.0,
@@ -308,8 +336,8 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                               FlutterFlowIconButton(
                                 borderRadius: 24.0,
                                 buttonSize: 48.0,
-                                fillColor: const Color(0x33FFFFFF),
-                                icon: const Icon(
+                                fillColor: Color(0x33FFFFFF),
+                                icon: Icon(
                                   Icons.tune,
                                   color: Colors.white,
                                   size: 24.0,
@@ -318,7 +346,7 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                                   print('IconButton pressed ...');
                                 },
                               ),
-                            ].divide(const SizedBox(width: 16.0)),
+                            ].divide(SizedBox(width: 16.0)),
                           ),
                         ],
                       ),
@@ -340,10 +368,10 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                                   width: 72.0,
                                   height: 72.0,
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF28A745),
+                                    color: Color(0xFF28A745),
                                     borderRadius: BorderRadius.circular(36.0),
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.camera,
                                     color: Colors.white,
                                     size: 32.0,
@@ -355,7 +383,7 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                           Container(
                             width: MediaQuery.sizeOf(context).width * 1.0,
                             height: 120.0,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: Color(0xFF1A1A40),
                               borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(0.0),
@@ -365,7 +393,7 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                               ),
                             ),
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 16.0, 16.0, 16.0),
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
@@ -380,10 +408,10 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                                           letterSpacing: 0.0,
                                         ),
                                   ),
-                                  SizedBox(
+                                  Container(
                                     height: 60.0,
                                     child: ListView(
-                                      padding: const EdgeInsets.fromLTRB(
+                                      padding: EdgeInsets.fromLTRB(
                                         12.0,
                                         0,
                                         12.0,
@@ -528,14 +556,14 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                                             ),
                                           ),
                                         ),
-                                      ].divide(const SizedBox(width: 12.0)),
+                                      ].divide(SizedBox(width: 12.0)),
                                     ),
                                   ),
-                                ].divide(const SizedBox(height: 16.0)),
+                                ].divide(SizedBox(height: 16.0)),
                               ),
                             ),
                           ),
-                        ].divide(const SizedBox(height: 24.0)),
+                        ].divide(SizedBox(height: 24.0)),
                       ),
                     ],
                   ),
@@ -544,7 +572,7 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
               Container(
                 width: MediaQuery.sizeOf(context).width * 1.0,
                 height: 100.0,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Color(0x33000000),
                 ),
                 child: ClipRRect(
@@ -555,7 +583,7 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                       sigmaY: 10.0,
                     ),
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
+                      padding: EdgeInsetsDirectional.fromSTEB(
                           16.0, 24.0, 16.0, 24.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
@@ -565,7 +593,7 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.face,
                                 color: Color(0xFF28A745),
                                 size: 24.0,
@@ -586,7 +614,7 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.gesture,
                                 color: Colors.white,
                                 size: 24.0,
@@ -607,7 +635,7 @@ class _ArFeatureScreenWidgetState extends State<ArFeatureScreenWidget> {
                             mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.share,
                                 color: Colors.white,
                                 size: 24.0,

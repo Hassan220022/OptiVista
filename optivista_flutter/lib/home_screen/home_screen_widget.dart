@@ -1,13 +1,15 @@
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'home_screen_model.dart';
 export 'home_screen_model.dart';
 
 class HomeScreenWidget extends StatefulWidget {
-  const HomeScreenWidget({super.key});
+  const HomeScreenWidget({Key? key}) : super(key: key);
 
   @override
   _HomeScreenWidgetState createState() => _HomeScreenWidgetState();
@@ -50,7 +52,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
               Container(
                 width: double.infinity,
                 height: 180.0,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [Color(0xFF1A1A40), Color(0xFF2A2A60)],
                     stops: [0.0, 1.0],
@@ -167,7 +169,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                           Container(
                             width: double.infinity,
                             height: double.infinity,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
                                   Colors.transparent,
@@ -202,12 +204,12 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                     options: FFButtonOptions(
                                       width: 120.0,
                                       height: 40.0,
-                                      color: const Color(0xFFFFC857),
+                                      color: Color(0xFFFFC857),
                                       textStyle: FlutterFlowTheme.of(context)
                                           .titleSmall
                                           .override(
                                             fontFamily: 'Inter Tight',
-                                            color: const Color(0xFF1A1A40),
+                                            color: Color(0xFF1A1A40),
                                           ),
                                       elevation: 0.0,
                                       borderRadius: BorderRadius.circular(20.0),
@@ -401,7 +403,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                       ),
                       Row(
                         children: [
-                          const Icon(Icons.star, color: Color(0xFFFFC857)),
+                          Icon(Icons.star, color: const Color(0xFFFFC857)),
                           Text(
                             rating,
                             style: FlutterFlowTheme.of(context).bodySmall,

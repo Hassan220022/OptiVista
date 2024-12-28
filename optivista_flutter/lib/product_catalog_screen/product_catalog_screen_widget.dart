@@ -1,7 +1,10 @@
-import '../flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
 import 'product_catalog_screen_model.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class ProductCatalogScreenWidget extends StatefulWidget {
   const ProductCatalogScreenWidget({super.key});
@@ -53,7 +56,7 @@ class _ProductCatalogScreenWidgetState
                 Container(
                   width: double.infinity,
                   height: 180.0,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Color(0xFF1A1A40),
                   ),
                   child: Stack(
@@ -85,7 +88,7 @@ class _ProductCatalogScreenWidgetState
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Inter',
-                                    color: const Color(0xCCFFFFFF),
+                                    color: Color(0xCCFFFFFF),
                                   ),
                             ),
                           ],
@@ -108,7 +111,7 @@ class _ProductCatalogScreenWidgetState
                         Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF4F4F4),
+                            color: Color(0xFFF4F4F4),
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                           child: Padding(
@@ -131,8 +134,8 @@ class _ProductCatalogScreenWidgetState
                                           .bodyMedium,
                                       border: InputBorder.none,
                                     ),
-                                    style:
-                                        FlutterFlowTheme.of(context).bodyMedium,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium,
                                     validator: (value) => _model
                                         .textControllerValidator
                                         ?.call(context, value),

@@ -1,7 +1,10 @@
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'checkout_screen_model.dart';
 export 'checkout_screen_model.dart';
 
@@ -68,7 +71,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                 Container(
                   width: MediaQuery.sizeOf(context).width * 1.0,
                   height: 180.0,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     image: DecorationImage(
                       image: NetworkImage(
                         'https://images.unsplash.com/photo-1573537805874-4cedc5d389ce?w=500&h=500',
@@ -79,7 +82,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                   ),
                   child: Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+                        EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -100,7 +103,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Inter',
-                                    color: const Color(0xCCFFFFFF),
+                                    color: Color(0xCCFFFFFF),
                                     letterSpacing: 0.0,
                                   ),
                         ),
@@ -108,11 +111,11 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                     ),
                   ),
                 ),
-                SizedBox(
+                Container(
                   width: MediaQuery.sizeOf(context).width * 1.0,
                   child: Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 24.0),
+                        EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 24.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -130,7 +133,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   20.0, 20.0, 20.0, 20.0),
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
@@ -155,7 +158,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0xFFE0E3E7),
                                           width: 1.0,
                                         ),
@@ -163,7 +166,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -171,7 +174,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       errorBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -179,7 +182,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -220,7 +223,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0xFFE0E3E7),
                                           width: 1.0,
                                         ),
@@ -228,7 +231,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -236,7 +239,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       errorBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -244,7 +247,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -285,7 +288,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0xFFE0E3E7),
                                           width: 1.0,
                                         ),
@@ -293,7 +296,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -301,7 +304,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       errorBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -309,7 +312,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -358,7 +361,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                                         letterSpacing: 0.0,
                                                       ),
                                               enabledBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: Color(0xFFE0E3E7),
                                                   width: 1.0,
                                                 ),
@@ -366,7 +369,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                                     BorderRadius.circular(8.0),
                                               ),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: Color(0x00000000),
                                                   width: 1.0,
                                                 ),
@@ -374,7 +377,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                                     BorderRadius.circular(8.0),
                                               ),
                                               errorBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: Color(0x00000000),
                                                   width: 1.0,
                                                 ),
@@ -383,7 +386,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                               ),
                                               focusedErrorBorder:
                                                   OutlineInputBorder(
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: Color(0x00000000),
                                                   width: 1.0,
                                                 ),
@@ -433,7 +436,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                                         letterSpacing: 0.0,
                                                       ),
                                               enabledBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: Color(0xFFE0E3E7),
                                                   width: 1.0,
                                                 ),
@@ -441,7 +444,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                                     BorderRadius.circular(8.0),
                                               ),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: Color(0x00000000),
                                                   width: 1.0,
                                                 ),
@@ -449,7 +452,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                                     BorderRadius.circular(8.0),
                                               ),
                                               errorBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: Color(0x00000000),
                                                   width: 1.0,
                                                 ),
@@ -458,7 +461,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                               ),
                                               focusedErrorBorder:
                                                   OutlineInputBorder(
-                                                borderSide: const BorderSide(
+                                                borderSide: BorderSide(
                                                   color: Color(0x00000000),
                                                   width: 1.0,
                                                 ),
@@ -484,7 +487,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                           ),
                                         ),
                                       ),
-                                    ].divide(const SizedBox(width: 16.0)),
+                                    ].divide(SizedBox(width: 16.0)),
                                   ),
                                   TextFormField(
                                     controller: _model.textController6,
@@ -506,7 +509,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0xFFE0E3E7),
                                           width: 1.0,
                                         ),
@@ -514,7 +517,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -522,7 +525,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       errorBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -530,7 +533,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                             BorderRadius.circular(8.0),
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
+                                        borderSide: BorderSide(
                                           color: Color(0x00000000),
                                           width: 1.0,
                                         ),
@@ -540,7 +543,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                       filled: true,
                                       fillColor: FlutterFlowTheme.of(context)
                                           .secondaryBackground,
-                                      suffixIcon: const Icon(
+                                      suffixIcon: Icon(
                                         Icons.keyboard_arrow_down_rounded,
                                       ),
                                     ),
@@ -557,7 +560,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                   Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.check_box_outline_blank,
                                         color: Color(0xFF1A1A40),
                                         size: 24.0,
@@ -571,9 +574,9 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                               letterSpacing: 0.0,
                                             ),
                                       ),
-                                    ].divide(const SizedBox(width: 12.0)),
+                                    ].divide(SizedBox(width: 12.0)),
                                   ),
-                                ].divide(const SizedBox(height: 16.0)),
+                                ].divide(SizedBox(height: 16.0)),
                               ),
                             ),
                           ),
@@ -592,7 +595,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                               borderRadius: BorderRadius.circular(12.0),
                             ),
                             child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(
+                              padding: EdgeInsetsDirectional.fromSTEB(
                                   20.0, 20.0, 20.0, 20.0),
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
@@ -678,7 +681,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                       ),
                                     ],
                                   ),
-                                ].divide(const SizedBox(height: 12.0)),
+                                ].divide(SizedBox(height: 12.0)),
                               ),
                             ),
                           ),
@@ -691,16 +694,16 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                           options: FFButtonOptions(
                             width: MediaQuery.sizeOf(context).width * 1.0,
                             height: 56.0,
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
-                            iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
-                            color: const Color(0xFFFFC857),
+                            color: Color(0xFFFFC857),
                             textStyle: FlutterFlowTheme.of(context)
                                 .titleMedium
                                 .override(
                                   fontFamily: 'Inter Tight',
-                                  color: const Color(0xFF1A1A40),
+                                  color: Color(0xFF1A1A40),
                                   letterSpacing: 0.0,
                                 ),
                             elevation: 2.0,
@@ -727,14 +730,14 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
                                     letterSpacing: 0.0,
                                   ),
                             ),
-                          ].divide(const SizedBox(width: 8.0)),
+                          ].divide(SizedBox(width: 8.0)),
                         ),
-                      ].divide(const SizedBox(height: 24.0)),
+                      ].divide(SizedBox(height: 24.0)),
                     ),
                   ),
                 ),
                
-              ].divide(const SizedBox(height: 24.0)),
+              ].divide(SizedBox(height: 24.0)),
             ),
           ),
         ),
@@ -745,7 +748,7 @@ class _CheckoutScreenWidgetState extends State<CheckoutScreenWidget> {
           // Navigate back
           
           backgroundColor: FlutterFlowTheme.of(context).primary,
-          child: const Icon(
+          child: Icon(
             Icons.arrow_back,
             color: Colors.white,
           ),

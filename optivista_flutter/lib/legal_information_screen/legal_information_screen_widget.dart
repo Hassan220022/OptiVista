@@ -1,7 +1,10 @@
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'legal_information_screen_model.dart';
 export 'legal_information_screen_model.dart';
 
@@ -52,7 +55,7 @@ class _LegalInformationScreenWidgetState
                 Container(
                   width: MediaQuery.sizeOf(context).width * 1.0,
                   height: 180.0,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [Color(0xFF1A1A40), Color(0xFF2A2A60)],
                       stops: [0.0, 1.0],
@@ -62,7 +65,7 @@ class _LegalInformationScreenWidgetState
                   ),
                   child: Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+                        EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -83,11 +86,11 @@ class _LegalInformationScreenWidgetState
                           style:
                               FlutterFlowTheme.of(context).bodyLarge.override(
                                     fontFamily: 'Inter',
-                                    color: const Color(0xCCFFFFFF),
+                                    color: Color(0xCCFFFFFF),
                                     letterSpacing: 0.0,
                                   ),
                         ),
-                      ].divide(const SizedBox(height: 8.0)),
+                      ].divide(SizedBox(height: 8.0)),
                     ),
                   ),
                 ),
@@ -95,7 +98,7 @@ class _LegalInformationScreenWidgetState
                   width: MediaQuery.sizeOf(context).width * 1.0,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(0.0),
                       bottomRight: Radius.circular(0.0),
                       topLeft: Radius.circular(32.0),
@@ -104,7 +107,7 @@ class _LegalInformationScreenWidgetState
                   ),
                   child: Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(32.0, 24.0, 32.0, 24.0),
+                        EdgeInsetsDirectional.fromSTEB(32.0, 24.0, 32.0, 24.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -116,7 +119,7 @@ class _LegalInformationScreenWidgetState
                             borderRadius: BorderRadius.circular(16.0),
                           ),
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 20.0, 20.0, 20.0, 20.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
@@ -154,7 +157,7 @@ class _LegalInformationScreenWidgetState
                                         letterSpacing: 0.0,
                                       ),
                                 ),
-                              ].divide(const SizedBox(height: 16.0)),
+                              ].divide(SizedBox(height: 16.0)),
                             ),
                           ),
                         ),
@@ -166,7 +169,7 @@ class _LegalInformationScreenWidgetState
                             borderRadius: BorderRadius.circular(16.0),
                           ),
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 20.0, 20.0, 20.0, 20.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
@@ -204,7 +207,7 @@ class _LegalInformationScreenWidgetState
                                         letterSpacing: 0.0,
                                       ),
                                 ),
-                              ].divide(const SizedBox(height: 16.0)),
+                              ].divide(SizedBox(height: 16.0)),
                             ),
                           ),
                         ),
@@ -216,7 +219,7 @@ class _LegalInformationScreenWidgetState
                             borderRadius: BorderRadius.circular(16.0),
                           ),
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 20.0, 20.0, 20.0, 20.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
@@ -254,7 +257,7 @@ class _LegalInformationScreenWidgetState
                                         letterSpacing: 0.0,
                                       ),
                                 ),
-                              ].divide(const SizedBox(height: 16.0)),
+                              ].divide(SizedBox(height: 16.0)),
                             ),
                           ),
                         ),
@@ -266,7 +269,7 @@ class _LegalInformationScreenWidgetState
                             borderRadius: BorderRadius.circular(16.0),
                           ),
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 20.0, 20.0, 20.0, 20.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
@@ -304,18 +307,18 @@ class _LegalInformationScreenWidgetState
                                         letterSpacing: 0.0,
                                       ),
                                 ),
-                              ].divide(const SizedBox(height: 16.0)),
+                              ].divide(SizedBox(height: 16.0)),
                             ),
                           ),
                         ),
                         Container(
                           width: MediaQuery.sizeOf(context).width * 1.0,
                           decoration: BoxDecoration(
-                            color: const Color(0xFFFFF3E0),
+                            color: Color(0xFFFFF3E0),
                             borderRadius: BorderRadius.circular(16.0),
                           ),
                           child: Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 20.0, 20.0, 20.0, 20.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
@@ -323,7 +326,7 @@ class _LegalInformationScreenWidgetState
                                 Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.info_outline,
                                       color: Color(0xFFFF6F00),
                                       size: 24.0,
@@ -340,7 +343,7 @@ class _LegalInformationScreenWidgetState
                                             fontWeight: FontWeight.w600,
                                           ),
                                     ),
-                                  ].divide(const SizedBox(width: 12.0)),
+                                  ].divide(SizedBox(width: 12.0)),
                                 ),
                                 Text(
                                   'By using our app, you agree to our Terms & Conditions and Privacy Policy. Please review these documents carefully.',
@@ -353,21 +356,21 @@ class _LegalInformationScreenWidgetState
                                         letterSpacing: 0.0,
                                       ),
                                 ),
-                              ].divide(const SizedBox(height: 12.0)),
+                              ].divide(SizedBox(height: 12.0)),
                             ),
                           ),
                         ),
                         FFButtonWidget(
                           onPressed: () {
-                             context.go('/homeScreen');
+                             context.go('/profileScreen');
                           },
                           text: 'Accept All Policies',
                           options: FFButtonOptions(
                             width: MediaQuery.sizeOf(context).width * 1.0,
                             height: 56.0,
-                            padding: const EdgeInsetsDirectional.fromSTEB(
+                            padding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
-                            iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
                             color: FlutterFlowTheme.of(context).primary,
                             textStyle: FlutterFlowTheme.of(context)
@@ -381,7 +384,7 @@ class _LegalInformationScreenWidgetState
                             borderRadius: BorderRadius.circular(28.0),
                           ),
                         ),
-                      ].divide(const SizedBox(height: 24.0)),
+                      ].divide(SizedBox(height: 24.0)),
                     ),
                   ),
                 ),

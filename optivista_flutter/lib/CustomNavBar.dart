@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 class CustomNavBar extends StatefulWidget {
   final Widget child;
 
-  const CustomNavBar({super.key, required this.child});
+  const CustomNavBar({Key? key, required this.child}) : super(key: key);
 
   @override
   _CustomNavBarState createState() => _CustomNavBarState();
@@ -20,11 +20,11 @@ class _CustomNavBarState extends State<CustomNavBar> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.go('/signInScreen'), // Adjust route
         backgroundColor: Colors.purple,
-        child: const Icon(Icons.chat_bubble),
+        child: Icon(Icons.chat_bubble),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
+        shape: CircularNotchedRectangle(),
         notchMargin: 8.0,
         child: BottomNavigationBar(
           currentIndex: _currentIndex,

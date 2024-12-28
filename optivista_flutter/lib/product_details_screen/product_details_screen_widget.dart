@@ -1,8 +1,11 @@
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'product_details_screen_model.dart';
 export 'product_details_screen_model.dart';
 
@@ -299,7 +302,7 @@ class _ProductDetailsScreenWidgetState
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              Container(
                 width: MediaQuery.sizeOf(context).width * 1.0,
                 height: 400.0,
                 child: Stack(
@@ -313,7 +316,7 @@ class _ProductDetailsScreenWidgetState
                     Container(
                       width: MediaQuery.sizeOf(context).width * 1.0,
                       height: MediaQuery.sizeOf(context).height * 1.0,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [Colors.transparent, Colors.black],
                           stops: [0.0, 1.0],
@@ -323,7 +326,7 @@ class _ProductDetailsScreenWidgetState
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
+                      padding: EdgeInsetsDirectional.fromSTEB(
                           16.0, 48.0, 16.0, 16.0),
                       child: Container(
                         child: Row(
@@ -333,8 +336,8 @@ class _ProductDetailsScreenWidgetState
                             FlutterFlowIconButton(
                               borderRadius: 20.0,
                               buttonSize: 40.0,
-                              fillColor: const Color(0x33FFFFFF),
-                              icon: const Icon(
+                              fillColor: Color(0x33FFFFFF),
+                              icon: Icon(
                                 Icons.arrow_back,
                                 color: Colors.white,
                                 size: 24.0,
@@ -349,8 +352,8 @@ class _ProductDetailsScreenWidgetState
                                 FlutterFlowIconButton(
                                   borderRadius: 20.0,
                                   buttonSize: 40.0,
-                                  fillColor: const Color(0x33FFFFFF),
-                                  icon: const Icon(
+                                  fillColor: Color(0x33FFFFFF),
+                                  icon: Icon(
                                     Icons.share,
                                     color: Colors.white,
                                     size: 24.0,
@@ -362,8 +365,8 @@ class _ProductDetailsScreenWidgetState
                                 FlutterFlowIconButton(
                                   borderRadius: 20.0,
                                   buttonSize: 40.0,
-                                  fillColor: const Color(0x33FFFFFF),
-                                  icon: const Icon(
+                                  fillColor: Color(0x33FFFFFF),
+                                  icon: Icon(
                                     Icons.favorite_border,
                                     color: Colors.white,
                                     size: 24.0,
@@ -372,7 +375,7 @@ class _ProductDetailsScreenWidgetState
                                     print('IconButton pressed ...');
                                   },
                                 ),
-                              ].divide(const SizedBox(width: 12.0)),
+                              ].divide(SizedBox(width: 12.0)),
                             ),
                           ],
                         ),
@@ -385,7 +388,7 @@ class _ProductDetailsScreenWidgetState
                 width: MediaQuery.sizeOf(context).width * 1.0,
                 decoration: BoxDecoration(
                   color: FlutterFlowTheme.of(context).secondaryBackground,
-                  borderRadius: const BorderRadius.only(
+                  borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(0.0),
                     bottomRight: Radius.circular(0.0),
                     topLeft: Radius.circular(32.0),
@@ -394,7 +397,7 @@ class _ProductDetailsScreenWidgetState
                 ),
                 child: Padding(
                   padding:
-                      const EdgeInsetsDirectional.fromSTEB(32.0, 24.0, 32.0, 24.0),
+                      EdgeInsetsDirectional.fromSTEB(32.0, 24.0, 32.0, 24.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -438,32 +441,32 @@ class _ProductDetailsScreenWidgetState
                                       letterSpacing: 0.0,
                                     ),
                               ),
-                            ].divide(const SizedBox(width: 8.0)),
+                            ].divide(SizedBox(width: 8.0)),
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.star,
                                 color: Color(0xFFFFC107),
                                 size: 20.0,
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.star,
                                 color: Color(0xFFFFC107),
                                 size: 20.0,
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.star,
                                 color: Color(0xFFFFC107),
                                 size: 20.0,
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.star,
                                 color: Color(0xFFFFC107),
                                 size: 20.0,
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.star_half,
                                 color: Color(0xFFFFC107),
                                 size: 20.0,
@@ -479,16 +482,16 @@ class _ProductDetailsScreenWidgetState
                                       letterSpacing: 0.0,
                                     ),
                               ),
-                            ].divide(const SizedBox(width: 4.0)),
+                            ].divide(SizedBox(width: 4.0)),
                           ),
-                        ].divide(const SizedBox(height: 8.0)),
+                        ].divide(SizedBox(height: 8.0)),
                       ),
                       FFButtonWidget(
                         onPressed: () {
                            context.go('/arFeatureScreen');
                         },
                         text: 'Try On in AR',
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.view_in_ar,
                           color: Colors.white,
                           size: 15.0,
@@ -496,9 +499,9 @@ class _ProductDetailsScreenWidgetState
                         options: FFButtonOptions(
                           width: MediaQuery.sizeOf(context).width * 1.0,
                           height: 56.0,
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
-                          iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
                           color: FlutterFlowTheme.of(context).primary,
                           textStyle:
@@ -518,7 +521,7 @@ class _ProductDetailsScreenWidgetState
                           borderRadius: BorderRadius.circular(16.0),
                         ),
                         child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               16.0, 16.0, 16.0, 16.0),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
@@ -632,7 +635,7 @@ class _ProductDetailsScreenWidgetState
                                   ),
                                 ],
                               ),
-                            ].divide(const SizedBox(height: 16.0)),
+                            ].divide(SizedBox(height: 16.0)),
                           ),
                         ),
                       ),
@@ -643,7 +646,7 @@ class _ProductDetailsScreenWidgetState
                           borderRadius: BorderRadius.circular(16.0),
                         ),
                         child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               16.0, 16.0, 16.0, 16.0),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
@@ -722,32 +725,32 @@ class _ProductDetailsScreenWidgetState
                                             Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
-                                                const Icon(
+                                                Icon(
                                                   Icons.star,
                                                   color: Color(0xFFFFC107),
                                                   size: 16.0,
                                                 ),
-                                                const Icon(
+                                                Icon(
                                                   Icons.star,
                                                   color: Color(0xFFFFC107),
                                                   size: 16.0,
                                                 ),
-                                                const Icon(
+                                                Icon(
                                                   Icons.star,
                                                   color: Color(0xFFFFC107),
                                                   size: 16.0,
                                                 ),
-                                                const Icon(
+                                                Icon(
                                                   Icons.star,
                                                   color: Color(0xFFFFC107),
                                                   size: 16.0,
                                                 ),
-                                                const Icon(
+                                                Icon(
                                                   Icons.star,
                                                   color: Color(0xFFFFC107),
                                                   size: 16.0,
                                                 ),
-                                              ].divide(const SizedBox(width: 4.0)),
+                                              ].divide(SizedBox(width: 4.0)),
                                             ),
                                             Text(
                                               'Perfect fit and amazing quality! The classic design goes with everything.',
@@ -762,7 +765,7 @@ class _ProductDetailsScreenWidgetState
                                           ],
                                         ),
                                       ),
-                                    ].divide(const SizedBox(width: 12.0)),
+                                    ].divide(SizedBox(width: 12.0)),
                                   ),
                                   Row(
                                     mainAxisSize: MainAxisSize.max,
@@ -808,32 +811,32 @@ class _ProductDetailsScreenWidgetState
                                             Row(
                                               mainAxisSize: MainAxisSize.max,
                                               children: [
-                                                const Icon(
+                                                Icon(
                                                   Icons.star,
                                                   color: Color(0xFFFFC107),
                                                   size: 16.0,
                                                 ),
-                                                const Icon(
+                                                Icon(
                                                   Icons.star,
                                                   color: Color(0xFFFFC107),
                                                   size: 16.0,
                                                 ),
-                                                const Icon(
+                                                Icon(
                                                   Icons.star,
                                                   color: Color(0xFFFFC107),
                                                   size: 16.0,
                                                 ),
-                                                const Icon(
+                                                Icon(
                                                   Icons.star,
                                                   color: Color(0xFFFFC107),
                                                   size: 16.0,
                                                 ),
-                                                const Icon(
+                                                Icon(
                                                   Icons.star_border,
                                                   color: Color(0xFFFFC107),
                                                   size: 16.0,
                                                 ),
-                                              ].divide(const SizedBox(width: 4.0)),
+                                              ].divide(SizedBox(width: 4.0)),
                                             ),
                                             Text(
                                               'Great sunglasses, but took some time to adjust to the fit.',
@@ -848,11 +851,11 @@ class _ProductDetailsScreenWidgetState
                                           ],
                                         ),
                                       ),
-                                    ].divide(const SizedBox(width: 12.0)),
+                                    ].divide(SizedBox(width: 12.0)),
                                   ),
-                                ].divide(const SizedBox(height: 12.0)),
+                                ].divide(SizedBox(height: 12.0)),
                               ),
-                            ].divide(const SizedBox(height: 16.0)),
+                            ].divide(SizedBox(height: 16.0)),
                           ),
                         ),
                       ),
@@ -864,9 +867,9 @@ class _ProductDetailsScreenWidgetState
                         options: FFButtonOptions(
                           width: MediaQuery.sizeOf(context).width * 1.0,
                           height: 56.0,
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
-                          iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
                           color: FlutterFlowTheme.of(context).primary,
                           textStyle:
@@ -879,7 +882,7 @@ class _ProductDetailsScreenWidgetState
                           borderRadius: BorderRadius.circular(28.0),
                         ),
                       ),
-                    ].divide(const SizedBox(height: 24.0)),
+                    ].divide(SizedBox(height: 24.0)),
                   ),
                 ),
               ),

@@ -1,7 +1,10 @@
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'forget_password_screen_model.dart';
 export 'forget_password_screen_model.dart';
 
@@ -263,9 +266,9 @@ class _ForgetPasswordScreenWidgetState
                context.go('/signInScreen');
             },
           ),
-          title: const Text('Forgot Password?',),
+          title: Text('Forgot Password?',),
           
-          actions: const [],
+          actions: [],
           centerTitle: true,
           elevation: 0.0,
         ),
@@ -274,7 +277,7 @@ class _ForgetPasswordScreenWidgetState
         body: SafeArea(
           top: true,
           child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+            padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -282,7 +285,7 @@ class _ForgetPasswordScreenWidgetState
                 children: [
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(32.0, 0.0, 32.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(32.0, 0.0, 32.0, 0.0),
                     child: Material(
                       color: Colors.transparent,
                       elevation: 2.0,
@@ -311,7 +314,7 @@ class _ForgetPasswordScreenWidgetState
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(32.0, 0.0, 32.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(32.0, 0.0, 32.0, 0.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -338,12 +341,12 @@ class _ForgetPasswordScreenWidgetState
                                 letterSpacing: 0.0,
                               ),
                         ),
-                      ].divide(const SizedBox(height: 12.0)),
+                      ].divide(SizedBox(height: 12.0)),
                     ),
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(32.0, 0.0, 32.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(32.0, 0.0, 32.0, 0.0),
                     child: Material(
                       color: Colors.transparent,
                       elevation: 2.0,
@@ -358,7 +361,7 @@ class _ForgetPasswordScreenWidgetState
                           borderRadius: BorderRadius.circular(16.0),
                         ),
                         child: Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(
+                          padding: EdgeInsetsDirectional.fromSTEB(
                               24.0, 24.0, 24.0, 24.0),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
@@ -391,21 +394,21 @@ class _ForgetPasswordScreenWidgetState
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
+                                    borderSide: BorderSide(
                                       color: Color(0x00000000),
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   errorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
+                                    borderSide: BorderSide(
                                       color: Color(0x00000000),
                                       width: 1.0,
                                     ),
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   focusedErrorBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
+                                    borderSide: BorderSide(
                                       color: Color(0x00000000),
                                       width: 1.0,
                                     ),
@@ -414,7 +417,7 @@ class _ForgetPasswordScreenWidgetState
                                   filled: true,
                                   fillColor: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
-                                  suffixIcon: const Icon(
+                                  suffixIcon: Icon(
                                     Icons.mail_outline,
                                   ),
                                 ),
@@ -437,9 +440,9 @@ class _ForgetPasswordScreenWidgetState
                                 options: FFButtonOptions(
                                   width: MediaQuery.sizeOf(context).width * 1.0,
                                   height: 50.0,
-                                  padding: const EdgeInsetsDirectional.fromSTEB(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 0.0),
-                                  iconPadding: const EdgeInsetsDirectional.fromSTEB(
+                                  iconPadding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 0.0),
                                   color: FlutterFlowTheme.of(context).primary,
                                   textStyle: FlutterFlowTheme.of(context)
@@ -454,7 +457,7 @@ class _ForgetPasswordScreenWidgetState
                                   borderRadius: BorderRadius.circular(25.0),
                                 ),
                               ),
-                            ].divide(const SizedBox(height: 24.0)),
+                            ].divide(SizedBox(height: 24.0)),
                           ),
                         ),
                       ),
@@ -462,7 +465,7 @@ class _ForgetPasswordScreenWidgetState
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(32.0, 0.0, 32.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(32.0, 0.0, 32.0, 0.0),
                     child: Container(
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
@@ -490,13 +493,13 @@ class _ForgetPasswordScreenWidgetState
                                   fontWeight: FontWeight.w600,
                                 ),
                           ),
-                        ].divide(const SizedBox(width: 4.0)),
+                        ].divide(SizedBox(width: 4.0)),
                       ),
                     ),
                   ),
                   Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(32.0, 0.0, 32.0, 0.0),
+                        EdgeInsetsDirectional.fromSTEB(32.0, 0.0, 32.0, 0.0),
                     child: Container(
                       width: MediaQuery.sizeOf(context).width * 1.0,
                       decoration: BoxDecoration(
@@ -504,7 +507,7 @@ class _ForgetPasswordScreenWidgetState
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             16.0, 16.0, 16.0, 16.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -529,7 +532,7 @@ class _ForgetPasswordScreenWidgetState
                                         fontWeight: FontWeight.w600,
                                       ),
                                 ),
-                              ].divide(const SizedBox(width: 12.0)),
+                              ].divide(SizedBox(width: 12.0)),
                             ),
                             Text(
                               '• Check your spam folder if you don\'t see the email\n• The reset link will expire in 24 hours\n• Make sure to use your registered email address',
@@ -542,7 +545,7 @@ class _ForgetPasswordScreenWidgetState
                                     letterSpacing: 0.0,
                                   ),
                             ),
-                          ].divide(const SizedBox(height: 12.0)),
+                          ].divide(SizedBox(height: 12.0)),
                         ),
                       ),
                     ),

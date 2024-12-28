@@ -1,8 +1,11 @@
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'settings_screen_model.dart';
 export 'settings_screen_model.dart';
 
@@ -364,14 +367,14 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                   letterSpacing: 0.0,
                 ),
           ),
-          actions: const [],
+          actions: [],
           centerTitle: false,
           elevation: 0.0,
         ),
         body: SafeArea(
           top: true,
           child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 0.0),
+            padding: EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 0.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -389,7 +392,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             20.0, 20.0, 20.0, 20.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -425,7 +428,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                     ),
-                                  ].divide(const SizedBox(width: 12.0)),
+                                  ].divide(SizedBox(width: 12.0)),
                                 ),
                                 Icon(
                                   Icons.chevron_right,
@@ -457,7 +460,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                     ),
-                                  ].divide(const SizedBox(width: 12.0)),
+                                  ].divide(SizedBox(width: 12.0)),
                                 ),
                                 Icon(
                                   Icons.chevron_right,
@@ -489,13 +492,13 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                     ),
-                                  ].divide(const SizedBox(width: 12.0)),
+                                  ].divide(SizedBox(width: 12.0)),
                                 ),
                                 Switch(
                                   value: _model.switchValue1!,
                                   onChanged: (newValue) async {
                                     safeSetState(
-                                        () => _model.switchValue1 = newValue);
+                                        () => _model.switchValue1 = newValue!);
                                   },
                                   activeColor:
                                       FlutterFlowTheme.of(context).primary,
@@ -510,7 +513,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                 ),
                               ],
                             ),
-                          ].divide(const SizedBox(height: 16.0)),
+                          ].divide(SizedBox(height: 16.0)),
                         ),
                       ),
                     ),
@@ -528,7 +531,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             20.0, 20.0, 20.0, 20.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -559,7 +562,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                   value: _model.switchValue2!,
                                   onChanged: (newValue) async {
                                     safeSetState(
-                                        () => _model.switchValue2 = newValue);
+                                        () => _model.switchValue2 = newValue!);
                                   },
                                   activeColor:
                                       FlutterFlowTheme.of(context).primary,
@@ -591,7 +594,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                   value: _model.switchValue3!,
                                   onChanged: (newValue) async {
                                     safeSetState(
-                                        () => _model.switchValue3 = newValue);
+                                        () => _model.switchValue3 = newValue!);
                                   },
                                   activeColor:
                                       FlutterFlowTheme.of(context).primary,
@@ -623,7 +626,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                   value: _model.switchValue4!,
                                   onChanged: (newValue) async {
                                     safeSetState(
-                                        () => _model.switchValue4 = newValue);
+                                        () => _model.switchValue4 = newValue!);
                                   },
                                   activeColor:
                                       FlutterFlowTheme.of(context).primary,
@@ -638,7 +641,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                 ),
                               ],
                             ),
-                          ].divide(const SizedBox(height: 16.0)),
+                          ].divide(SizedBox(height: 16.0)),
                         ),
                       ),
                     ),
@@ -656,7 +659,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             20.0, 20.0, 20.0, 20.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -687,7 +690,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                   value: _model.switchValue5!,
                                   onChanged: (newValue) async {
                                     safeSetState(
-                                        () => _model.switchValue5 = newValue);
+                                        () => _model.switchValue5 = newValue!);
                                   },
                                   activeColor:
                                       FlutterFlowTheme.of(context).primary,
@@ -724,7 +727,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                     ),
-                                  ].divide(const SizedBox(width: 12.0)),
+                                  ].divide(SizedBox(width: 12.0)),
                                 ),
                                 Icon(
                                   Icons.chevron_right,
@@ -756,7 +759,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                     ),
-                                  ].divide(const SizedBox(width: 12.0)),
+                                  ].divide(SizedBox(width: 12.0)),
                                 ),
                                 Icon(
                                   Icons.chevron_right,
@@ -766,7 +769,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                 ),
                               ],
                             ),
-                          ].divide(const SizedBox(height: 16.0)),
+                          ].divide(SizedBox(height: 16.0)),
                         ),
                       ),
                     ),
@@ -784,7 +787,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             20.0, 20.0, 20.0, 20.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -820,7 +823,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                     ),
-                                  ].divide(const SizedBox(width: 12.0)),
+                                  ].divide(SizedBox(width: 12.0)),
                                 ),
                                 Text(
                                   'English',
@@ -857,13 +860,13 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                     ),
-                                  ].divide(const SizedBox(width: 12.0)),
+                                  ].divide(SizedBox(width: 12.0)),
                                 ),
                                 Switch(
                                   value: _model.switchValue6!,
                                   onChanged: (newValue) async {
                                     safeSetState(
-                                        () => _model.switchValue6 = newValue);
+                                        () => _model.switchValue6 = newValue!);
                                   },
                                   activeColor:
                                       FlutterFlowTheme.of(context).primary,
@@ -900,7 +903,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                     ),
-                                  ].divide(const SizedBox(width: 12.0)),
+                                  ].divide(SizedBox(width: 12.0)),
                                 ),
                                 Icon(
                                   Icons.chevron_right,
@@ -910,7 +913,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                 ),
                               ],
                             ),
-                          ].divide(const SizedBox(height: 16.0)),
+                          ].divide(SizedBox(height: 16.0)),
                         ),
                       ),
                     ),
@@ -928,7 +931,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                       child: Padding(
-                        padding: const EdgeInsetsDirectional.fromSTEB(
+                        padding: EdgeInsetsDirectional.fromSTEB(
                             20.0, 20.0, 20.0, 20.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.max,
@@ -964,7 +967,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                     ),
-                                  ].divide(const SizedBox(width: 12.0)),
+                                  ].divide(SizedBox(width: 12.0)),
                                 ),
                                 Icon(
                                   Icons.chevron_right,
@@ -996,7 +999,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                             letterSpacing: 0.0,
                                           ),
                                     ),
-                                  ].divide(const SizedBox(width: 12.0)),
+                                  ].divide(SizedBox(width: 12.0)),
                                 ),
                                 Icon(
                                   Icons.chevron_right,
@@ -1017,7 +1020,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                                     letterSpacing: 0.0,
                                   ),
                             ),
-                          ].divide(const SizedBox(height: 16.0)),
+                          ].divide(SizedBox(height: 16.0)),
                         ),
                       ),
                     ),
@@ -1031,9 +1034,9 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                       width: MediaQuery.sizeOf(context).width * 1.0,
                       height: 56.0,
                       padding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                       iconPadding:
-                          const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                          EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                       color: FlutterFlowTheme.of(context).error,
                       textStyle:
                           FlutterFlowTheme.of(context).titleMedium.override(
@@ -1045,7 +1048,7 @@ class _SettingsScreenWidgetState extends State<SettingsScreenWidget> {
                       borderRadius: BorderRadius.circular(28.0),
                     ),
                   ),
-                ].divide(const SizedBox(height: 24.0)),
+                ].divide(SizedBox(height: 24.0)),
               ),
             ),
           ),

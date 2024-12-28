@@ -1,8 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import '../../index.dart';
-import '../flutter_flow_util.dart';
+import 'package:go_router/go_router.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
+import '/index.dart';
+import '/main.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/lat_lng.dart';
+import '/flutter_flow/place.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import 'serialization_util.dart';
 
 export 'package:go_router/go_router.dart';
 export 'serialization_util.dart';
@@ -28,7 +36,7 @@ class AppStateNotifier extends ChangeNotifier {
 class CustomNavBar extends StatefulWidget {
   final Widget child;
 
-  const CustomNavBar({super.key, required this.child});
+  const CustomNavBar({Key? key, required this.child}) : super(key: key);
 
   @override
   _CustomNavBarState createState() => _CustomNavBarState();
@@ -44,7 +52,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.go('/chatScreen'),
         backgroundColor: Colors.purple,
-        child: const Icon(Icons.chat_bubble),
+        child: const Icon(Icons.search),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -68,7 +76,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
                 context.go('/cartScreen');
                 break;
               case 3:
-                context.go('/profileScreen');
+                context.go('/welcomeScreen');
                 break;
             }
           },
@@ -91,7 +99,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'Profile',
+              label: 'Account',
             ),
           ],
         ),
@@ -105,90 +113,90 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
   debugLogDiagnostics: true,
   refreshListenable: appStateNotifier,
   navigatorKey: appNavigatorKey,
-  errorBuilder: (context, state) => const WelcomeScreenWidget(),
+  errorBuilder: (context, state) => WelcomeScreenWidget(),
   routes: [
     GoRoute(
       name: 'home_screen',
       path: '/homeScreen',
-      builder: (context, state) => const CustomNavBar(
+      builder: (context, state) => CustomNavBar(
         child: HomeScreenWidget(),
       ),
     ),
     GoRoute(
       name: 'product_catalog_screen',
       path: '/productCatalogScreen',
-      builder: (context, state) => const CustomNavBar(
+      builder: (context, state) => CustomNavBar(
         child: ProductCatalogScreenWidget(),
       ),
     ),
     GoRoute(
       name: 'cart_screen',
       path: '/cartScreen',
-      builder: (context, state) => const CustomNavBar(
+      builder: (context, state) => CustomNavBar(
         child: CartScreenWidget(),
       ),
     ),
     GoRoute(
       name: 'profile_screen',
       path: '/profileScreen',
-      builder: (context, state) => const CustomNavBar(
+      builder: (context, state) => CustomNavBar(
         child: ProfileScreenWidget(),
       ),
     ),
     GoRoute(
       name: 'welcome_screen',
       path: '/welcomeScreen',
-      builder: (context, state) => const WelcomeScreenWidget(),
+      builder: (context, state) => WelcomeScreenWidget(),
     ),
     GoRoute(
       name: 'sign_in_screen',
       path: '/signInScreen',
-      builder: (context, state) => const SignInScreenWidget(),
+      builder: (context, state) => SignInScreenWidget(),
     ),
     GoRoute(
       name: 'sign_up_screen',
       path: '/signUpScreen',
-      builder: (context, state) => const SignUpScreenWidget(),
+      builder: (context, state) => SignUpScreenWidget(),
     ),
     GoRoute(
       name: 'product_details_screen',
       path: '/productDetailsScreen',
-      builder: (context, state) => const ProductDetailsScreenWidget(),
+      builder: (context, state) => ProductDetailsScreenWidget(),
     ),
     GoRoute(
       name: 'ar_feature_screen',
       path: '/arFeatureScreen',
-      builder: (context, state) => const ArFeatureScreenWidget(),
+      builder: (context, state) => ArFeatureScreenWidget(),
     ),
     GoRoute(
       name: 'checkout_screen',
       path: '/checkoutScreen',
-      builder: (context, state) => const CheckoutScreenWidget(),
+      builder: (context, state) => CheckoutScreenWidget(),
     ),
     GoRoute(
       name: 'order_history_screen',
       path: '/orderHistoryScreen',
-      builder: (context, state) => const OrderHistoryScreenWidget(),
+      builder: (context, state) => OrderHistoryScreenWidget(),
     ),
     GoRoute(
       name: 'forget_password_screen',
       path: '/forgetPasswordScreen',
-      builder: (context, state) => const ForgetPasswordScreenWidget(),
+      builder: (context, state) => ForgetPasswordScreenWidget(),
     ),
     GoRoute(
       name: 'feedback_support_screen',
       path: '/feedbackSupportScreen',
-      builder: (context, state) => const FeedbackSupportScreenWidget(),
+      builder: (context, state) => FeedbackSupportScreenWidget(),
     ),
     GoRoute(
       name: 'settings_screen',
       path: '/settingsScreen',
-      builder: (context, state) => const SettingsScreenWidget(),
+      builder: (context, state) => SettingsScreenWidget(),
     ),
     GoRoute(
       name: 'legal_information_screen',
       path: '/legalInformationScreen',
-      builder: (context, state) => const LegalInformationScreenWidget(),
+      builder: (context, state) => LegalInformationScreenWidget(),
     ),
   ],
 );
@@ -288,5 +296,5 @@ class TransitionInfo {
   final Duration duration;
   final Alignment? alignment;
 
-  static TransitionInfo appDefault() => const TransitionInfo(hasTransition: false);
+  static TransitionInfo appDefault() => TransitionInfo(hasTransition: false);
 }

@@ -1,8 +1,11 @@
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'profile_screen_model.dart';
 export 'profile_screen_model.dart';
 
@@ -42,16 +45,16 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primary,
           automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              // Add navigation logic or back functionality here
-              Navigator.pop(context);
-            },
-          ),
+          // leading: IconButton(
+          //   icon: Icon(
+          //     Icons.arrow_back,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     // Add navigation logic or back functionality here
+          //     context.go('/profileScreen');
+          //   },
+          // ),
           title: Text(
             'Profile',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
@@ -62,7 +65,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
           ),
           actions: [
             IconButton(
-              icon: const Icon(
+              icon: Icon(
                 Icons.settings,
                 color: Colors.white,
               ),
@@ -82,12 +85,12 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   width: MediaQuery.sizeOf(context).width * 1.0,
                   height: 280.0,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [Color(0xFF1A1A40), Color(0xFF2A2A60)],
                       stops: [0.0, 1.0],
@@ -97,7 +100,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                   ),
                   child: Padding(
                     padding:
-                        const EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
+                        EdgeInsetsDirectional.fromSTEB(24.0, 24.0, 24.0, 24.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -132,11 +135,11 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                   width: 120.0,
                                   height: 120.0,
                                   decoration: BoxDecoration(
-                                    color: const Color(0x33000000),
+                                    color: Color(0x33000000),
                                     borderRadius: BorderRadius.circular(60.0),
                                   ),
                                   child: Align(
-                                    alignment: const AlignmentDirectional(0.8, 0.8),
+                                    alignment: AlignmentDirectional(1, 0.8),
                                     child: FlutterFlowIconButton(
                                       borderRadius: 18.0,
                                       buttonSize: 36.0,
@@ -173,11 +176,11 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                           style:
                               FlutterFlowTheme.of(context).bodyLarge.override(
                                     fontFamily: 'Inter',
-                                    color: const Color(0xCCFFFFFF),
+                                    color: Color(0xCCFFFFFF),
                                     letterSpacing: 0.0,
                                   ),
                         ),
-                      ].divide(const SizedBox(height: 16.0)),
+                      ].divide(SizedBox(height: 16.0)),
                     ),
                   ),
                 ),
@@ -194,7 +197,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
+                      padding: EdgeInsetsDirectional.fromSTEB(
                           20.0, 20.0, 20.0, 20.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
@@ -215,8 +218,8 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                               FlutterFlowIconButton(
                                 borderRadius: 20.0,
                                 buttonSize: 40.0,
-                                fillColor: const Color(0xFFFFF8E1),
-                                icon: const Icon(
+                                fillColor: Color(0xFFFFF8E1),
+                                icon: Icon(
                                   Icons.edit,
                                   color: Color(0xFFFFC857),
                                   size: 24.0,
@@ -311,9 +314,9 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                   ),
                                 ],
                               ),
-                            ].divide(const SizedBox(height: 12.0)),
+                            ].divide(SizedBox(height: 12.0)),
                           ),
-                        ].divide(const SizedBox(height: 16.0)),
+                        ].divide(SizedBox(height: 16.0)),
                       ),
                     ),
                   ),
@@ -331,7 +334,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
+                      padding: EdgeInsetsDirectional.fromSTEB(
                           20.0, 20.0, 20.0, 20.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
@@ -349,7 +352,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     12.0, 0.0, 12.0, 0.0),
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -358,7 +361,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
+                                    padding: EdgeInsets.all(12.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
@@ -415,7 +418,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                padding: EdgeInsetsDirectional.fromSTEB(
                                     12.0, 0.0, 12.0, 0.0),
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -424,7 +427,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(12.0),
+                                    padding: EdgeInsets.all(12.0),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.max,
                                       mainAxisAlignment:
@@ -480,9 +483,9 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                   ),
                                 ),
                               ),
-                            ].divide(const SizedBox(height: 12.0)),
+                            ].divide(SizedBox(height: 12.0)),
                           ),
-                        ].divide(const SizedBox(height: 16.0)),
+                        ].divide(SizedBox(height: 16.0)),
                       ),
                     ),
                   ),
@@ -500,7 +503,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                     child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
+                      padding: EdgeInsetsDirectional.fromSTEB(
                           20.0, 20.0, 20.0, 20.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
@@ -540,7 +543,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                               letterSpacing: 0.0,
                                             ),
                                       ),
-                                    ].divide(const SizedBox(width: 12.0)),
+                                    ].divide(SizedBox(width: 12.0)),
                                   ),
                                   Icon(
                                     Icons.chevron_right,
@@ -573,7 +576,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                               letterSpacing: 0.0,
                                             ),
                                       ),
-                                    ].divide(const SizedBox(width: 12.0)),
+                                    ].divide(SizedBox(width: 12.0)),
                                   ),
                                   Icon(
                                     Icons.chevron_right,
@@ -606,7 +609,7 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                               letterSpacing: 0.0,
                                             ),
                                       ),
-                                    ].divide(const SizedBox(width: 12.0)),
+                                    ].divide(SizedBox(width: 12.0)),
                                   ),
                                   Icon(
                                     Icons.chevron_right,
@@ -616,9 +619,9 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                                   ),
                                 ],
                               ),
-                            ].divide(const SizedBox(height: 12.0)),
+                            ].divide(SizedBox(height: 12.0)),
                           ),
-                        ].divide(const SizedBox(height: 16.0)),
+                        ].divide(SizedBox(height: 16.0)),
                       ),
                     ),
                   ),
@@ -631,21 +634,21 @@ class _ProfileScreenWidgetState extends State<ProfileScreenWidget> {
                   options: FFButtonOptions(
                     width: MediaQuery.sizeOf(context).width * 0.9,
                     height: 56.0,
-                    padding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                     iconPadding:
-                        const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                    color: const Color(0xFFFFC857),
+                        EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                    color: Color(0xFFFFC857),
                     textStyle:
                         FlutterFlowTheme.of(context).titleMedium.override(
                               fontFamily: 'Inter Tight',
-                              color: const Color(0xFF1A1A40),
+                              color: Color(0xFF1A1A40),
                               letterSpacing: 0.0,
                             ),
                     elevation: 3.0,
                     borderRadius: BorderRadius.circular(28.0),
                   ),
                 ),
-              ].divide(const SizedBox(height: 24.0)),
+              ].divide(SizedBox(height: 24.0)),
             ),
           ),
         ),
