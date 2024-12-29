@@ -16,12 +16,21 @@ import 'providers/order_provider.dart';
 import 'providers/feedback_provider.dart';
 import 'providers/ar_provider.dart';
 
+import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
+// Import your Firebase options file if you have one (auto-generated)
+// import 'firebase_options.dart'; // Ensure this file exists
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GoRouter.optionURLReflectsImperativeAPIs = true;
   usePathUrlStrategy();
 
   await FlutterFlowTheme.initialize();
+
+  // Initialize Firebase
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
 
   runApp(
     MultiProvider(

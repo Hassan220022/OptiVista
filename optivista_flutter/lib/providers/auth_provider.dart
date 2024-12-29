@@ -68,13 +68,18 @@ class AuthProvider with ChangeNotifier {
 
   // Logout the current user
   Future<void> logout() async {
+    _isLoading = true;
+    notifyListeners();
+
     await _authService.logout();
     _user = null;
+    _error = null;
+    _isLoading = false;
     notifyListeners();
   }
 
-  // Optionally, implement a method to check existing authentication state
-  Future<void> checkAuthStatus() async {
+  // Fetch current user
+  Future<void> fetchCurrentUser() async {
     _isLoading = true;
     notifyListeners();
 
@@ -82,11 +87,29 @@ class AuthProvider with ChangeNotifier {
       _user = await _authService.getCurrentUser();
       _error = null;
     } catch (e) {
-      _user = null;
       _error = e.toString();
     }
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  // Google Sign-In
+  Future<bool> signInWithGoogle() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      _user = await _authService.signInWithGoogle();
+      _error = null;
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    }
   }
 }

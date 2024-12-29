@@ -30,16 +30,16 @@ class ProductService {
     }
   }
 
-  // Update product stock
-  Future<void> updateStock(int id, int stock) async {
-    final data = {
-      'stock': stock,
-    };
+  // // Update product stock
+  // Future<void> updateStock(int id, int stock) async {
+  //   final data = {
+  //     'stock': stock,
+  //   };
 
-    final response = await _apiService.put('/products/$id/stock', data);
+  //   final response = await _apiService.put('/products/$id/stock', data);
 
-    if (!response['success']) {
-      throw Exception(response['message'] ?? 'Failed to update stock');
-    }
-  }
+  //   if (!response['success']) {
+  //     throw Exception(response['message'] ?? 'Failed to update stock');
+  //   }
+  // }
 }

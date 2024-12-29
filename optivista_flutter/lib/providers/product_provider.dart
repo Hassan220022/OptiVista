@@ -43,20 +43,20 @@ class ProductProvider with ChangeNotifier {
   }
 
   // Update product stock
-  Future<bool> updateProductStock(int id, int stock) async {
-    try {
-      await _productService.updateStock(id, stock);
-      // Update local product list if necessary
-      int index = _products.indexWhere((product) => product.id == id);
-      if (index != -1) {
-        _products[index].stock = stock;
-        notifyListeners();
-      }
-      return true;
-    } catch (e) {
-      _error = e.toString();
-      notifyListeners();
-      return false;
-    }
-  }
+  // Future<bool> updateProductStock(int id, int stock) async {
+  //   try {
+  //     await _productService.updateStock(id, stock);
+  //     // Update local product list if necessary
+  //     int index = _products.indexWhere((product) => product.id == id);
+  //     if (index != -1) {
+  //       _products[index].stock = stock;
+  //       notifyListeners();
+  //     }
+  //     return true;
+  //   } catch (e) {
+  //     _error = e.toString();
+  //     notifyListeners();
+  //     return false;
+  //   }
+  // }
 }

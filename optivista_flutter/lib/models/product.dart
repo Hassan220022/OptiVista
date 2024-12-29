@@ -8,7 +8,7 @@ class Product {
   final String name;
   final String description;
   final double price;
-  final int stock;
+  int stock;
   final String imageUrl;
   final String arMetadata;
 
