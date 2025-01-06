@@ -1,4 +1,3 @@
-// Example: backend/src/controllers/productController.js
 import { getAllProducts, getProductById } from '../services/productService.js';
 
 export const getAllProductsController = async (req, res) => {

@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
-// import testRoutes from './src/routes/testRoutes.js';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { errorHandler, notFound } from './src/middlewares/errorHandler.js';
@@ -18,7 +17,6 @@ import uploadRoutes from './src/routes/uploadRoutes.js';
 
 const app = express();
 app.use(express.json());
-// app.use('/api/test', testRoutes);
 
 // Middlewares
 app.use(cors());
@@ -41,6 +39,6 @@ app.use(errorHandler);
 
 // Start server
 const PORT = 3000;
-app.listen(PORT, '0.0.0.0',() => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });

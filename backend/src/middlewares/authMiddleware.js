@@ -26,16 +26,3 @@ export const authorize = (roles = []) => {
     next();
   };
 };
-
-/////////////////////
-//////////Usage Example:
-////////////Protect routes by requiring authentication:
-// const { authenticate, authorize } = require('../middlewares/authMiddleware');
-
-// router.get('/protected', authenticate, (req, res) => {
-//   res.json({ success: true, message: 'Welcome to the protected route!' });
-// });
-
-// router.post('/admin', authenticate, authorize(['admin']), (req, res) => {
-//   res.json({ success: true, message: 'Admin route accessed' });
-// });

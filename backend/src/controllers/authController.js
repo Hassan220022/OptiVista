@@ -2,8 +2,8 @@ import { login, register } from '../services/authService.js';
 
 export const loginController = async (req, res, next) => {
   try {
-    const { username, password } = req.body;
-    const token = await login(username, password);
+    const { email, password } = req.body;
+    const token = await login(email, password);
     res.json({ status: 'success', token });
   } catch (error) {
     next(error);
