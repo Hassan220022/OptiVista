@@ -4,7 +4,7 @@ import { Button } from '../../common/Button';
 import { SearchInput } from '../../common/SearchInput';
 import { ProductTable } from './ProductTable';
 import { AddProductPage } from './AddProductPage';
-import type { Product } from '../../../types/product';
+import { productApi } from '../../../services/apiService'; // Import the API service
 
 const ProductList: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -14,15 +14,8 @@ const ProductList: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://196.221.151.195:3000/api/products', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setProducts(data.products);
-        }
+        const response = await productApi.getProducts(); // Use the API service
+        setProducts(response.data.products);
       } catch (error) {
         console.error('Failed to fetch products:', error);
       }

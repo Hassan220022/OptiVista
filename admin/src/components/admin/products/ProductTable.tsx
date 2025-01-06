@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '../../common/Button';
-import type { Product } from '../../../types/product';
+import { productApi } from '../../../services/apiService'; // Import the API service
 
 interface ProductTableProps {
   products: Product[];
@@ -10,23 +10,11 @@ interface ProductTableProps {
 export function ProductTable({ products, onEdit }: ProductTableProps) {
   const handleDelete = async (productId: number) => {
     try {
-      const response = await fetch(`http://196.221.151.195:3000/api/products/${productId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.status === 'success') {
-        alert('Product deleted successfully!');
-        window.location.reload(); // Refresh the page
-      } else {
-        alert(data.message || 'Failed to delete product.');
-      }
+      await productApi.deleteProduct(productId); // Use the API service
+      alert('Product deleted successfully!');
+      window.location.reload(); // Refresh the page
     } catch (error) {
-      alert('An error occurred. Please try again.');
+      alert('Failed to delete product.');
     }
   };
 

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '../../common/Button';
 import { Card } from '../../common/Card';
-import type { Product, ProductCategory } from '../../../types/product';
+import type { ProductCategory } from '../../../types/product';
+import { productApi } from '../../../services/apiService'; // Import the API service
 
 const CATEGORIES: ProductCategory[] = [
   'Sunglasses',
@@ -32,41 +33,33 @@ const COLORS = [
 ];
 
 const AddProductPage: React.FC = () => {
-  const [formData, setFormData] = useState<Omit<Product, 'id'>>({
+  const [formData, setFormData] = useState({
     name: '',
-    price: 0,
-    stock: 0,
-    category: 'Sunglasses',
+    price: '',
+    stock: '',
+    category: '',
     description: '',
     imageUrl: '',
     arModelUrl: '',
-    materials: [],
-    availableColors: [],
+    materials: [] as string[],
+    colors: [] as string[],
+    dimensions: {
+      frameWidth: '',
+      templeLength: '',
+      lensHeight: '',
+      bridgeWidth: '',
+    },
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://196.221.151.195:3000/api/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.status === 'success') {
-        alert('Product added successfully!');
-        window.location.href = '/dashboard'; // Redirect to dashboard
-      } else {
-        alert(data.message || 'Failed to add product.');
-      }
+      await productApi.addProduct(formData); // Use the API service
+      alert('Product added successfully!');
+      window.location.href = '/dashboard'; // Redirect to dashboard
     } catch (error) {
-      alert('An error occurred. Please try again.');
+      alert('Failed to add product.');
     }
   };
 

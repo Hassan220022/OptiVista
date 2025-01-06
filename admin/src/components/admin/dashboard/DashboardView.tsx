@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { BarChart3, Users, Package, ShoppingCart } from 'lucide-react';
 import { ProductList } from '../products/ProductList';
 import { OrderList } from '../orders/OrderList';
+import { dashboardApi } from '../../../services/apiService'; // Import the API service
 
 const DashboardView: React.FC = () => {
   const navigate = useNavigate();
@@ -21,15 +22,8 @@ const DashboardView: React.FC = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch('http://196.221.151.195:3000/api/admin/stats', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setStats(data.stats);
-        }
+        const response = await dashboardApi.getAdminStats(); // Use the API service
+        setStats(response.data.stats);
       } catch (error) {
         console.error('Failed to fetch stats:', error);
       }

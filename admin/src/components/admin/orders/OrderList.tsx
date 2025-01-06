@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { SearchInput } from '../../common/SearchInput';
 import { OrderTable } from './OrderTable';
 import type { Order } from '../../../types/order';
+import { orderApi } from '../../../services/apiService'; // Import the API service
 
 const OrderList: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -10,15 +11,8 @@ const OrderList: React.FC = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://196.221.151.195:3000/api/orders', {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setOrders(data.orders);
-        }
+        const response = await orderApi.getOrders(); // Use the API service
+        setOrders(response.data.orders);
       } catch (error) {
         console.error('Failed to fetch orders:', error);
       }

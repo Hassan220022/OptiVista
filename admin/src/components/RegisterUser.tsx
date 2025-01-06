@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authApi } from '../services/apiService'; // Import the API service
 
 const RegisterUser: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -18,25 +19,11 @@ const RegisterUser: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://196.221.151.195:3000/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({ username, email, password, role: 'consultant' }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.status === 'success') {
-        alert('User registered successfully!');
-        navigate('/dashboard');
-      } else {
-        setError(data.message || 'Registration failed.');
-      }
-    } catch (err) {
-      setError('An error occurred while registering. Please try again.');
+      const response = await authApi.register({ username, email, password, role: 'consultant' }); // Use the API service
+      alert('User registered successfully!');
+      navigate('/dashboard');
+    } catch (error) {
+      setError('Registration failed. Please try again.');
     }
   };
 

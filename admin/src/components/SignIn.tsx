@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authApi } from '../services/apiService'; // Import the API service
 
 const SignIn: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -11,32 +12,19 @@ const SignIn: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://196.221.151.195:3000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await authApi.login({ username, password }); // Use the API service
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userRole', response.data.user.role);
 
-      const data = await response.json();
-
-      if (data.status === 'success') {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('userRole', data.user.role);
-
-        // Redirect based on role
-        if (data.user.role === 'admin') {
-          navigate('/dashboard');
-        } else if (data.user.role === 'consultant') {
-          navigate('/user-dashboard');
-        }
-      } else {
-        setError(data.message);
+      // Redirect based on role
+      if (response.data.user.role === 'admin') {
+        navigate('/dashboard');
+      } else if (response.data.user.role === 'consultant') {
+        navigate('/user-dashboard');
       }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
+    } catch (error) {
+      setError('Invalid username or password.');
     }
   };
 
