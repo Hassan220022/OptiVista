@@ -1,13 +1,6 @@
 import React from 'react';
 import { Button } from '../../common/Button';
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  stock: number;
-  category: string;
-}
+import type { Product } from '../../../types/product';
 
 interface ProductTableProps {
   products: Product[];
@@ -15,6 +8,28 @@ interface ProductTableProps {
 }
 
 export function ProductTable({ products, onEdit }: ProductTableProps) {
+  const handleDelete = async (productId: number) => {
+    try {
+      const response = await fetch(`http://196.221.151.195:3000/api/products/${productId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.status === 'success') {
+        alert('Product deleted successfully!');
+        window.location.reload(); // Refresh the page
+      } else {
+        alert(data.message || 'Failed to delete product.');
+      }
+    } catch (error) {
+      alert('An error occurred. Please try again.');
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200">
       <table className="min-w-full divide-y divide-gray-200">
@@ -45,12 +60,19 @@ export function ProductTable({ products, onEdit }: ProductTableProps) {
               <td className="px-6 py-4 whitespace-nowrap">{product.stock}</td>
               <td className="px-6 py-4 whitespace-nowrap">{product.category}</td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <Button 
-                  variant="secondary" 
+                <Button
+                  variant="secondary"
                   size="sm"
                   onClick={() => onEdit(product)}
                 >
                   Edit
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => handleDelete(product.id)}
+                >
+                  Delete
                 </Button>
               </td>
             </tr>

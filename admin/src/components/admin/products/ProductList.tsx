@@ -1,43 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '../../common/Button';
 import { SearchInput } from '../../common/SearchInput';
 import { ProductTable } from './ProductTable';
 import { AddProductPage } from './AddProductPage';
+import type { Product } from '../../../types/product';
 
-const initialProducts = [
-  { 
-    id: 1, 
-    name: 'Classic Aviator Sunglasses', 
-    price: 149.99, 
-    stock: 50, 
-    category: 'Sunglasses',
-    description: 'Timeless aviator design with UV protection',
-    imageUrl: 'https://example.com/aviator.jpg',
-    arModelUrl: 'https://example.com/aviator.glb',
-    colors: ['Gold', 'Black'],
-    materials: ['Metal']
-  },
-  { 
-    id: 2, 
-    name: 'Modern Reading Glasses', 
-    price: 99.99, 
-    stock: 30, 
-    category: 'Reading Glasses',
-    description: 'Comfortable reading glasses with blue light protection',
-    imageUrl: 'https://example.com/reading.jpg',
-    arModelUrl: 'https://example.com/reading.glb',
-    colors: ['Tortoise', 'Black'],
-    materials: ['Acetate']
-  }
-];
-
-export function ProductList() {
-  const [products, setProducts] = useState(initialProducts);
+const ProductList: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddProduct, setShowAddProduct] = useState(false);
 
-  const filteredProducts = products.filter(product =>
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://196.221.151.195:3000/api/products', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setProducts(data.products);
+        }
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -49,7 +43,7 @@ export function ProductList() {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Products</h1>
-        <Button 
+        <Button
           className="flex items-center gap-2"
           onClick={() => setShowAddProduct(true)}
         >
@@ -65,7 +59,7 @@ export function ProductList() {
         />
       </div>
 
-      <ProductTable 
+      <ProductTable
         products={filteredProducts}
         onEdit={(product) => {
           console.log('Edit product:', product);
@@ -73,4 +67,6 @@ export function ProductList() {
       />
     </div>
   );
-}
+};
+
+export default ProductList;

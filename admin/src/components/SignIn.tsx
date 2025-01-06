@@ -24,9 +24,14 @@ const SignIn: React.FC = () => {
       if (data.status === 'success') {
         localStorage.setItem('token', data.token);
         localStorage.setItem('isAuthenticated', 'true');
-        // Store user role if needed
         localStorage.setItem('userRole', data.user.role);
-        navigate('/dashboard');
+
+        // Redirect based on role
+        if (data.user.role === 'admin') {
+          navigate('/dashboard');
+        } else if (data.user.role === 'consultant') {
+          navigate('/user-dashboard');
+        }
       } else {
         setError(data.message);
       }

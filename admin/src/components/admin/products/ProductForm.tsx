@@ -12,7 +12,7 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
+
     onSubmit({
       name: formData.get('name') as string,
       price: Number(formData.get('price')),
@@ -81,10 +81,39 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
           required
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
         >
-          <option value="Electronics">Electronics</option>
-          <option value="Accessories">Accessories</option>
-          <option value="Clothing">Clothing</option>
+          <option value="Sunglasses">Sunglasses</option>
+          <option value="Reading Glasses">Reading Glasses</option>
+          <option value="Sports Eyewear">Sports Eyewear</option>
+          <option value="Designer Frames">Designer Frames</option>
         </select>
+      </div>
+
+      <div>
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          Description
+        </label>
+        <textarea
+          name="description"
+          id="description"
+          defaultValue={product?.description}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          rows={4}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700">
+          Image URL
+        </label>
+        <input
+          type="url"
+          name="imageUrl"
+          id="imageUrl"
+          defaultValue={product?.imageUrl}
+          required
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        />
       </div>
 
       <div className="flex gap-4">

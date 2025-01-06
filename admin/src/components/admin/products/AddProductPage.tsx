@@ -31,29 +31,43 @@ const COLORS = [
   'Rose Gold'
 ];
 
-export function AddProductPage() {
-  const [formData, setFormData] = useState({
+const AddProductPage: React.FC = () => {
+  const [formData, setFormData] = useState<Omit<Product, 'id'>>({
     name: '',
-    price: '',
-    stock: '',
-    category: '',
+    price: 0,
+    stock: 0,
+    category: 'Sunglasses',
     description: '',
     imageUrl: '',
     arModelUrl: '',
-    materials: [] as string[],
-    colors: [] as string[],
-    dimensions: {
-      frameWidth: '',
-      templeLength: '',
-      lensHeight: '',
-      bridgeWidth: ''
-    }
+    materials: [],
+    availableColors: [],
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Handle form submission
-    console.log(formData);
+
+    try {
+      const response = await fetch('http://196.221.151.195:3000/api/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.status === 'success') {
+        alert('Product added successfully!');
+        window.location.href = '/dashboard'; // Redirect to dashboard
+      } else {
+        alert(data.message || 'Failed to add product.');
+      }
+    } catch (error) {
+      alert('An error occurred. Please try again.');
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -334,3 +348,4 @@ export function AddProductPage() {
     </div>
   );
 }
+export default AddProductPage;

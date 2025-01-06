@@ -2,11 +2,13 @@ export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | '
 
 export interface Order {
   id: number;
+  userId: number; // Added to match backend schema
   productId: number;
   quantity: number;
   status: OrderStatus;
-  customerName: string;
-  customerEmail: string;
-  total: number;
-  createdAt: string;
+  totalPrice: number; // Changed from `total` to match backend schema
+  shippingAddress: string; // Added to match backend schema
+  paymentMethod: string; // Added to match backend schema
+  createdAt: string; // Matches backend schema
+  updatedAt?: string; // Optional, matches backend schema
 }

@@ -12,7 +12,7 @@ const statusColors = {
   processing: 'bg-blue-100 text-blue-800',
   shipped: 'bg-purple-100 text-purple-800',
   delivered: 'bg-green-100 text-green-800',
-  cancelled: 'bg-red-100 text-red-800'
+  cancelled: 'bg-red-100 text-red-800',
 };
 
 export function OrderTable({ orders, onStatusChange }: OrderTableProps) {
@@ -25,10 +25,13 @@ export function OrderTable({ orders, onStatusChange }: OrderTableProps) {
               Order ID
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Customer
+              Shipping Address
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Total
+              Payment Method
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Total Price
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Status
@@ -42,11 +45,9 @@ export function OrderTable({ orders, onStatusChange }: OrderTableProps) {
           {orders.map((order) => (
             <tr key={order.id}>
               <td className="px-6 py-4 whitespace-nowrap">#{order.id}</td>
-              <td className="px-6 py-4">
-                <div className="text-sm font-medium text-gray-900">{order.customerName}</div>
-                <div className="text-sm text-gray-500">{order.customerEmail}</div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">${order.total}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{order.shippingAddress}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{order.paymentMethod}</td>
+              <td className="px-6 py-4 whitespace-nowrap">${order.totalPrice}</td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[order.status]}`}>
                   {order.status}

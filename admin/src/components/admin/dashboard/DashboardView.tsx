@@ -1,22 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart3, Users, Package, ShoppingCart } from 'lucide-react';
 import { ProductList } from '../products/ProductList';
 import { OrderList } from '../orders/OrderList';
 
-const stats = [
-  { title: 'Total Sales', value: '$12,345', icon: BarChart3, change: '+12%' },
-  { title: 'Active Users', value: '1,234', icon: Users, change: '+3%' },
-  { title: 'Products', value: '345', icon: Package, change: '+5%' },
-  { title: 'Pending Orders', value: '23', icon: ShoppingCart, change: '-2%' },
-];
-
 const DashboardView: React.FC = () => {
   const navigate = useNavigate();
+  const [stats, setStats] = useState([
+    { title: 'Total Sales', value: '$12,345', icon: BarChart3, change: '+12%' },
+    { title: 'Active Users', value: '1,234', icon: Users, change: '+3%' },
+    { title: 'Products', value: '345', icon: Package, change: '+5%' },
+    { title: 'Pending Orders', value: '23', icon: ShoppingCart, change: '-2%' },
+  ]);
 
   const handleRegisterNewUser = () => {
     navigate('/register');
   };
+
+  // Fetch dashboard stats from the backend
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('http://196.221.151.195:3000/api/admin/stats', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setStats(data.stats);
+        }
+      } catch (error) {
+        console.error('Failed to fetch stats:', error);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -51,11 +71,11 @@ const DashboardView: React.FC = () => {
         </div>
         <div className="mt-8">
           <h3 className="text-xl font-semibold">Orders</h3>
-          <ProductList/>
+          <OrderList />
         </div>
         <div className="mt-8">
           <h3 className="text-xl font-semibold">Products</h3>
-          <OrderList/>
+          <ProductList />
         </div>
       </div>
     </div>
