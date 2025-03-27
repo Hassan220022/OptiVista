@@ -1,0 +1,18 @@
+[Unit]
+Description=MinIO
+Documentation=https://docs.min.io
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/opt/minio
+ExecStart=/usr/local/bin/minio server /opt/minio/data --console-address :9001
+Restart=always
+RestartSec=3
+Environment="MINIO_ROOT_USER=minioadmin"
+Environment="MINIO_ROOT_PASSWORD=minioadmin"
+
+[Install]
+WantedBy=multi-user.target 
