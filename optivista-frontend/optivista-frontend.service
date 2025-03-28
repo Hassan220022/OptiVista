@@ -1,0 +1,33 @@
+[Unit]
+Description=OptiVista Frontend Admin Portal
+After=network.target optivista-backend.service
+Wants=optivista-backend.service
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/optivista-frontend
+ExecStart=/usr/bin/env node /usr/bin/serve -s dist -l 3001
+Restart=always
+RestartSec=5
+
+# Resource control (30% limits)
+CPUQuota=30%
+MemoryMax=30%
+
+# Security enhancements
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+
+# Environment variables
+Environment=NODE_ENV=production
+Environment=PORT=3001
+Environment=VITE_API_URL=http://localhost:3000
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target 

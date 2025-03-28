@@ -1,19 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import SignInDebugger from './SignInDebugger';
+
+// Check if we're in development mode
+const isDevelopment = process.env.NODE_ENV === 'development';
+const isDebugEnabled = isDevelopment || localStorage.getItem('enable_debug_mode') === 'true';
+
+// Define the auth result type for clarity
+interface AuthResult {
+  success: boolean;
+  error?: string;
+}
 
 const SignIn = () => {
+  // Render the debug version if in development mode
+  if (isDebugEnabled) {
+    return <SignInDebugger />;
+  }
+
+  // Original SignIn component
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [networkError, setNetworkError] = useState(false);
+  
   const { login } = useAuth();
 
-  // Handle form submission using useAuth hook
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
-    // Reset error states
     setError('');
     setNetworkError(false);
     setLoading(true);
@@ -26,7 +42,7 @@ const SignIn = () => {
     }
 
     try {
-      const result = await login({ email, password });
+      const result: AuthResult = await login({ email, password });
       if (!result.success) {
         if (result.error?.includes('Network error') || result.error?.includes('timed out')) {
           setNetworkError(true);
@@ -35,7 +51,6 @@ const SignIn = () => {
           setError(result.error || 'Invalid email or password');
         }
       }
-      // No need to navigate - useAuth handles it
     } catch (error) {
       setError('An unexpected error occurred');
       console.error('Login error:', error);
@@ -47,6 +62,14 @@ const SignIn = () => {
   const retryConnection = () => {
     setNetworkError(false);
     handleSubmit(new Event('submit') as any);
+  };
+
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
   };
 
   return (
@@ -78,7 +101,7 @@ const SignIn = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
               disabled={loading}
@@ -92,7 +115,7 @@ const SignIn = () => {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               className="w-full p-2 border border-gray-300 rounded"
               required
               disabled={loading}

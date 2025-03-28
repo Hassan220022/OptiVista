@@ -1,0 +1,203 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# OptiVista Frontend - Administrative Portal: Detailed Specification
+
+## Core Components
+
+### 1. Authentication System
+- Secure login interface with role-based access control
+- Password recovery functionality
+- Session management with automatic timeout
+- Two-factor authentication for administrator accounts
+- JWT-based authentication with secure token storage
+
+### 2. Administrator Dashboard
+- **Overview Panel**
+  - Platform-wide KPIs (total sales, active sellers, product count)
+  - Real-time sales tracking with time-series visualization
+  - Conversion metrics and growth indicators
+  - Alerts for critical issues requiring attention
+
+- **Seller Management**
+  - Comprehensive seller listing with filtering and search
+  - Detailed seller profiles with performance metrics
+  - Approval workflow for new seller onboarding
+  - Suspension/activation controls with audit logging
+  - Communication system for contacting sellers
+
+- **Catalog Oversight**
+  - Cross-seller product search and filtering
+  - Quality control tools for product listings
+  - Bulk actions for managing multiple products
+  - Category and attribute management
+
+- **Order Management**
+  - Platform-wide order monitoring
+  - Issue resolution tools for disputed orders
+  - Return/refund approval workflow
+
+- **Analytics & Reporting**
+  - Customizable reporting dashboard
+  - Exportable reports (CSV, Excel, PDF)
+  - Scheduled report generation and distribution
+  - Sales trend analysis with predictive modeling
+
+### 3. Seller Dashboard
+- **Product Management**
+  - Inventory listing with status indicators
+  - Product creation/editing interface with image upload
+  - Batch operations for inventory updates
+  - SKU and variant management
+  - Stock level tracking with low-stock alerts
+
+- **Order Processing**
+  - Consolidated order view with status filtering
+  - Order detail screen with fulfillment tools
+  - Shipping label generation
+  - Customer communication interface
+
+- **Sales Analytics**
+  - Product performance metrics
+  - Revenue tracking and visualization
+  - Comparative analysis (week/month/year)
+  - Best/worst performers identification
+
+- **Financial Management**
+  - Transaction history
+  - Settlement tracking
+  - Invoice generation
+  - Commission calculation transparency
+
+### 4. Shared Components
+- **Notification System**
+  - In-app notification center
+  - Email notification preferences
+  - Alert prioritization
+
+- **Settings & Configuration**
+  - Profile management
+  - Password changes
+  - Notification preferences
+  - Display options
+
+- **Help & Support**
+  - Contextual help documentation
+  - Support ticket system
+  - Knowledge base integration
+
+## Technical Architecture
+
+### Recommended Tech Stack
+
+#### Frontend Framework
+- **React with TypeScript**: Provides strong typing, component reusability, and excellent developer experience
+- **Vite**: Fast build tool optimized for modern JavaScript development
+
+#### UI Component Library
+- **Chakra UI** or **MUI (Material-UI)**: Comprehensive, accessible component libraries that balance aesthetics and functionality
+
+#### State Management
+- **Redux Toolkit**: For global state management with simplified boilerplate
+- **React Query**: For server-state management and API caching
+
+#### Routing
+- **React Router**: Industry standard for SPA routing with support for nested routes and route protection
+
+#### Form Handling
+- **React Hook Form**: Performant, flexible form validation with minimal re-renders
+- **Yup**: Schema validation for form inputs
+
+#### Data Visualization
+- **Recharts** or **Nivo**: React-based charting libraries for sales and analytics dashboards
+- **react-table**: For complex, interactive data tables
+
+#### API Integration
+- **Axios**: HTTP client with request/response interception capabilities
+- **OpenAPI/Swagger**: For API documentation and type generation
+
+#### Authentication
+- **JWT Authentication**: With secure token storage and refresh capabilities
+- **Auth Context Provider**: Custom React context for authentication state
+
+#### Testing
+- **Jest**: Unit testing framework
+- **React Testing Library**: Component testing with focus on user behavior
+- **Cypress**: End-to-end testing
+
+#### Build & Deployment
+- **Docker**: Containerization for consistent environments
+- **GitHub Actions** or **GitLab CI**: CI/CD pipeline automation
+
+#### Additional Tools
+- **date-fns**: Date manipulation library
+- **i18next**: Internationalization support
+- **react-error-boundary**: Graceful error handling
+- **react-helmet**: Document head management
+
+## UI/UX Considerations
+
+### Design System
+- Consistent color scheme reflecting brand identity
+- Typography hierarchy for readability
+- Responsive layouts for desktop and tablet use
+- Component library with standardized inputs, buttons, and cards
+- Accessibility compliance (WCAG 2.1 AA)
+
+### User Experience
+- Intuitive navigation with breadcrumbs
+- Progressive disclosure for complex tasks
+- Skeleton loaders for perceived performance
+- Optimistic UI updates for improved responsiveness
+- Consistent error handling and user feedback
+- Guided workflows for multi-step processes
+
+## Implementation Priorities
+
+1. **Phase 1: Core Authentication and Basic Dashboards**
+   - Secure login system with role separation
+   - Basic dashboard shells with navigation
+   - Essential seller product management
+
+2. **Phase 2: Advanced Product and Order Management**
+   - Complete product CRUD operations
+   - Order processing workflow
+   - Inventory management
+
+3. **Phase 3: Analytics and Reporting**
+   - Sales dashboards and visualizations
+   - Exportable reports
+   - Performance metrics
+
+4. **Phase 4: Advanced Features**
+   - Bulk operations
+   - Advanced filtering
+   - API integrations with shipping providers
+   - Automated notifications
+
+## Performance Considerations
+
+- Implement virtualization for long lists (product catalogs, order histories)
+- Optimize image loading with lazy loading and proper sizing
+- Implement request debouncing and throttling for search operations
+- Use memoization for expensive calculations
+- Implement pagination for large datasets
+- Configure proper caching strategies for API responses
+
+## Security Measures
+
+- CSRF protection for all API requests
+- Input sanitization to prevent XSS attacks
+- Rate limiting on authentication attempts
+- Regular security audits and dependency updates
+- Role-based access controls with principle of least privilege
+- Audit logging for sensitive operations
+
+## Project-Specific Instructions
+
+- IMPORTANT: Do not use any Appwrite MCP services in this project
+- All backend integrations should be implemented using custom APIs
+- Follow the technical architecture and implementation priorities outlined above
+- Ensure all components meet the security measures specified

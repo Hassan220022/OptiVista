@@ -1,3 +1,124 @@
-@tailwind base;        /* Add this line */
-@tailwind components;  /* Keep this line */
-@tailwind utilities;   /* Keep this line */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --primary-color: #2563eb;
+    --primary-light: #3b82f6;
+    --primary-dark: #1d4ed8;
+    --secondary-color: #64748b;
+    --accent-color: #f59e0b;
+    --success-color: #22c55e;
+    --error-color: #ef4444;
+    --warning-color: #f59e0b;
+    --info-color: #3b82f6;
+    --background-light: #f8fafc;
+    --background-dark: #0f172a;
+    --text-light: #64748b;
+    --text-dark: #1e293b;
+    --text-white: #ffffff;
+    --border-color: #e2e8f0;
+    --card-bg-light: #ffffff;
+    --card-bg-dark: #1e293b;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.dark {
+    color-scheme: dark;
+}
+
+@layer components {
+    .btn {
+        @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+    }
+
+    .btn-primary {
+        @apply bg-primary text-white hover:bg-primary/90 shadow;
+    }
+
+    .btn-secondary {
+        @apply bg-secondary text-white hover:bg-secondary/90;
+    }
+
+    .btn-outline {
+        @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+    }
+
+    .btn-ghost {
+        @apply hover:bg-accent hover:text-accent-foreground;
+    }
+
+    .btn-link {
+        @apply text-primary underline-offset-4 hover:underline;
+    }
+
+    .btn-sm {
+        @apply h-8 rounded-md px-3 text-xs;
+    }
+
+    .btn-md {
+        @apply h-9 px-4 py-2;
+    }
+
+    .btn-lg {
+        @apply h-10 rounded-md px-8 text-base;
+    }
+
+    .btn-icon {
+        @apply h-9 w-9;
+    }
+
+    .card {
+        @apply rounded-lg border bg-card text-card-foreground shadow;
+    }
+
+    .bg-card {
+        @apply bg-white dark:bg-gray-800;
+    }
+
+    .card-header {
+        @apply flex flex-col space-y-1.5 p-6;
+    }
+
+    .card-title {
+        @apply font-semibold leading-none tracking-tight;
+    }
+
+    .card-description {
+        @apply text-sm text-muted-foreground;
+    }
+
+    .card-content {
+        @apply p-6 pt-0;
+    }
+
+    .card-footer {
+        @apply flex items-center p-6 pt-0;
+    }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

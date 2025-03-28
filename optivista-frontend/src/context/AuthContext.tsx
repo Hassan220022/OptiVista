@@ -1,113 +1,130 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
-import authService from '../services/auth';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 
-// Define user type
-export interface User {
+interface User {
   id: string;
   email: string;
-  role: 'admin' | 'seller';
-  firstName: string;
-  lastName: string;
+  name: string | null;
+  role: 'admin' | 'user';
 }
 
-// Define auth context type
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
-  login: (credentials: { email: string; password: string }) => Promise<{ success: boolean; error?: string }>;
-  logout: () => void;
+  login: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
+  logout: () => Promise<void>;
+  checkAuth: () => Promise<void>;
 }
 
-// Create auth context with default values
-export const AuthContext = createContext<AuthContextType>({
-  user: null,
-  isAuthenticated: false,
-  loading: true,
-  login: async () => ({ success: false }),
-  logout: () => {},
-});
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 interface AuthProviderProps {
-  children: ReactNode;
+  children: React.ReactNode;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-
-  // Check for existing user session on initial load
-  useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem('token');
-      const userData = localStorage.getItem('user');
-      
-      if (token && userData) {
-        try {
-          const parsedUser = JSON.parse(userData);
-          setUser(parsedUser);
-        } catch (error) {
-          console.error('Failed to parse user data:', error);
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-        }
-      }
-      
-      setLoading(false);
-    };
-    
-    checkAuth();
-  }, []);
-
-  // Login function
-  const login = async (credentials: { email: string; password: string }): Promise<{ success: boolean; error?: string }> => {
+  
+  // Check for token in localStorage/sessionStorage on initial load
+  const checkAuth = useCallback(async () => {
     try {
-      // Use auth service with timeout protection
-      const loginPromise = authService.login(credentials);
+      setLoading(true);
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       
-      // Add a timeout to prevent hanging UI
-      const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error('Login request timed out')), 10000);
-      });
-      
-      // Race between the login request and timeout
-      const response = await Promise.race([loginPromise, timeoutPromise]);
-      
-      // Set user in state
-      setUser(response.user);
-      
-      // Navigate based on role
-      if (response.user.role === 'admin') {
-        navigate('/admin-dashboard');
-      } else {
-        navigate('/seller-dashboard');
+      if (!token) {
+        setUser(null);
+        return;
       }
       
-      return { success: true };
+      // For demo purposes, we'll mock the token validation
+      // In a real app, you would validate the token with your backend
+      const userData = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || 'null');
+      
+      if (userData) {
+        setUser(userData);
+      } else {
+        // If user data doesn't exist, clear token
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+        setUser(null);
+      }
     } catch (error) {
-      console.error('Login error:', error);
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'An unexpected error occurred'
+      console.error('Auth check failed:', error);
+      // Clear potentially corrupted data
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
+      localStorage.removeItem('user');
+      sessionStorage.removeItem('user');
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+  
+  const login = async (email: string, password: string, rememberMe = false) => {
+    try {
+      setLoading(true);
+      
+      // Here would be a call to your authentication API
+      // For demo purposes, we'll create a mock response
+      const mockUser: User = {
+        id: '1',
+        email,
+        name: 'Admin User',
+        role: 'admin',
       };
+      
+      // Create a mock token
+      const mockToken = `mock-jwt-token-${Date.now()}`;
+      
+      // Store in localStorage or sessionStorage depending on remember me
+      const storage = rememberMe ? localStorage : sessionStorage;
+      storage.setItem('token', mockToken);
+      storage.setItem('user', JSON.stringify(mockUser));
+      
+      setUser(mockUser);
+      return Promise.resolve();
+    } catch (error) {
+      console.error('Login failed:', error);
+      return Promise.reject(error);
+    } finally {
+      setLoading(false);
     }
   };
-
-  // Logout function
-  const logout = () => {
-    authService.logout();
-    setUser(null);
-    navigate('/signin');
+  
+  const logout = async () => {
+    try {
+      setLoading(true);
+      
+      // Clear stored data
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
+      localStorage.removeItem('user');
+      sessionStorage.removeItem('user');
+      
+      setUser(null);
+      return Promise.resolve();
+    } catch (error) {
+      console.error('Logout failed:', error);
+      return Promise.reject(error);
+    } finally {
+      setLoading(false);
+    }
   };
-
-  // Determine if user is authenticated
-  const isAuthenticated = !!user;
-
-  return (
-    <AuthContext.Provider value={{ user, isAuthenticated, loading, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  
+  const value = {
+    user,
+    isAuthenticated: !!user,
+    loading,
+    login,
+    logout,
+    checkAuth,
+  };
+  
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }; 

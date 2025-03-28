@@ -1,0 +1,9 @@
+# Crontab for OptiVista Frontend health checks
+# Run health check every 5 minutes
+*/5 * * * * /opt/optivista-frontend/healthcheck.sh > /dev/null 2>&1
+
+# Clean up old log files weekly (keep last 30 days)
+0 0 * * 0 find /var/log -name "optivista-frontend-*.log" -type f -mtime +30 -delete > /dev/null 2>&1
+
+# Restart service once per day during low-traffic hours (3 AM)
+0 3 * * * systemctl restart optivista-frontend > /dev/null 2>&1 
