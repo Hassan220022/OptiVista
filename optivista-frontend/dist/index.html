@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OptiVista Administrative Portal for managing AR-enhanced e-commerce system">
+    <title>OptiVista Administrative Portal</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success-color: #22c55e;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --text-dark: #333;
+            --text-light: #64748b;
+            --bg-light: #f5f5f5;
+            --bg-white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .container {
+            text-align: center;
+            background-color: var(--bg-white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            max-width: 90%;
+            width: 650px;
+            margin: 1rem;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        .status {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            background-color: #f0f9ff;
+            border-radius: 10px;
+            min-width: 150px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .status-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-value {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            display: inline-block;
+        }
+
+        .status-online {
+            background-color: var(--success-color);
+        }
+
+        .status-offline {
+            background-color: var(--error-color);
+        }
+
+        .status-loading {
+            animation: pulse 1.5s infinite;
+            background-color: var(--warning-color);
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        .info-panel {
+            background-color: #f0f9ff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .info-panel h2 {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-panel ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .info-panel li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-panel li::before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-right: 0.5em;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .status-item {
+                min-width: 130px;
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>OptiVista Administrative Portal</h1>
+        <p>Welcome to the OptiVista Administrative Portal. This portal provides tools for managing the OptiVista system,
+            including products, orders, and AR model management.</p>
+
+        <div class="status">
+            <div class="status-item">
+                <div class="status-label">Frontend Status</div>
+                <div class="status-value">
+                    <span class="status-indicator status-online"></span>
+                    Online
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Backend Status</div>
+                <div class="status-value" id="backend-status">
+                    <span class="status-indicator status-loading"></span>
+                    Checking...
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Server Load</div>
+                <div class="status-value" id="server-load">
+                    <span class="status-indicator status-online"></span>
+                    <span id="load-value">Low</span>
+                </div>
+            </div>
+        </div>
+
+        <p>The complete application is being set up. Please check back later for the full functionality.</p>
+
+        <div class="info-panel">
+            <h2>System Information</h2>
+            <ul>
+                <li>Frontend Version: 1.0.0</li>
+                <li>Last Deployment: <span id="deploy-date">Loading...</span></li>
+                <li>Service Status: <span id="service-status">Active</span></li>
+                <li>System Health: <span id="system-health">Good</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Update deployment date
+        document.getElementById('deploy-date').textContent = new Date().toLocaleString();
+
+        // Check backend health
+        fetch('/health')
+            .then(response => {
+                const statusElement = document.getElementById('backend-status');
+                if (response.ok) {
+                    statusElement.innerHTML = '<span class="status-indicator status-online"></span> Online';
+                    document.getElementById('system-health').textContent = 'Excellent';
+                } else {
+                    statusElement.innerHTML = '<span class="status-indicator status-offline"></span> Offline';
+                    document.getElementById('system-health').textContent = 'Warning';
+                }
+                return response.json().catch(() => ({}));
+            })
+            .then(data => {
+                if (data && data.serverLoad) {
+                    const load = parseFloat(data.serverLoad);
+                    let loadText = 'Low';
+                    let statusClass = 'status-online';
+
+                    if (load > 70) {
+                        loadText = 'High';
+                        statusClass = 'status-offline';
+                    } else if (load > 30) {
+                        loadText = 'Medium';
+                        statusClass = 'status-loading';
+                    }
+
+                    document.getElementById('load-value').textContent = loadText;
+                    document.querySelector('#server-load .status-indicator').className =
+                        'status-indicator ' + statusClass;
+                }
+            })
+            .catch(error => {
+                const statusElement = document.getElementById('backend-status');
+                statusElement.innerHTML = '<span class="status-indicator status-offline"></span> Offline';
+                document.getElementById('system-health').textContent = 'Error';
+            });
+
+        // Simulate a service status check - in real app, this would be an API call
+        setTimeout(() => {
+            document.getElementById('service-status').textContent = 'Active (30% CPU limit)';
+        }, 1500);
+    </script>
+</body>
+
+</html>

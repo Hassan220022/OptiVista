@@ -1,4 +1,4 @@
-import { apiRequest } from './api';
+import { API_BASE_URL, apiRequest } from './api';
 
 interface LoginCredentials {
   email: string;
@@ -21,28 +21,77 @@ interface User {
   role: string;
 }
 
+// Define types for auth responses
+interface LoginResponse {
+  success: boolean;
+  token?: string;
+  user?: any;
+  error?: string;
+}
+
+interface RegisterResponse {
+  success: boolean;
+  error?: string;
+}
+
+// Auth service with methods for authentication operations
 export const authService = {
   /**
    * Logs in a user with email and password
    * @param credentials - The user's login credentials
    * @returns Promise with user data and token
    */
-  login: async (credentials: LoginCredentials) => {
+  async login(credentials: LoginCredentials): Promise<LoginResponse> {
     try {
-      const response = await apiRequest('/auth/login', 'POST', credentials);
-      
+      // Make API request to login endpoint
+      const response = await apiRequest({
+        method: 'POST',
+        url: `${API_BASE_URL}/auth/login`,
+        data: credentials,
+      });
+
+      // If we get a successful response with token and user
       if (response.token && response.user) {
-        // Store authentication data
+        // Store auth data in localStorage
         localStorage.setItem('token', response.token);
-        localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('user', JSON.stringify(response.user));
         
-        return response;
+        return {
+          success: true,
+          token: response.token,
+          user: response.user,
+        };
+      } else {
+        // If the response is missing token or user
+        console.error('Invalid login response format:', response);
+        return {
+          success: false,
+          error: 'Invalid response from server',
+        };
       }
-      throw new Error('Invalid response from server');
     } catch (error) {
-      console.error('Login failed:', error);
-      throw error;
+      // Handle and format errors
+      console.error('Login error:', error);
+      
+      if (error instanceof Error) {
+        // Return formatted error for network issues
+        if (error.message.includes('Network Error') || error.message.includes('timeout')) {
+          return {
+            success: false,
+            error: `Network error: ${error.message}`,
+          };
+        }
+        
+        return {
+          success: false,
+          error: error.message,
+        };
+      }
+      
+      return {
+        success: false,
+        error: 'An unknown error occurred',
+      };
     }
   },
   
@@ -51,42 +100,64 @@ export const authService = {
    * @param userData - The user registration data
    * @returns Promise with registration result
    */
-  register: async (userData: RegisterData) => {
-    return apiRequest('/auth/register', 'POST', userData);
+  async register(userData: RegisterData): Promise<RegisterResponse> {
+    try {
+      // Make API request to register endpoint
+      await apiRequest({
+        method: 'POST',
+        url: `${API_BASE_URL}/auth/register`,
+        data: userData,
+      });
+      
+      return { success: true };
+    } catch (error) {
+      console.error('Registration error:', error);
+      
+      if (error instanceof Error) {
+        return {
+          success: false,
+          error: error.message,
+        };
+      }
+      
+      return {
+        success: false,
+        error: 'An unknown error occurred',
+      };
+    }
   },
   
   /**
    * Logs out the current user
    */
-  logout: () => {
+  logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('user');
-    window.location.href = '/signin';
   },
   
   /**
    * Gets the current authenticated user
    * @returns The user object or null if not authenticated
    */
-  getCurrentUser: (): User | null => {
-    const userStr = localStorage.getItem('user');
-    if (!userStr) return null;
-    
-    try {
-      return JSON.parse(userStr) as User;
-    } catch (error) {
-      console.error('Error parsing user data:', error);
-      return null;
-    }
+  getCurrentUser(): User | null {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  },
+  
+  /**
+   * Gets the current authenticated user
+   * @returns The user object or null if not authenticated
+   */
+  getToken() {
+    return localStorage.getItem('token');
   },
   
   /**
    * Checks if the user is authenticated
    * @returns Boolean indicating authentication status
    */
-  isAuthenticated: (): boolean => {
-    return localStorage.getItem('isAuthenticated') === 'true';
+  isAuthenticated() {
+    return !!this.getToken();
   },
   
   /**

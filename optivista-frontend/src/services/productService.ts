@@ -1,247 +1,286 @@
-// Product Service
-// Provides functionality to manage eyewear products with database integration
-// and AR model handling using the FileManager API
+import { apiRequest, API_BASE_URL } from './api';
+import Product from '../types/product';
+import fileManager from './fileManager';
 
-import { apiRequest } from './api';
-import fileManagerApi, { FileMetadata } from './fileManager';
+// Base URL for the products API
+const PRODUCTS_API_BASE = `${API_BASE_URL}/products`;
 
-const PRODUCTS_API_BASE = '/products';
-
-// Type definitions for product data
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  style: string;
-  color: string;
-  size: string;
-  gender: 'male' | 'female' | 'unisex';
-  material: string;
-  weight: number;
-  inStock: boolean;
-  stockQuantity: number;
-  discount?: number;
-  rating?: number;
-  imageKey: string;
-  imageUrl?: string;
-  modelKey?: string; // 3D model key for AR visualization
-  modelUrl?: string;
-  sellerId: string;
-  dateAdded: string;
-  lastUpdated: string;
-}
-
-export interface ProductFilter {
-  category?: string;
-  style?: string;
-  color?: string;
-  gender?: 'male' | 'female' | 'unisex';
-  material?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  inStock?: boolean;
-}
-
-export interface ProductsResponse {
-  products: Product[];
-  totalCount: number;
-  page: number;
-  pageSize: number;
-}
-
-export interface ProductUpload {
-  product: Omit<Product, 'id' | 'imageUrl' | 'modelUrl' | 'dateAdded' | 'lastUpdated'>;
-  image: File;
-  model?: File; // 3D model for AR visualization is optional
-}
-
-// Product Service API
+// Product service with methods for product operations
 export const productService = {
-  // Get all products with optional filtering and pagination
-  getAllProducts: async (
-    filters?: ProductFilter,
-    page: number = 1,
-    pageSize: number = 20
-  ): Promise<ProductsResponse> => {
-    let queryParams = `?page=${page}&pageSize=${pageSize}`;
-    
-    if (filters) {
-      Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          queryParams += `&${key}=${encodeURIComponent(String(value))}`;
-        }
+  /**
+   * Gets all products with optional filtering
+   * @param filters - Optional filters for products
+   * @returns Promise with array of products
+   */
+  async getAllProducts(filters = {}) {
+    try {
+      // Build query string from filters
+      const queryParams = Object.entries(filters)
+        .filter(([_, value]) => value !== undefined && value !== null && value !== '')
+        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
+        .join('&');
+      
+      const url = queryParams 
+        ? `${PRODUCTS_API_BASE}?${queryParams}`
+        : PRODUCTS_API_BASE;
+      
+      return await apiRequest({
+        method: 'GET',
+        url
       });
-    }
-    
-    const response = await apiRequest(`${PRODUCTS_API_BASE}${queryParams}`);
-    
-    // Process products to include presigned URLs for images and models
-    const productsWithUrls = await productService.enhanceProductsWithUrls(response.products);
-    
-    return {
-      ...response,
-      products: productsWithUrls
-    };
-  },
-  
-  // Get a single product by ID
-  getProductById: async (id: string): Promise<Product> => {
-    const product = await apiRequest(`${PRODUCTS_API_BASE}/${id}`);
-    
-    // Enhance product with presigned URLs for image and 3D model
-    return await productService.enhanceProductWithUrls(product);
-  },
-  
-  // Create a new product including image and optional 3D model uploads
-  createProduct: async (productUpload: ProductUpload): Promise<Product> => {
-    try {
-      // 1. Upload product image
-      const imageUploadResult = await fileManagerApi.uploadImage(
-        productUpload.image, 
-        'products/images'
-      );
-      
-      // 2. Upload 3D model if provided
-      let modelUploadResult = null;
-      if (productUpload.model) {
-        modelUploadResult = await fileManagerApi.uploadModel(
-          productUpload.model,
-          'products/models'
-        );
-      }
-      
-      // 3. Create product data with file keys
-      const productData = {
-        ...productUpload.product,
-        imageKey: imageUploadResult.file.key,
-        ...(modelUploadResult && { modelKey: modelUploadResult.file.key }),
-      };
-      
-      // 4. Save product to database via API
-      const createdProduct = await apiRequest(PRODUCTS_API_BASE, 'POST', productData);
-      
-      // 5. Return product with URLs included
-      return await productService.enhanceProductWithUrls(createdProduct);
-      
     } catch (error) {
-      console.error('Failed to create product:', error);
+      console.error('Error fetching products:', error);
       throw error;
     }
   },
   
-  // Update an existing product
-  updateProduct: async (
-    id: string, 
-    productData: Partial<Product>, 
-    newImage?: File,
-    newModel?: File
-  ): Promise<Product> => {
+  /**
+   * Gets a product by its ID
+   * @param id - The product ID
+   * @returns Promise with product details
+   */
+  async getProductById(id: string) {
     try {
-      const updatedData: any = { ...productData };
-      
-      // 1. Upload new image if provided
-      if (newImage) {
-        const imageUploadResult = await fileManagerApi.uploadImage(
-          newImage, 
-          'products/images'
-        );
-        updatedData.imageKey = imageUploadResult.file.key;
-      }
-      
-      // 2. Upload new 3D model if provided
-      if (newModel) {
-        const modelUploadResult = await fileManagerApi.uploadModel(
-          newModel,
-          'products/models'
-        );
-        updatedData.modelKey = modelUploadResult.file.key;
-      }
-      
-      // 3. Update product in database
-      const updatedProduct = await apiRequest(`${PRODUCTS_API_BASE}/${id}`, 'PUT', updatedData);
-      
-      // 4. Return product with URLs included
-      return await productService.enhanceProductWithUrls(updatedProduct);
-      
+      return await apiRequest({
+        method: 'GET',
+        url: `${PRODUCTS_API_BASE}/${id}`
+      });
     } catch (error) {
-      console.error(`Failed to update product ${id}:`, error);
+      console.error(`Error fetching product ${id}:`, error);
       throw error;
     }
   },
   
-  // Delete a product
-  deleteProduct: async (id: string): Promise<{ message: string }> => {
+  /**
+   * Handles file uploads for products (images, models)
+   * @param file - The file to upload
+   * @param type - The type of file ('image' or 'model')
+   * @returns Promise with uploaded file details
+   */
+  async uploadProductFile(file: File, type: 'image' | 'model') {
     try {
-      // 1. Get product to obtain file keys
-      const product = await productService.getProductById(id);
+      // Validate file type
+      const imageTypes = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+      const modelTypes = ['.glb', '.gltf', '.usdz', '.obj'];
+      const allowedTypes = type === 'image' ? imageTypes : modelTypes;
       
-      // 2. Delete product from database
-      const result = await apiRequest(`${PRODUCTS_API_BASE}/${id}`, 'DELETE');
-      
-      // 3. Delete associated files
-      if (product.imageKey) {
-        await fileManagerApi.deleteFile(product.imageKey);
+      const fileExt = `.${file.name.split('.').pop()?.toLowerCase()}`;
+      if (!allowedTypes.includes(fileExt)) {
+        throw new Error(`File type not supported. Allowed types: ${allowedTypes.join(', ')}`);
       }
       
-      if (product.modelKey) {
-        await fileManagerApi.deleteFile(product.modelKey);
-      }
+      // Upload to appropriate path
+      const path = type === 'image' ? 'products/images' : 'products/models';
+      const result = await fileManager.uploadFile({
+        file,
+        path,
+        metadata: { type }
+      });
       
       return result;
-      
     } catch (error) {
-      console.error(`Failed to delete product ${id}:`, error);
+      console.error(`Error uploading ${type}:`, error);
       throw error;
     }
   },
   
-  // Get products by seller ID
-  getProductsBySellerId: async (sellerId: string): Promise<Product[]> => {
-    const response = await apiRequest(`${PRODUCTS_API_BASE}?sellerId=${sellerId}`);
-    return await productService.enhanceProductsWithUrls(response.products);
-  },
-  
-  // Search products
-  searchProducts: async (searchTerm: string): Promise<Product[]> => {
-    const response = await apiRequest(`${PRODUCTS_API_BASE}/search?q=${encodeURIComponent(searchTerm)}`);
-    return await productService.enhanceProductsWithUrls(response.products);
-  },
-  
-  // Get featured products for homepage
-  getFeaturedProducts: async (limit: number = 8): Promise<Product[]> => {
-    const response = await apiRequest(`${PRODUCTS_API_BASE}/featured?limit=${limit}`);
-    return await productService.enhanceProductsWithUrls(response.products);
-  },
-  
-  // Utility function to enhance a product with file URLs
-  enhanceProductWithUrls: async (product: Product): Promise<Product> => {
+  /**
+   * Creates a new product
+   * @param productData - The product data
+   * @returns Promise with created product
+   */
+  async createProduct(productData: Partial<Product>) {
     try {
-      const enhancedProduct = { ...product };
-      
-      // Get image URL
-      if (product.imageKey) {
-        enhancedProduct.imageUrl = await fileManagerApi.getCachedFileUrl(product.imageKey);
+      // Validate required fields
+      if (!productData.name || !productData.price) {
+        throw new Error('Product name and price are required');
       }
       
-      // Get 3D model URL if exists
-      if (product.modelKey) {
-        enhancedProduct.modelUrl = await fileManagerApi.getCachedFileUrl(product.modelKey);
-      }
+      // Transform data if needed
+      const processedData = {
+        ...productData,
+        price: typeof productData.price === 'string' 
+          ? parseFloat(productData.price) 
+          : productData.price,
+        stock: typeof productData.stock === 'string' 
+          ? parseInt(productData.stock, 10) 
+          : productData.stock,
+      };
       
-      return enhancedProduct;
+      // Create the product
+      const createdProduct = await apiRequest({
+        method: 'POST',
+        url: PRODUCTS_API_BASE,
+        data: processedData
+      });
+      
+      return createdProduct;
     } catch (error) {
-      console.error('Error enhancing product with URLs:', error);
-      // Return original product if URL enhancement fails
-      return product;
+      console.error('Error creating product:', error);
+      throw error;
     }
   },
   
-  // Utility function to enhance multiple products with file URLs
-  enhanceProductsWithUrls: async (products: Product[]): Promise<Product[]> => {
-    return Promise.all(products.map(product => productService.enhanceProductWithUrls(product)));
+  /**
+   * Updates an existing product
+   * @param id - The product ID
+   * @param updates - The product updates
+   * @returns Promise with updated product
+   */
+  async updateProduct(id: string, updates: Partial<Product>) {
+    try {
+      // Validate ID
+      if (!id) {
+        throw new Error('Product ID is required for update');
+      }
+      
+      // Transform data if needed
+      const updatedData = {
+        ...updates,
+        price: typeof updates.price === 'string' 
+          ? parseFloat(updates.price) 
+          : updates.price,
+        stock: typeof updates.stock === 'string' 
+          ? parseInt(updates.stock, 10) 
+          : updates.stock,
+      };
+      
+      // Update the product
+      const updatedProduct = await apiRequest({
+        method: 'PUT',
+        url: `${PRODUCTS_API_BASE}/${id}`,
+        data: updatedData
+      });
+      
+      return updatedProduct;
+    } catch (error) {
+      console.error(`Error updating product ${id}:`, error);
+      throw error;
+    }
+  },
+  
+  /**
+   * Deletes a product
+   * @param id - The product ID
+   * @returns Promise with success status
+   */
+  async deleteProduct(id: string) {
+    try {
+      const result = await apiRequest({
+        method: 'DELETE',
+        url: `${PRODUCTS_API_BASE}/${id}`
+      });
+      
+      return result;
+    } catch (error) {
+      console.error(`Error deleting product ${id}:`, error);
+      throw error;
+    }
+  },
+  
+  /**
+   * Gets products by seller ID
+   * @param sellerId - The seller ID
+   * @returns Promise with array of products
+   */
+  async getProductsBySeller(sellerId: string) {
+    try {
+      const response = await apiRequest({
+        method: 'GET',
+        url: `${PRODUCTS_API_BASE}?sellerId=${sellerId}`
+      });
+      
+      return response;
+    } catch (error) {
+      console.error(`Error fetching products for seller ${sellerId}:`, error);
+      throw error;
+    }
+  },
+  
+  /**
+   * Gets products by seller ID (alias for getProductsBySeller)
+   * @param sellerId - The seller ID
+   * @returns Promise with array of products
+   */
+  async getProductsBySellerId(sellerId: string) {
+    return this.getProductsBySeller(sellerId);
+  },
+  
+  /**
+   * Searches products by term
+   * @param searchTerm - The search term
+   * @returns Promise with array of matching products
+   */
+  async searchProducts(searchTerm: string) {
+    try {
+      const response = await apiRequest({
+        method: 'GET',
+        url: `${PRODUCTS_API_BASE}/search?q=${encodeURIComponent(searchTerm)}`
+      });
+      
+      return response;
+    } catch (error) {
+      console.error(`Error searching products for term ${searchTerm}:`, error);
+      throw error;
+    }
+  },
+  
+  /**
+   * Gets featured products
+   * @param limit - Maximum number of products to return
+   * @returns Promise with array of featured products
+   */
+  async getFeaturedProducts(limit = 10) {
+    try {
+      const response = await apiRequest({
+        method: 'GET',
+        url: `${PRODUCTS_API_BASE}/featured?limit=${limit}`
+      });
+      
+      return response;
+    } catch (error) {
+      console.error('Error fetching featured products:', error);
+      throw error;
+    }
+  },
+  
+  /**
+   * Updates product inventory
+   * @param id - The product ID
+   * @param stockChange - The stock quantity change
+   * @returns Promise with updated product
+   */
+  async updateInventory(id: string, stockChange: number) {
+    try {
+      const response = await apiRequest({
+        method: 'PATCH',
+        url: `${PRODUCTS_API_BASE}/${id}/inventory`,
+        data: { stockChange }
+      });
+      
+      return response;
+    } catch (error) {
+      console.error(`Error updating inventory for product ${id}:`, error);
+      throw error;
+    }
+  },
+  
+  /**
+   * Gets a file URL
+   * @param fileKey - The file key
+   * @returns Promise with file URL
+   */
+  async getFileUrl(fileKey: string) {
+    try {
+      if (!fileKey) return '';
+      
+      const result = await fileManager.getPublicUrl(fileKey);
+      return result;
+    } catch (error) {
+      console.error(`Error getting file URL for ${fileKey}:`, error);
+      return '';
+    }
   }
 };
 
-export default productService; 
+export default productService;

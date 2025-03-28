@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import productService, { Product } from '../../services/productService';
+import productService from '../../services/productService';
+import Product, { ProductVariant } from '../../types/product';
 import ARViewerComponent from '../ar/ARViewerComponent';
 
 /**
@@ -171,7 +172,7 @@ const ProductDetailPage: React.FC = () => {
                 <div className="product-variants">
                   <h3>Colors</h3>
                   <div className="variant-options">
-                    {product.variants.map(variant => (
+                    {product.variants.map((variant: ProductVariant) => (
                       <div 
                         key={variant.id}
                         className={`variant-option ${selectedVariant === variant.id ? 'selected' : ''}`}

@@ -2,9 +2,17 @@
 /// <reference types="react" />
 /// <reference types="react-dom" />
 
-// Explicitly declare React namespace to add Fragment
+// Explicitly declare React namespace to add missing definitions
 declare namespace React {
   interface Fragment {}
+  
+  // Add missing React hooks
+  function useContext<T>(context: React.Context<T>): T;
+  function useState<T>(initialState: T | (() => T)): [T, React.Dispatch<React.SetStateAction<T>>];
+  function useEffect(effect: React.EffectCallback, deps?: React.DependencyList): void;
+  function useCallback<T extends (...args: any[]) => any>(callback: T, deps: React.DependencyList): T;
+  function useMemo<T>(factory: () => T, deps: React.DependencyList): T;
+  function useRef<T>(initialValue: T): React.RefObject<T>;
 }
 
 interface ImportMetaEnv {

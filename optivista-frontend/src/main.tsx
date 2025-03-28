@@ -1,22 +1,31 @@
 // Simple React app with modern API
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import { AuthProvider } from './context/AuthContext';
 import './index.css';
+import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
+import { NotificationProvider } from './context/NotificationContext';
+import NotificationContainer from './components/ui/NotificationContainer';
 
-// Create root element and render app
+// Get the root element
 const rootElement = document.getElementById('root');
-if (rootElement) {
-  const root = createRoot(rootElement);
-  root.render(
-    <React.StrictMode>
-      <BrowserRouter>
+if (!rootElement) throw new Error('Failed to find the root element');
+
+// Create root and render app
+const root = ReactDOM.createRoot(rootElement);
+root.render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <ThemeProvider>
         <AuthProvider>
-          <App />
+          <NotificationProvider>
+            <App />
+            <NotificationContainer />
+          </NotificationProvider>
         </AuthProvider>
-      </BrowserRouter>
-    </React.StrictMode>
-  );
-}
+      </ThemeProvider>
+    </BrowserRouter>
+  </React.StrictMode>
+);

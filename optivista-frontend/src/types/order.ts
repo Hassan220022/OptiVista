@@ -1,16 +1,26 @@
-export type OrderStatus = 'pending' | 'shipped' | 'delivered' | 'cancelled';
+export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
 
-export interface Order {
-  id: number;
-  productId: number;
-  productName: string;
+export interface OrderItem {
+  productId: string;
   quantity: number;
-  status: OrderStatus;
-  customerName: string;
-  customerEmail: string;
-  total: number;
-  createdAt: string;
+  price: number;
+}
+
+interface Order {
+  id: string;
+  customerId: string;
   sellerId: string;
+  items: OrderItem[];
+  totalAmount: number;
+  status: OrderStatus;
+  createdAt: string;
+}
+
+export interface OrdersResponse {
+  orders: Order[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
 }
 
 export default Order;

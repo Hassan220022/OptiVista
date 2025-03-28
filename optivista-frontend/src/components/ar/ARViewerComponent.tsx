@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Product } from '../../services/productService';
+import Product from '../../types/product';
 import useUnityAR from '../../hooks/useUnityAR';
 
 interface ARViewerProps {

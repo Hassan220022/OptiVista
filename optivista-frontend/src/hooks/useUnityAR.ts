@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface UnityAROptions {
   modelUrl: string;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: { current: HTMLDivElement | null };
   onLoad?: () => void;
   onError?: (error: string) => void;
 }
@@ -19,6 +19,7 @@ interface UnityARInstance {
  * This hook handles cross-platform (iOS/Android) AR rendering needs
  */
 const useUnityAR = ({ modelUrl, containerRef, onLoad, onError }: UnityAROptions) => {
+  // Using type assertion to bypass readonly check
   const unityInstanceRef = useRef<UnityARInstance | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +56,8 @@ const useUnityAR = ({ modelUrl, containerRef, onLoad, onError }: UnityAROptions)
         };
         
         if (isMounted) {
-          unityInstanceRef.current = mockUnityInstance;
+          // Type assertion to bypass readonly check
+          (unityInstanceRef as any).current = mockUnityInstance;
           setIsLoaded(true);
           setIsLoading(false);
           onLoad && onLoad();
@@ -80,7 +82,8 @@ const useUnityAR = ({ modelUrl, containerRef, onLoad, onError }: UnityAROptions)
       isMounted = false;
       if (unityInstanceRef.current) {
         unityInstanceRef.current.unload();
-        unityInstanceRef.current = null;
+        // Type assertion to bypass readonly check
+        (unityInstanceRef as any).current = null;
       }
     };
   }, [modelUrl, containerRef, onLoad, onError]);
@@ -98,7 +101,8 @@ const useUnityAR = ({ modelUrl, containerRef, onLoad, onError }: UnityAROptions)
   const reload = async () => {
     if (unityInstanceRef.current) {
       unityInstanceRef.current.unload();
-      unityInstanceRef.current = null;
+      // Type assertion to bypass readonly check
+      (unityInstanceRef as any).current = null;
     }
     
     setIsLoaded(false);
@@ -124,7 +128,8 @@ const useUnityAR = ({ modelUrl, containerRef, onLoad, onError }: UnityAROptions)
         isLoaded: true
       };
       
-      unityInstanceRef.current = mockUnityInstance;
+      // Type assertion to bypass readonly check
+      (unityInstanceRef as any).current = mockUnityInstance;
       setIsLoaded(true);
       setIsLoading(false);
       onLoad && onLoad();
