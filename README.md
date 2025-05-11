@@ -188,8 +188,10 @@ Please ensure that your contributions adhere to the project's coding standards a
 ## Authors
 
 - **Hassan Mikawi**
+- **Ahmed Amr**
 - **Yehia Hatem**
 - **Mostafa Othman**
+  
 ## License
 
 This project is licensed under the [MIT License](https://github.com/Hassan220022/OptiVista/blob/main/LICENSE).
