@@ -1,28 +1,58 @@
-import jwt from 'jsonwebtoken';
-import config from '../config/appConfig.js';
+import { supabase } from '../config/supabase.js';
 
-export const authenticate = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ success: false, message: 'Access token missing or invalid' });
-  }
-
-  const token = authHeader.split(' ')[1];
+export const authenticate = async (req, res, next) => {
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
-    req.user = decoded; // Attach decoded token data to the request
-    next(); // Continue to the next middleware or route handler
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'No token provided' 
+      });
+    }
+
+    const token = authHeader.substring(7);
+    
+    // Verify token with Supabase
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    
+    if (error || !user) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid or expired token' 
+      });
+    }
+
+    // Attach user to request
+    req.user = user;
+    next();
   } catch (error) {
-    return res.status(401).json({ success: false, message: 'Invalid or expired token' });
+    console.error('Authentication error:', error);
+    res.status(401).json({ 
+      success: false, 
+      message: 'Authentication failed' 
+    });
   }
 };
 
-export const authorize = (roles = []) => {
+export const authorize = (roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ success: false, message: 'Access denied' });
+    if (!req.user) {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Authentication required' 
+      });
     }
+
+    const userRole = req.user.user_metadata?.role || 'customer';
+    
+    if (!roles.includes(userRole)) {
+      return res.status(403).json({ 
+        success: false, 
+        message: 'Insufficient permissions' 
+      });
+    }
+
     next();
   };
 };

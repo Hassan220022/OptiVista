@@ -3,18 +3,41 @@ import { login, register } from '../services/authService.js';
 export const loginController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Email and password are required' 
+      });
+    }
+    
     const token = await login(email, password);
-    res.json({ status: 'success', token });
+    res.json({ success: true, token });
   } catch (error) {
-    next(error);
+    res.status(401).json({ 
+      success: false, 
+      message: error.message || 'Invalid credentials' 
+    });
   }
 };
 
 export const registerController = async (req, res, next) => {
   try {
-    const user = await register(req.body.username, req.body.email, req.body.password, req.body.role);
-    res.status(201).json({ status: 'success', user });
+    const { username, email, password, role } = req.body;
+    
+    if (!username || !email || !password) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Username, email and password are required' 
+      });
+    }
+    
+    const user = await register(username, email, password, role);
+    res.status(201).json({ success: true, user });
   } catch (error) {
-    next(error);
+    res.status(400).json({ 
+      success: false, 
+      message: error.message || 'Registration failed' 
+    });
   }
 };

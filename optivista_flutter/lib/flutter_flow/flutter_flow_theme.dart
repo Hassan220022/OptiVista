@@ -125,22 +125,22 @@ class LightModeTheme extends FlutterFlowTheme {
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
 
-  late Color primary = const Color(0xFF4B39EF);
-  late Color secondary = const Color(0xFF39D2C0);
-  late Color tertiary = const Color(0xFFEE8B60);
-  late Color alternate = const Color(0xFFE0E3E7);
-  late Color primaryText = const Color(0xFF14181B);
-  late Color secondaryText = const Color(0xFF57636C);
-  late Color primaryBackground = const Color(0xFFF1F4F8);
-  late Color secondaryBackground = const Color(0xFFFFFFFF);
-  late Color accent1 = const Color(0x4C4B39EF);
-  late Color accent2 = const Color(0x4D39D2C0);
-  late Color accent3 = const Color(0x4DEE8B60);
-  late Color accent4 = const Color(0xCCFFFFFF);
-  late Color success = const Color(0xFF249689);
-  late Color warning = const Color(0xFFF9CF58);
-  late Color error = const Color(0xFFFF5963);
-  late Color info = const Color(0xFFFFFFFF);
+  late Color primary = const Color(0xFF6366F1);  // Modern indigo
+  late Color secondary = const Color(0xFF10B981); // Emerald green
+  late Color tertiary = const Color(0xFFF59E0B);  // Amber
+  late Color alternate = const Color(0xFFE5E7EB);  // Cool gray
+  late Color primaryText = const Color(0xFF111827); // Gray-900
+  late Color secondaryText = const Color(0xFF6B7280); // Gray-500
+  late Color primaryBackground = const Color(0xFFF9FAFB); // Gray-50
+  late Color secondaryBackground = const Color(0xFFFFFFFF); // White
+  late Color accent1 = const Color(0x336366F1);  // Primary with opacity
+  late Color accent2 = const Color(0x3310B981);  // Secondary with opacity
+  late Color accent3 = const Color(0x33F59E0B);  // Tertiary with opacity
+  late Color accent4 = const Color(0xE6FFFFFF);  // White with opacity
+  late Color success = const Color(0xFF10B981);  // Emerald-500
+  late Color warning = const Color(0xFFF59E0B);  // Amber-500
+  late Color error = const Color(0xFFEF4444);    // Red-500
+  late Color info = const Color(0xFF3B82F6);     // Blue-500
 }
 
 abstract class Typography {
@@ -296,22 +296,22 @@ class DarkModeTheme extends FlutterFlowTheme {
   @Deprecated('Use tertiary instead')
   Color get tertiaryColor => tertiary;
 
-  late Color primary = const Color(0xFF4B39EF);
-  late Color secondary = const Color(0xFF39D2C0);
-  late Color tertiary = const Color(0xFFEE8B60);
-  late Color alternate = const Color(0xFF262D34);
-  late Color primaryText = const Color(0xFFFFFFFF);
-  late Color secondaryText = const Color(0xFF95A1AC);
-  late Color primaryBackground = const Color(0xFF1D2428);
-  late Color secondaryBackground = const Color(0xFF14181B);
-  late Color accent1 = const Color(0x4C4B39EF);
-  late Color accent2 = const Color(0x4D39D2C0);
-  late Color accent3 = const Color(0x4DEE8B60);
-  late Color accent4 = const Color(0xB2262D34);
-  late Color success = const Color(0xFF249689);
-  late Color warning = const Color(0xFFF9CF58);
-  late Color error = const Color(0xFFFF5963);
-  late Color info = const Color(0xFFFFFFFF);
+  late Color primary = const Color(0xFF818CF8);   // Light indigo
+  late Color secondary = const Color(0xFF34D399); // Light emerald
+  late Color tertiary = const Color(0xFFFBBF24);  // Light amber
+  late Color alternate = const Color(0xFF374151);  // Gray-700
+  late Color primaryText = const Color(0xFFF9FAFB); // Gray-50
+  late Color secondaryText = const Color(0xFF9CA3AF); // Gray-400
+  late Color primaryBackground = const Color(0xFF111827); // Gray-900
+  late Color secondaryBackground = const Color(0xFF1F2937); // Gray-800
+  late Color accent1 = const Color(0x33818CF8);   // Primary with opacity
+  late Color accent2 = const Color(0x3334D399);   // Secondary with opacity
+  late Color accent3 = const Color(0x33FBBF24);   // Tertiary with opacity
+  late Color accent4 = const Color(0xB3374151);   // Alternate with opacity
+  late Color success = const Color(0xFF34D399);   // Emerald-400
+  late Color warning = const Color(0xFFFBBF24);   // Yellow-400
+  late Color error = const Color(0xFFF87171);     // Red-400
+  late Color info = const Color(0xFF60A5FA);      // Blue-400
 }
 
 extension TextStyleHelper on TextStyle {
