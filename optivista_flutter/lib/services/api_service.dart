@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://196.221.151.195:3000';
+  static const String baseUrl = 'http://localhost:3000';
   final FlutterSecureStorage _storage = FlutterSecureStorage();
 
   // POST request
