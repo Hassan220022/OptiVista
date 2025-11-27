@@ -11,7 +11,7 @@ import '../../features/core/presentation/splash_screen.dart';
 import '../../features/core/presentation/root_shell_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 
-import '../../features/catalog/presentation/catalog_screen.dart';
+import '../../features/catalog/presentation/screens/catalog_screen.dart';
 import '../../features/catalog/presentation/product_details_screen.dart';
 import '../../features/cart/presentation/cart_screen.dart';
 
@@ -22,7 +22,7 @@ import '../../features/checkout/presentation/order_review_screen.dart';
 import '../../features/checkout/presentation/order_confirmation_screen.dart';
 import '../../features/orders/presentation/order_history_screen.dart';
 import '../../features/orders/presentation/order_details_screen.dart';
-import '../../features/home/presentation/home_screen.dart';
+import '../../features/home/presentation/screens/home_screen.dart';
 
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/support/presentation/feedback_screen.dart';

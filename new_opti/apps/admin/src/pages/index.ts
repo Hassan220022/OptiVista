@@ -1,0 +1,7 @@
+export { Dashboard } from "./Dashboard"
+export { Products } from "./Products"
+export { Orders } from "./Orders"
+export { Users } from "./Users"
+export { Reviews } from "./Reviews"
+export { Feedback } from "./Feedback"
+export { Settings } from "./Settings"
