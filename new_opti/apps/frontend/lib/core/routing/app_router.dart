@@ -6,22 +6,22 @@ import '../supabase/supabase_session_manager.dart';
 import '../../features/auth/presentation/sign_in_screen.dart';
 import '../../features/auth/presentation/sign_up_screen.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
-import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/core/presentation/splash_screen.dart';
 import '../../features/core/presentation/root_shell_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 
 import '../../features/catalog/presentation/screens/catalog_screen.dart';
-import '../../features/catalog/presentation/product_details_screen.dart';
-import '../../features/cart/presentation/cart_screen.dart';
+import '../../features/catalog/presentation/screens/product_details_screen.dart';
+import '../../features/cart/presentation/screens/cart_screen.dart';
 
 import '../../features/ar/presentation/ar_try_on_screen.dart';
-import '../../features/checkout/presentation/shipping_address_screen.dart';
-import '../../features/checkout/presentation/payment_method_screen.dart';
-import '../../features/checkout/presentation/order_review_screen.dart';
-import '../../features/checkout/presentation/order_confirmation_screen.dart';
-import '../../features/orders/presentation/order_history_screen.dart';
-import '../../features/orders/presentation/order_details_screen.dart';
+import '../../features/checkout/presentation/screens/shipping_address_screen.dart';
+import '../../features/checkout/presentation/screens/payment_method_screen.dart';
+import '../../features/checkout/presentation/screens/order_review_screen.dart';
+import '../../features/checkout/presentation/screens/order_confirmation_screen.dart';
+import '../../features/orders/presentation/screens/order_history_screen.dart';
+import '../../features/orders/presentation/screens/order_details_screen.dart';
 import '../../features/home/presentation/screens/home_screen.dart';
 
 import '../../features/settings/presentation/settings_screen.dart';

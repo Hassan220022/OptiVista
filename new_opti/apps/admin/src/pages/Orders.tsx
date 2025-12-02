@@ -22,92 +22,10 @@ import {
   Clock,
   XCircle,
   RefreshCw,
+  Loader2,
 } from "lucide-react"
 import { formatCurrency, formatDateTime } from "@/lib/utils"
-
-interface Order {
-  id: string
-  orderNumber: string
-  customer: {
-    name: string
-    email: string
-  }
-  items: number
-  total: number
-  status: "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled"
-  paymentStatus: "pending" | "paid" | "failed" | "refunded"
-  createdAt: string
-  updatedAt: string
-}
-
-const mockOrders: Order[] = [
-  {
-    id: "1",
-    orderNumber: "ORD-2024-001",
-    customer: { name: "John Doe", email: "john@example.com" },
-    items: 2,
-    total: 319.98,
-    status: "pending",
-    paymentStatus: "paid",
-    createdAt: "2024-01-20T10:30:00",
-    updatedAt: "2024-01-20T10:30:00",
-  },
-  {
-    id: "2",
-    orderNumber: "ORD-2024-002",
-    customer: { name: "Jane Smith", email: "jane@example.com" },
-    items: 1,
-    total: 189.99,
-    status: "confirmed",
-    paymentStatus: "paid",
-    createdAt: "2024-01-19T15:45:00",
-    updatedAt: "2024-01-19T16:00:00",
-  },
-  {
-    id: "3",
-    orderNumber: "ORD-2024-003",
-    customer: { name: "Mike Johnson", email: "mike@example.com" },
-    items: 3,
-    total: 629.97,
-    status: "processing",
-    paymentStatus: "paid",
-    createdAt: "2024-01-18T09:15:00",
-    updatedAt: "2024-01-19T11:30:00",
-  },
-  {
-    id: "4",
-    orderNumber: "ORD-2024-004",
-    customer: { name: "Sarah Wilson", email: "sarah@example.com" },
-    items: 1,
-    total: 349.99,
-    status: "shipped",
-    paymentStatus: "paid",
-    createdAt: "2024-01-17T14:20:00",
-    updatedAt: "2024-01-19T10:00:00",
-  },
-  {
-    id: "5",
-    orderNumber: "ORD-2024-005",
-    customer: { name: "Chris Brown", email: "chris@example.com" },
-    items: 2,
-    total: 459.98,
-    status: "delivered",
-    paymentStatus: "paid",
-    createdAt: "2024-01-15T11:30:00",
-    updatedAt: "2024-01-18T16:45:00",
-  },
-  {
-    id: "6",
-    orderNumber: "ORD-2024-006",
-    customer: { name: "Emily Davis", email: "emily@example.com" },
-    items: 1,
-    total: 159.99,
-    status: "cancelled",
-    paymentStatus: "refunded",
-    createdAt: "2024-01-14T08:45:00",
-    updatedAt: "2024-01-14T12:00:00",
-  },
-]
+import { useAdminOrders, type Order } from "@/hooks/useAdminApi"
 
 const statusConfig = {
   pending: { label: "Pending", icon: Clock, color: "bg-yellow-100 text-yellow-800" },
@@ -128,22 +46,51 @@ const paymentStatusConfig = {
 export function Orders() {
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
+  
+  const { data: ordersData, isLoading, error } = useAdminOrders()
+  const orders = ordersData?.items ?? []
 
-  const filteredOrders = mockOrders.filter((order) => {
+  const filteredOrders = (orders ?? []).filter((order) => {
     const matchesSearch =
-      order.orderNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.customer.email.toLowerCase().includes(searchQuery.toLowerCase())
+      order.order_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (order.profiles?.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false) ||
+      (order.profiles?.email?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false)
     const matchesStatus = statusFilter === "all" || order.status === statusFilter
     return matchesSearch && matchesStatus
   })
 
+  if (isLoading) {
+    return (
+      <div className="flex flex-col">
+        <Header title="Orders" description="Manage and track customer orders" />
+        <div className="flex items-center justify-center p-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col">
+        <Header title="Orders" description="Manage and track customer orders" />
+        <div className="p-6">
+          <Card className="border-red-200 bg-red-50">
+            <CardContent className="pt-6">
+              <p className="text-red-600">Error loading orders: {error.message}</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
   const orderStats = {
-    total: mockOrders.length,
-    pending: mockOrders.filter((o) => o.status === "pending").length,
-    processing: mockOrders.filter((o) => ["confirmed", "processing"].includes(o.status)).length,
-    shipped: mockOrders.filter((o) => o.status === "shipped").length,
-    delivered: mockOrders.filter((o) => o.status === "delivered").length,
+    total: orders?.length ?? 0,
+    pending: orders?.filter((o) => o.status === "pending").length ?? 0,
+    processing: orders?.filter((o) => ["confirmed", "processing"].includes(o.status)).length ?? 0,
+    shipped: orders?.filter((o) => o.status === "shipped").length ?? 0,
+    delivered: orders?.filter((o) => o.status === "delivered").length ?? 0,
   }
 
   return (
@@ -219,7 +166,6 @@ export function Orders() {
               <TableRow>
                 <TableHead>Order</TableHead>
                 <TableHead>Customer</TableHead>
-                <TableHead>Items</TableHead>
                 <TableHead>Total</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Payment</TableHead>
@@ -228,49 +174,56 @@ export function Orders() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredOrders.map((order) => {
-                const status = statusConfig[order.status]
-                const StatusIcon = status.icon
-                const payment = paymentStatusConfig[order.paymentStatus]
+              {filteredOrders.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                    No orders found
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filteredOrders.map((order) => {
+                  const status = statusConfig[order.status]
+                  const StatusIcon = status.icon
+                  const payment = paymentStatusConfig[order.payment_status]
 
-                return (
-                  <TableRow key={order.id}>
-                    <TableCell className="font-mono font-medium">
-                      {order.orderNumber}
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">{order.customer.name}</p>
-                        <p className="text-sm text-muted-foreground">{order.customer.email}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>{order.items} items</TableCell>
-                    <TableCell className="font-medium">{formatCurrency(order.total)}</TableCell>
-                    <TableCell>
-                      <div className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${status.color}`}>
-                        <StatusIcon className="h-3 w-3" />
-                        {status.label}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={payment.variant}>{payment.label}</Badge>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {formatDateTime(order.createdAt)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => console.log("View order:", order.id)}
-                      >
-                        <Eye className="h-4 w-4 mr-1" />
-                        View
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
+                  return (
+                    <TableRow key={order.id}>
+                      <TableCell className="font-mono font-medium">
+                        {order.order_number}
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <p className="font-medium">{order.profiles?.full_name || "Unknown"}</p>
+                          <p className="text-sm text-muted-foreground">{order.profiles?.email || "-"}</p>
+                        </div>
+                      </TableCell>
+                      <TableCell className="font-medium">{formatCurrency(order.total)}</TableCell>
+                      <TableCell>
+                        <div className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${status.color}`}>
+                          <StatusIcon className="h-3 w-3" />
+                          {status.label}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={payment.variant}>{payment.label}</Badge>
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {formatDateTime(order.created_at)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => console.log("View order:", order.id)}
+                        >
+                          <Eye className="h-4 w-4 mr-1" />
+                          View
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
+              )}
             </TableBody>
           </Table>
         </Card>
@@ -278,7 +231,7 @@ export function Orders() {
         {/* Pagination */}
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing {filteredOrders.length} of {mockOrders.length} orders
+            Showing {filteredOrders.length} of {orderStats.total} orders
           </p>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" disabled>
@@ -290,8 +243,6 @@ export function Orders() {
           </div>
         </div>
       </div>
-
-      {/* Order Detail Modal would go here */}
     </div>
   )
 }

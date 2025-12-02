@@ -13,113 +13,72 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, Eye, MessageSquare, Bug, HelpCircle, Lightbulb, CheckCircle } from "lucide-react"
+import { Search, Eye, MessageSquare, Bug, HelpCircle, Lightbulb, CheckCircle, Loader2 } from "lucide-react"
 import { formatDateTime } from "@/lib/utils"
+import { useAdminFeedback } from "@/hooks/useAdminApi"
 
-interface FeedbackItem {
-  id: string
-  userId: string | null
-  userName: string | null
-  userEmail: string
-  type: "bug" | "feature" | "support" | "general"
-  subject: string
-  message: string
-  status: "new" | "in_progress" | "resolved" | "closed"
-  createdAt: string
-}
-
-const mockFeedback: FeedbackItem[] = [
-  {
-    id: "1",
-    userId: "user1",
-    userName: "John Doe",
-    userEmail: "john@example.com",
-    type: "bug",
-    subject: "AR try-on not loading on iPhone",
-    message: "When I try to use the AR feature on my iPhone 12, the camera opens but the glasses don't appear on screen.",
-    status: "in_progress",
-    createdAt: "2024-01-19T10:30:00",
-  },
-  {
-    id: "2",
-    userId: "user2",
-    userName: "Jane Smith",
-    userEmail: "jane@example.com",
-    type: "feature",
-    subject: "Add wishlist sharing feature",
-    message: "It would be great if I could share my wishlist with friends and family for gift ideas.",
-    status: "new",
-    createdAt: "2024-01-18T15:45:00",
-  },
-  {
-    id: "3",
-    userId: null,
-    userName: null,
-    userEmail: "guest@example.com",
-    type: "support",
-    subject: "How to return my order?",
-    message: "I received the wrong size glasses. How can I initiate a return?",
-    status: "resolved",
-    createdAt: "2024-01-17T09:15:00",
-  },
-  {
-    id: "4",
-    userId: "user4",
-    userName: "Sarah Wilson",
-    userEmail: "sarah@example.com",
-    type: "general",
-    subject: "Great app experience!",
-    message: "Just wanted to say that I love the app! The AR feature helped me find the perfect frames.",
-    status: "closed",
-    createdAt: "2024-01-16T14:20:00",
-  },
-  {
-    id: "5",
-    userId: "user5",
-    userName: "Chris Brown",
-    userEmail: "chris@example.com",
-    type: "bug",
-    subject: "Payment failed but order went through",
-    message: "I received an error during payment but I got charged and received an order confirmation. Please check.",
-    status: "new",
-    createdAt: "2024-01-15T11:30:00",
-  },
-]
-
-const typeConfig = {
+const typeConfig: Record<string, { label: string; icon: typeof Bug; color: string }> = {
   bug: { label: "Bug Report", icon: Bug, color: "bg-red-100 text-red-800" },
   feature: { label: "Feature Request", icon: Lightbulb, color: "bg-purple-100 text-purple-800" },
   support: { label: "Support", icon: HelpCircle, color: "bg-blue-100 text-blue-800" },
   general: { label: "General", icon: MessageSquare, color: "bg-gray-100 text-gray-800" },
 }
 
-const statusConfig = {
-  new: { label: "New", variant: "default" as const },
-  in_progress: { label: "In Progress", variant: "warning" as const },
-  resolved: { label: "Resolved", variant: "success" as const },
-  closed: { label: "Closed", variant: "secondary" as const },
+const statusConfig: Record<string, { label: string; variant: "default" | "warning" | "success" | "secondary" }> = {
+  new: { label: "New", variant: "default" },
+  in_progress: { label: "In Progress", variant: "warning" },
+  resolved: { label: "Resolved", variant: "success" },
+  closed: { label: "Closed", variant: "secondary" },
 }
 
 export function Feedback() {
   const [searchQuery, setSearchQuery] = useState("")
   const [typeFilter, setTypeFilter] = useState("all")
   const [statusFilter, setStatusFilter] = useState("all")
+  
+  const { data: feedback, isLoading, error } = useAdminFeedback()
 
-  const filteredFeedback = mockFeedback.filter((item) => {
+  const filteredFeedback = (feedback ?? []).filter((item) => {
     const matchesSearch =
       item.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.userEmail.toLowerCase().includes(searchQuery.toLowerCase())
+      (item.profiles?.email?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false)
     const matchesType = typeFilter === "all" || item.type === typeFilter
     const matchesStatus = statusFilter === "all" || item.status === statusFilter
     return matchesSearch && matchesType && matchesStatus
   })
 
+  if (isLoading) {
+    return (
+      <div className="flex flex-col">
+        <Header title="Feedback" description="View and manage user feedback and support requests" />
+        <div className="flex items-center justify-center p-12">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col">
+        <Header title="Feedback" description="View and manage user feedback and support requests" />
+        <div className="p-6">
+          <Card className="border-red-200 bg-red-50">
+            <CardContent className="pt-6">
+              <p className="text-red-600">Error loading feedback: {error.message}</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
   const feedbackStats = {
-    total: mockFeedback.length,
-    new: mockFeedback.filter((f) => f.status === "new").length,
-    inProgress: mockFeedback.filter((f) => f.status === "in_progress").length,
-    resolved: mockFeedback.filter((f) => f.status === "resolved").length,
+    total: feedback?.length ?? 0,
+    new: feedback?.filter((f) => f.status === "new").length ?? 0,
+    inProgress: feedback?.filter((f) => f.status === "in_progress").length ?? 0,
+    resolved: feedback?.filter((f) => f.status === "resolved").length ?? 0,
   }
 
   return (
@@ -217,48 +176,56 @@ export function Feedback() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredFeedback.map((item) => {
-                const type = typeConfig[item.type]
-                const TypeIcon = type.icon
-                const status = statusConfig[item.status]
+              {filteredFeedback.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                    No feedback found
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filteredFeedback.map((item) => {
+                  const type = typeConfig[item.type] ?? typeConfig.general
+                  const TypeIcon = type.icon
+                  const status = statusConfig[item.status] ?? statusConfig.new
 
-                return (
-                  <TableRow key={item.id}>
-                    <TableCell>
-                      <div className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${type.color}`}>
-                        <TypeIcon className="h-3 w-3" />
-                        {type.label}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="max-w-sm">
-                        <p className="font-medium">{item.subject}</p>
-                        <p className="text-sm text-muted-foreground line-clamp-1 mt-1">
-                          {item.message}
-                        </p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div>
-                        <p className="text-sm font-medium">{item.userName || "Guest"}</p>
-                        <p className="text-xs text-muted-foreground">{item.userEmail}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={status.variant}>{status.label}</Badge>
-                    </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
-                      {formatDateTime(item.createdAt)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="sm">
-                        <Eye className="h-4 w-4 mr-1" />
-                        View
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
+                  return (
+                    <TableRow key={item.id}>
+                      <TableCell>
+                        <div className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${type.color}`}>
+                          <TypeIcon className="h-3 w-3" />
+                          {type.label}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="max-w-sm">
+                          <p className="font-medium">{item.subject}</p>
+                          <p className="text-sm text-muted-foreground line-clamp-1 mt-1">
+                            {item.message}
+                          </p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div>
+                          <p className="text-sm font-medium">{item.profiles?.full_name || "Guest"}</p>
+                          <p className="text-xs text-muted-foreground">{item.profiles?.email || "-"}</p>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={status.variant}>{status.label}</Badge>
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {formatDateTime(item.created_at)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="sm">
+                          <Eye className="h-4 w-4 mr-1" />
+                          View
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
+              )}
             </TableBody>
           </Table>
         </Card>
@@ -266,7 +233,7 @@ export function Feedback() {
         {/* Pagination */}
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing {filteredFeedback.length} of {mockFeedback.length} items
+            Showing {filteredFeedback.length} of {feedbackStats.total} items
           </p>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" disabled>

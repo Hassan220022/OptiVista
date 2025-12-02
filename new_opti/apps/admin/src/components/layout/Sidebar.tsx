@@ -4,6 +4,7 @@ import {
   Package,
   ShoppingCart,
   Users,
+  Store,
   Star,
   MessageSquare,
   Settings,
@@ -11,18 +12,31 @@ import {
   Glasses,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useAuth } from "@/contexts/AuthContext"
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Products", href: "/products", icon: Package },
   { name: "Orders", href: "/orders", icon: ShoppingCart },
   { name: "Users", href: "/users", icon: Users },
+  { name: "Sellers", href: "/sellers", icon: Store },
   { name: "Reviews", href: "/reviews", icon: Star },
   { name: "Feedback", href: "/feedback", icon: MessageSquare },
   { name: "Settings", href: "/settings", icon: Settings },
 ]
 
+function getInitials(email: string | undefined): string {
+  if (!email) return "AD"
+  return email.slice(0, 2).toUpperCase()
+}
+
 export function Sidebar() {
+  const { user, signOut } = useAuth()
+
+  const handleLogout = async () => {
+    await signOut()
+  }
+
   return (
     <div className="flex h-screen w-64 flex-col bg-card border-r">
       {/* Logo */}
@@ -56,13 +70,21 @@ export function Sidebar() {
       <div className="border-t p-4">
         <div className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center">
-            <span className="text-sm font-medium text-primary">AD</span>
+            <span className="text-sm font-medium text-primary">
+              {getInitials(user?.email ?? undefined)}
+            </span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">Admin User</p>
-            <p className="text-xs text-muted-foreground truncate">admin@optivista.com</p>
+            <p className="text-sm font-medium truncate">Admin</p>
+            <p className="text-xs text-muted-foreground truncate">
+              {user?.email ?? "admin@optivista.com"}
+            </p>
           </div>
-          <button className="p-2 hover:bg-accent rounded-lg transition-colors">
+          <button 
+            onClick={handleLogout}
+            className="p-2 hover:bg-accent rounded-lg transition-colors"
+            title="Sign out"
+          >
             <LogOut className="h-4 w-4 text-muted-foreground" />
           </button>
         </div>

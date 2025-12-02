@@ -64,3 +64,22 @@ async def require_admin_role(
         )
     
     return current_user
+
+
+async def require_seller_role(
+    current_user: Dict[str, Any] = Depends(get_current_user)
+) -> Dict[str, Any]:
+    """
+    Require seller role for access.
+    Raises 403 if user is not a seller.
+    """
+    app_metadata = current_user.get("app_metadata", {})
+    role = app_metadata.get("role", "shopper")
+    
+    if role != "seller":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Seller access required"
+        )
+    
+    return current_user

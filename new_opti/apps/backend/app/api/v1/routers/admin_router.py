@@ -247,13 +247,36 @@ async def update_feedback_status(feedback_id: str, update: FeedbackStatusUpdate)
 
 # ============ Review Moderation ============
 
+@router.get("/reviews", dependencies=[Depends(require_admin_role)])
+async def list_all_reviews(
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    status: Optional[str] = None
+):
+    """List all reviews (admin only)."""
+    from app.core.supabase_client import supabase
+    
+    query = supabase.table("reviews").select(
+        "*, profiles:user_id (full_name, email), products:product_id (name)"
+    )
+    
+    if status == "approved":
+        query = query.eq("is_approved", True)
+    elif status == "pending":
+        query = query.eq("is_approved", False)
+    
+    response = query.order("created_at", desc=True).execute()
+    
+    return {"items": response.data or []}
+
+
 @router.get("/reviews/pending", dependencies=[Depends(require_admin_role)])
 async def list_pending_reviews():
     """List reviews pending moderation (admin only)."""
     from app.core.supabase_client import supabase
     
     response = supabase.table("reviews").select(
-        "*, profiles(full_name, email), products(name)"
+        "*, profiles:user_id (full_name, email), products:product_id (name)"
     ).eq("is_approved", False).order("created_at", desc=True).execute()
     
     return {"items": response.data or []}
@@ -343,21 +366,38 @@ async def get_dashboard_stats():
     
     # Get counts
     products = supabase.table("products").select("id", count="exact").eq("is_active", True).execute()
-    orders = supabase.table("orders").select("id", count="exact").execute()
+    orders = supabase.table("orders").select("*", count="exact").execute()
     users = supabase.table("profiles").select("id", count="exact").execute()
     pending_reviews = supabase.table("reviews").select("id", count="exact").eq("is_approved", False).execute()
     pending_feedback = supabase.table("feedback").select("id", count="exact").eq("status", "pending").execute()
     
-    # Recent orders
+    # Calculate revenue and pending orders
+    all_orders = orders.data or []
+    total_revenue = sum(
+        o.get("total", 0) or 0 
+        for o in all_orders 
+        if o.get("payment_status") == "paid"
+    )
+    pending_orders = sum(1 for o in all_orders if o.get("status") == "pending")
+    
+    # Recent orders with user info
     recent_orders = supabase.table("orders").select(
-        "id, order_number, status, total_cents, created_at"
+        "*, profiles:user_id(full_name, email)"
+    ).order("created_at", desc=True).limit(5).execute()
+    
+    # Top products
+    top_products = supabase.table("products").select("*").eq(
+        "is_active", True
     ).order("created_at", desc=True).limit(5).execute()
     
     return {
         "total_products": products.count or 0,
         "total_orders": orders.count or 0,
         "total_users": users.count or 0,
+        "total_revenue": total_revenue,
+        "pending_orders": pending_orders,
         "pending_reviews": pending_reviews.count or 0,
         "pending_feedback": pending_feedback.count or 0,
-        "recent_orders": recent_orders.data or []
+        "recent_orders": recent_orders.data or [],
+        "top_products": top_products.data or []
     }

@@ -7,5 +7,6 @@ from . import (
     feedback_router,
     review_router,
     admin_router,
+    seller_router,
     checkout_router
 )

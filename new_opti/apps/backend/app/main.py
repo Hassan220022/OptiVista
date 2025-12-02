@@ -10,6 +10,7 @@ from app.api.v1.routers import (
     feedback_router,
     review_router,
     admin_router,
+    seller_router,
     checkout_router
 )
 
@@ -38,6 +39,7 @@ app.include_router(feedback_router.router, prefix=f"{settings.API_V1_STR}/feedba
 app.include_router(review_router.router, prefix=f"{settings.API_V1_STR}/reviews", tags=["reviews"])
 app.include_router(checkout_router.router, prefix=f"{settings.API_V1_STR}/checkout", tags=["checkout"])
 app.include_router(admin_router.router, prefix=f"{settings.API_V1_STR}/admin", tags=["admin"])
+app.include_router(seller_router.router, prefix=f"{settings.API_V1_STR}/seller", tags=["seller"])
 
 @app.get("/")
 def root():
