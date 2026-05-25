@@ -6,3 +6,9 @@ pubspec.lock
 .dart_tool
 *.zip
 /backend/src/routes/sample_index.js
+
+# Environment files — NEVER commit secrets
+.env
+.env.*
+!.env.example
+!.env.template
