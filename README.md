@@ -1,11 +1,11 @@
 # OptiVista
 
-OptiVista is an AR eyewear commerce platform. The active codebase lives in `new_optivista/` and uses Expo for the customer mobile app, React/Vite for admin and seller dashboards, FastAPI for backend services, and Supabase for auth, database, storage, and realtime features.
+OptiVista is an AR eyewear commerce platform. The active codebase lives at the repository root and uses Expo for the customer mobile app, React/Vite for admin and seller dashboards, FastAPI for backend services, and Supabase for auth, database, storage, and realtime features.
 
 ## Current Source of Truth
 
 ```txt
-new_optivista/
+repo root/
 ├── apps/
 │   ├── backend/   # FastAPI API and service layer
 │   ├── admin/     # React/Vite admin dashboard
@@ -33,7 +33,7 @@ Legacy Flutter, old Node backend, old React frontend, MySQL dumps, and generated
 ### Backend
 
 ```bash
-cd new_optivista/apps/backend
+cd apps/backend
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -44,7 +44,7 @@ uvicorn app.main:app --reload
 ### Admin Dashboard
 
 ```bash
-cd new_optivista/apps/admin
+cd apps/admin
 npm install
 cp .env.example .env
 npm run dev
@@ -53,7 +53,7 @@ npm run dev
 ### Seller Dashboard
 
 ```bash
-cd new_optivista/apps/seller
+cd apps/seller
 npm install
 cp .env.example .env
 npm run dev
@@ -62,7 +62,7 @@ npm run dev
 ### Mobile App
 
 ```bash
-cd new_optivista/apps/mobile
+cd apps/mobile
 npm install
 cp .env.example .env
 npm run ios     # or npm run android / npm run web
@@ -72,16 +72,16 @@ npm run ios     # or npm run android / npm run web
 
 - Never commit `.env` or secret-bearing local config files.
 - Use `.env.example` files for placeholders only.
-- Supabase access is protected with RLS policies in `new_optivista/supabase/`.
+- Supabase access is protected with RLS policies in `supabase/`.
 - MCP configs and token-bearing automation files are ignored.
 - Generated files such as `node_modules/`, `dist/`, `.expo/`, `__pycache__/`, `.pyc`, and `.DS_Store` are ignored.
 
 ## Documentation
 
-- `new_optivista/docs/architecture.md` — current system architecture
-- `new_optivista/docs/UI_ARCHITECTURE.md` — current mobile/admin/seller UI map
-- `new_optivista/docs/HANDBOOK.md` — repo guide
-- `new_optivista/supabase/storage/buckets.md` — storage bucket intent
+- `docs/architecture.md` — current system architecture
+- `docs/UI_ARCHITECTURE.md` — current mobile/admin/seller UI map
+- `docs/HANDBOOK.md` — repo guide
+- `supabase/storage/buckets.md` — storage bucket intent
 
 ## Authors
 

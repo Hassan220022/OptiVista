@@ -6,9 +6,9 @@ This handbook maps the current active repository structure.
 
 - `README.md` — current project overview and setup commands.
 - `docs/` — project background artifacts.
-- `new_optivista/` — active monorepo and source of truth.
+- `apps/`, `docs/`, and `supabase/` — active monorepo contents at repo root.
 
-## `new_optivista/apps/backend`
+## `apps/backend`
 
 FastAPI backend.
 
@@ -23,7 +23,7 @@ FastAPI backend.
 - `app/tests/` — backend tests.
 - `requirements.txt` — Python dependencies.
 
-## `new_optivista/apps/mobile`
+## `apps/mobile`
 
 Expo Router customer mobile app.
 
@@ -40,7 +40,7 @@ Expo Router customer mobile app.
 - `src/theme/` — theme tokens and provider.
 - `src/types/` — shared TypeScript types.
 
-## `new_optivista/apps/admin`
+## `apps/admin`
 
 React/Vite admin dashboard.
 
@@ -51,7 +51,7 @@ React/Vite admin dashboard.
 - `src/lib/` — Supabase/API helpers.
 - `src/types/` — shared TypeScript types.
 
-## `new_optivista/apps/seller`
+## `apps/seller`
 
 React/Vite seller dashboard.
 
@@ -62,7 +62,7 @@ React/Vite seller dashboard.
 - `src/lib/` — Supabase/API helpers.
 - `src/types/` — shared TypeScript types.
 
-## `new_optivista/supabase`
+## `supabase`
 
 - `migrations/0001_init.sql` — consolidated schema, RLS, functions, buckets.
 - `migrations/0002_seed_data.sql` — seed categories, products, AR assets.
@@ -72,7 +72,7 @@ React/Vite seller dashboard.
 
 ## Hygiene Rules
 
-- Keep active source under `new_optivista/`.
+- Keep active source at the repository root.
 - Do not reintroduce root legacy apps.
 - Do not commit generated folders: `node_modules/`, `dist/`, `.expo/`, `__pycache__/`.
 - Do not commit `.env` files or MCP token configs.
