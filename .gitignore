@@ -2,10 +2,18 @@
 .flutter-plugins
 .flutter-plugins-dependencies
 pubspec.lock
-.gitignore
 .dart_tool
 *.zip
 /backend/src/routes/sample_index.js
+
+# Generated/cache files
+__pycache__/
+*.py[cod]
+new_opti/supabase/.temp/
+
+# Local MCP configuration — never commit access tokens
+**/.windsurf/mcp/
+**/mcp.json
 
 # Environment files — NEVER commit secrets
 .env
