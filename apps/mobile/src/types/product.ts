@@ -16,6 +16,8 @@ export interface Product {
   is_virtual_try_on_enabled: boolean;
   rating: number;
   review_count: number;
+  category?: string;
+  stock_quantity?: number;
 }
 
 export interface CatalogFilterState {
