@@ -15,8 +15,8 @@ class Settings(BaseSettings):
     
     # Paymob Payment Gateway
     PAYMOB_API_KEY: str                    # Legacy API key (base64 encoded)
-    PAYMOB_SECRET_KEY: str                 # Secret key (egy_sk_...)
-    PAYMOB_PUBLIC_KEY: str                 # Public key (egy_pk_...)
+    PAYMOB_SECRET_KEY: str                 # Provider secret key
+    PAYMOB_PUBLIC_KEY: str                 # Provider public key
     PAYMOB_IFRAME_ID: str                  # iFrame ID from dashboard
     PAYMOB_INTEGRATION_ID: str | None = None  # Card integration ID
     PAYMOB_APPLE_PAY_INTEGRATION_ID: str | None = None  # Apple Pay integration ID

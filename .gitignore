@@ -1,4 +1,9 @@
 .DS_Store
+.idea/
+.vscode/
+.claude/
+.opencode/
+.windsurf/
 .flutter-plugins
 .flutter-plugins-dependencies
 pubspec.lock
@@ -7,6 +12,9 @@ pubspec.lock
 /backend/src/routes/sample_index.js
 
 # Generated/cache files
+node_modules/
+dist/
+.expo/
 __pycache__/
 *.py[cod]
 new_opti/supabase/.temp/
