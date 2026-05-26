@@ -1,5 +1,3 @@
-import { Platform } from 'react-native';
-
 export const Typography = {
   largeTitle: {
     fontSize: 34,

@@ -25,10 +25,11 @@ import {
   Loader2,
 } from "lucide-react"
 import { formatCurrency, formatDateTime } from "@/lib/utils"
-import { useAdminOrders, type Order } from "@/hooks/useAdminApi"
+import { useAdminOrders } from "@/hooks/useAdminApi"
 
 const statusConfig = {
   pending: { label: "Pending", icon: Clock, color: "bg-yellow-100 text-yellow-800" },
+  paid: { label: "Paid", icon: CheckCircle, color: "bg-green-100 text-green-800" },
   confirmed: { label: "Confirmed", icon: CheckCircle, color: "bg-blue-100 text-blue-800" },
   processing: { label: "Processing", icon: RefreshCw, color: "bg-indigo-100 text-indigo-800" },
   shipped: { label: "Shipped", icon: Truck, color: "bg-purple-100 text-purple-800" },
@@ -151,6 +152,7 @@ export function Orders() {
           >
             <option value="all">All Status</option>
             <option value="pending">Pending</option>
+            <option value="paid">Paid</option>
             <option value="confirmed">Confirmed</option>
             <option value="processing">Processing</option>
             <option value="shipped">Shipped</option>

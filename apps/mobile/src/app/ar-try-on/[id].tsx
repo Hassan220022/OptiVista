@@ -2,11 +2,9 @@ import { Pressable, Text, View } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
 import { Spacing, Radii } from '../../theme/spacing';
-import { useTheme } from '../../theme/provider';
 
 export default function ARTryOnScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { colors } = useTheme();
   const router = useRouter();
 
   return (

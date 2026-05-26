@@ -18,6 +18,10 @@ import { formatDateTime } from "@/lib/utils"
 import { useAdminFeedback } from "@/hooks/useAdminApi"
 
 const typeConfig: Record<string, { label: string; icon: typeof Bug; color: string }> = {
+  AR_accuracy: { label: "AR Accuracy", icon: Eye, color: "bg-purple-100 text-purple-800" },
+  UX: { label: "User Experience", icon: Lightbulb, color: "bg-blue-100 text-blue-800" },
+  performance: { label: "Performance", icon: Bug, color: "bg-yellow-100 text-yellow-800" },
+  other: { label: "Other", icon: MessageSquare, color: "bg-gray-100 text-gray-800" },
   bug: { label: "Bug Report", icon: Bug, color: "bg-red-100 text-red-800" },
   feature: { label: "Feature Request", icon: Lightbulb, color: "bg-purple-100 text-purple-800" },
   support: { label: "Support", icon: HelpCircle, color: "bg-blue-100 text-blue-800" },
@@ -144,6 +148,10 @@ export function Feedback() {
             className="w-44"
           >
             <option value="all">All Types</option>
+            <option value="AR_accuracy">AR Accuracy</option>
+            <option value="UX">User Experience</option>
+            <option value="performance">Performance</option>
+            <option value="other">Other</option>
             <option value="bug">Bug Reports</option>
             <option value="feature">Feature Requests</option>
             <option value="support">Support</option>

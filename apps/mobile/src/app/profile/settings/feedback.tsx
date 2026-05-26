@@ -17,7 +17,7 @@ export default function FeedbackScreen() {
       style={{ flex: 1, backgroundColor: colors.background }}>
       <View style={{ padding: Spacing.lg }}>
         <Text style={{ fontSize: 17, fontWeight: '600', color: colors.text, marginBottom: Spacing.md }}>
-          What's this about?
+          {"What's this about?"}
         </Text>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.sm }}>
           {FEEDBACK_TYPES.map((type, i) => (

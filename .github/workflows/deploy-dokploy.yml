@@ -1,0 +1,110 @@
+name: Deploy web apps to Dokploy
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "apps/admin/**"
+      - "apps/seller/**"
+      - "apps/mobile/**"
+      - "supabase/**"
+      - ".github/workflows/deploy-dokploy.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: dokploy-master
+  cancel-in-progress: true
+
+jobs:
+  validate-admin:
+    name: Validate admin
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/admin
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/admin/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  validate-seller:
+    name: Validate seller
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/seller
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/seller/package-lock.json
+      - run: npm ci
+      - run: npm run build
+
+  validate-mobile-web:
+    name: Validate mobile web
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/mobile
+    env:
+      EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
+      EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build
+
+  deploy:
+    name: Deploy to Dokploy
+    runs-on: ubuntu-latest
+    needs:
+      - validate-admin
+      - validate-seller
+      - validate-mobile-web
+    steps:
+      - name: Deploy applications
+        env:
+          DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
+          DOKPLOY_API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
+          ADMIN_APP_ID: zmH5cjA-3dxh9mV3coem2
+          SELLER_APP_ID: 0rR3yLhXo_pb5ZtujDTVY
+          MOBILE_APP_ID: UYIm-84siMfsmMfPa_D8b
+          GITHUB_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          deploy_app() {
+            local app_id="$1"
+            local name="$2"
+            curl --fail --show-error --silent \
+              --request POST "${DOKPLOY_URL%/}/api/application.deploy" \
+              --header "content-type: application/json" \
+              --header "x-api-key: ${DOKPLOY_API_KEY}" \
+              --data "{\"applicationId\":\"${app_id}\",\"title\":\"GitHub Actions deploy: ${name}\",\"description\":\"Commit: ${GITHUB_SHA}\"}"
+            echo "Deployed ${name}"
+          }
+
+          deploy_app "$ADMIN_APP_ID" "admin"
+          deploy_app "$SELLER_APP_ID" "seller"
+          deploy_app "$MOBILE_APP_ID" "mobile-web"

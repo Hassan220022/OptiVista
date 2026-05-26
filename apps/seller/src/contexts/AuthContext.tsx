@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import type { User, Session } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
-import { api } from '@/lib/api'
 
 interface AuthContextType {
   user: User | null
@@ -9,6 +8,7 @@ interface AuthContextType {
   isLoading: boolean
   isSeller: boolean
   isApproved: boolean
+  storeName: string | null
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
   signOut: () => Promise<void>
 }
@@ -21,12 +21,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
   const [isSeller, setIsSeller] = useState(false)
   const [isApproved, setIsApproved] = useState(false)
+  const [storeName, setStoreName] = useState<string | null>(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setUser(session?.user ?? null)
-      api.setToken(session?.access_token ?? null)
 
       if (session?.user) {
         checkSellerRole(session.user.id)
@@ -39,7 +39,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       async (_event, session) => {
         setSession(session)
         setUser(session?.user ?? null)
-        api.setToken(session?.access_token ?? null)
 
         if (session?.user) {
           await checkSellerRole(session.user.id)
@@ -58,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('role, seller_status')
+        .select('role, is_seller_approved, store_name')
         .eq('id', userId)
         .single()
 
@@ -67,9 +66,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setIsSeller(false)
         setIsApproved(false)
       } else {
-        const profile = data as { role: string; seller_status: string }
+        const profile = data as { role: string; is_seller_approved: boolean | null; store_name: string | null }
         setIsSeller(profile.role === 'seller' || profile.role === 'admin')
-        setIsApproved(profile.seller_status === 'approved' || profile.role === 'admin')
+        setIsApproved(Boolean(profile.is_seller_approved) || profile.role === 'admin')
+        setStoreName(profile.store_name)
       }
     } catch (err) {
       console.error('Error checking seller role:', err)
@@ -94,7 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (data.user) {
         const { data: profile, error: profileError } = await supabase
           .from('profiles')
-          .select('role, seller_status')
+          .select('role, is_seller_approved, store_name')
           .eq('id', data.user.id)
           .single()
 
@@ -103,7 +103,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           return { error: 'Access denied. Seller privileges required.' }
         }
 
-        const p = profile as { role: string; seller_status: string }
+        const p = profile as { role: string; is_seller_approved: boolean | null; store_name: string | null }
         if (p.role !== 'seller' && p.role !== 'admin') {
           await supabase.auth.signOut()
           return { error: 'Access denied. Seller privileges required.' }
@@ -122,7 +122,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setSession(null)
     setIsSeller(false)
     setIsApproved(false)
-    api.setToken(null)
+    setStoreName(null)
   }
 
   return (
@@ -133,6 +133,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         isSeller,
         isApproved,
+        storeName,
         signIn,
         signOut,
       }}

@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import type { User, Session } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
-import { api } from '@/lib/api'
 
 interface AuthContextType {
   user: User | null
@@ -25,7 +24,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setUser(session?.user ?? null)
-      api.setToken(session?.access_token ?? null)
       
       if (session?.user) {
         checkAdminRole(session.user.id)
@@ -39,7 +37,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       async (_event, session) => {
         setSession(session)
         setUser(session?.user ?? null)
-        api.setToken(session?.access_token ?? null)
 
         if (session?.user) {
           await checkAdminRole(session.user.id)
@@ -112,7 +109,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
     setSession(null)
     setIsAdmin(false)
-    api.setToken(null)
   }
 
   return (
