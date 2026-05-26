@@ -17,7 +17,7 @@ dist/
 .expo/
 __pycache__/
 *.py[cod]
-new_opti/supabase/.temp/
+supabase/.temp/
 
 # Local MCP configuration — never commit access tokens
 **/.windsurf/mcp/

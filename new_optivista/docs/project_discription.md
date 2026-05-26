@@ -18,7 +18,7 @@ Seller Dashboard (React/Vite) ─ Supabase + FastAPI
 ## Active Source Tree
 
 ```txt
-new_opti/
+new_optivista/
 ├── apps/
 │   ├── backend/
 │   ├── admin/
@@ -30,4 +30,4 @@ new_opti/
 
 ## Removed Legacy Stack
 
-The previous Flutter app, old Node backend, old React frontend, and MySQL dump files are no longer part of the active project. They were replaced by the Expo/FastAPI/Supabase monorepo under `new_opti/`.
+The previous Flutter app, old Node backend, old React frontend, and MySQL dump files are no longer part of the active project. They were replaced by the Expo/FastAPI/Supabase monorepo under `new_optivista/`.
