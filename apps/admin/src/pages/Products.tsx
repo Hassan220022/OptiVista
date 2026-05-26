@@ -13,15 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {
-  Plus,
-  Search,
-  Edit,
-  Trash2,
-  Eye,
-  Package,
-  Loader2,
-} from "lucide-react"
+import { Search, Trash2, Package, Loader2 } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
 import { useAdminProducts, useDeleteProduct } from "@/hooks/useAdminApi"
 
@@ -152,8 +144,8 @@ export function Products() {
               <option value="inactive">Inactive</option>
             </Select>
           </div>
-          <Button onClick={() => console.log("Add product")}>
-            <Plus className="h-4 w-4 mr-2" />
+          <Button disabled title="Product creation form is not implemented yet">
+            <Package className="h-4 w-4 mr-2" />
             Add Product
           </Button>
         </div>
@@ -218,11 +210,11 @@ export function Products() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1">
-                        <Button variant="ghost" size="icon" title="View">
-                          <Eye className="h-4 w-4" />
+                        <Button variant="ghost" size="sm" title="Product detail view is not implemented yet" disabled>
+                          View
                         </Button>
-                        <Button variant="ghost" size="icon" title="Edit">
-                          <Edit className="h-4 w-4" />
+                        <Button variant="ghost" size="sm" title="Product edit form is not implemented yet" disabled>
+                          Edit
                         </Button>
                         <Button
                           variant="ghost"

@@ -1,377 +1,426 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { supabase } from "@/lib/supabase"
-import type { Product, Order, Review, Feedback, Profile } from "@/types/database"
+import { useAuth } from "@/contexts/AuthContext"
 
-// ============ PRODUCTS ============
+export type SellerOrderStatus = "pending" | "paid" | "shipped" | "delivered" | "cancelled"
 
-export function useProducts() {
-  return useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .order("created_at", { ascending: false })
-
-      if (error) throw error
-      return (data ?? []) as Product[]
-    },
-  })
+export interface SellerProduct {
+  id: string
+  name: string
+  slug: string
+  brand: string | null
+  description: string | null
+  price: number
+  price_cents: number
+  currency: string
+  thumbnail_url: string | null
+  is_active: boolean
+  stock_quantity: number
+  avg_rating: number | null
+  ar_enabled: boolean
+  created_at: string
+  updated_at: string
 }
 
-export function useProduct(id: string) {
-  return useQuery({
-    queryKey: ["products", id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .eq("id", id)
-        .single()
-
-      if (error) throw error
-      return data as Product
-    },
-    enabled: !!id,
-  })
+export interface SellerOrder {
+  id: string
+  order_number: string
+  customer: string
+  total: number
+  seller_total: number
+  currency: string
+  status: SellerOrderStatus
+  items: number
+  created_at: string
 }
 
-export function useUpdateProduct() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: async ({ id, updates }: { id: string; updates: Partial<Product> }) => {
-      const { data, error } = await supabase
-        .from("products")
-        .update(updates as never)
-        .eq("id", id)
-        .select()
-        .single()
-
-      if (error) throw error
-      return data
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] })
-    },
-  })
+export interface SellerReview {
+  id: string
+  customer: string
+  product: string
+  rating: number
+  title: string | null
+  body: string | null
+  is_approved: boolean
+  is_verified_purchase: boolean
+  helpful_count: number
+  created_at: string
 }
 
-export function useDeleteProduct() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from("products").delete().eq("id", id)
-      if (error) throw error
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] })
-    },
-  })
+export interface SellerPayout {
+  id: string
+  amount: number
+  currency: string
+  status: "pending" | "processing" | "completed" | "failed"
+  payout_method: string | null
+  processed_at: string | null
+  created_at: string
 }
 
-// ============ ORDERS ============
-
-export interface OrderWithProfile extends Order {
-  profiles: { full_name: string | null; email: string | null } | null
+export interface SellerProfile {
+  id: string
+  full_name: string | null
+  phone_number: string | null
+  store_name: string | null
+  store_description: string | null
+  store_logo_url: string | null
+  seller_commission_rate: number | null
+  is_seller_approved: boolean | null
 }
 
-export function useOrders() {
-  return useQuery({
-    queryKey: ["orders"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("orders")
-        .select(`
-          *,
-          profiles:user_id (full_name, email)
-        `)
-        .order("created_at", { ascending: false })
-
-      if (error) throw error
-      return (data ?? []) as unknown as OrderWithProfile[]
-    },
-  })
-}
-
-export function useOrder(id: string) {
-  return useQuery({
-    queryKey: ["orders", id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("orders")
-        .select(`
-          *,
-          profiles:user_id (full_name, email),
-          order_items (*)
-        `)
-        .eq("id", id)
-        .single()
-
-      if (error) throw error
-      return data
-    },
-    enabled: !!id,
-  })
-}
-
-export function useUpdateOrderStatus() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: Order["status"] }) => {
-      const { data, error } = await supabase
-        .from("orders")
-        .update({ status, updated_at: new Date().toISOString() } as never)
-        .eq("id", id)
-        .select()
-        .single()
-
-      if (error) throw error
-      return data
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders"] })
-    },
-  })
-}
-
-// ============ USERS/PROFILES ============
-
-export interface ProfileWithStats extends Profile {
-  orders_count: number
-  total_spent: number
-}
-
-export function useUsers() {
-  return useQuery({
-    queryKey: ["users"],
-    queryFn: async () => {
-      // First get all profiles
-      const { data: profiles, error: profilesError } = await supabase
-        .from("profiles")
-        .select("*")
-        .order("created_at", { ascending: false })
-
-      if (profilesError) throw profilesError
-      if (!profiles) return []
-
-      // Get order stats for each user
-      const { data: orderStats, error: statsError } = await supabase
-        .from("orders")
-        .select("user_id, total")
-
-      if (statsError) throw statsError
-
-      // Aggregate stats by user
-      const statsByUser = (orderStats ?? []).reduce((acc, order) => {
-        const userId = (order as { user_id: string; total: number }).user_id
-        const total = (order as { user_id: string; total: number }).total
-        if (!acc[userId]) {
-          acc[userId] = { count: 0, total: 0 }
-        }
-        acc[userId].count++
-        acc[userId].total += total || 0
-        return acc
-      }, {} as Record<string, { count: number; total: number }>)
-
-      // Merge stats with profiles
-      const profilesWithStats: ProfileWithStats[] = (profiles as Profile[]).map((profile) => ({
-        ...profile,
-        orders_count: statsByUser[profile.id]?.count || 0,
-        total_spent: statsByUser[profile.id]?.total || 0,
-      }))
-
-      return profilesWithStats
-    },
-  })
-}
-
-// ============ REVIEWS ============
-
-export interface ReviewWithDetails extends Review {
-  profiles: { full_name: string | null; email: string | null } | null
-  products: { name: string } | null
-}
-
-export function useReviews() {
-  return useQuery({
-    queryKey: ["reviews"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("reviews")
-        .select(`
-          *,
-          profiles:user_id (full_name, email),
-          products:product_id (name)
-        `)
-        .order("created_at", { ascending: false })
-
-      if (error) throw error
-      return (data ?? []) as unknown as ReviewWithDetails[]
-    },
-  })
-}
-
-export function useApproveReview() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: async ({ id, isApproved }: { id: string; isApproved: boolean }) => {
-      const { data, error } = await supabase
-        .from("reviews")
-        .update({ is_approved: isApproved, updated_at: new Date().toISOString() } as never)
-        .eq("id", id)
-        .select()
-        .single()
-
-      if (error) throw error
-      return data
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["reviews"] })
-    },
-  })
-}
-
-export function useDeleteReview() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from("reviews").delete().eq("id", id)
-      if (error) throw error
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["reviews"] })
-    },
-  })
-}
-
-// ============ FEEDBACK ============
-
-export interface FeedbackWithProfile extends Feedback {
-  profiles: { full_name: string | null; email: string | null } | null
-}
-
-export function useFeedback() {
-  return useQuery({
-    queryKey: ["feedback"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("feedback")
-        .select(`
-          *,
-          profiles:user_id (full_name, email)
-        `)
-        .order("created_at", { ascending: false })
-
-      if (error) throw error
-      return (data ?? []) as unknown as FeedbackWithProfile[]
-    },
-  })
-}
-
-export function useUpdateFeedbackStatus() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { data, error } = await supabase
-        .from("feedback")
-        .update({ status } as never)
-        .eq("id", id)
-        .select()
-        .single()
-
-      if (error) throw error
-      return data
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["feedback"] })
-    },
-  })
-}
-
-// ============ DASHBOARD STATS ============
-
-export interface DashboardStats {
+export interface SellerStats {
   totalRevenue: number
+  pendingRevenue: number
   totalOrders: number
-  totalProducts: number
-  totalUsers: number
   pendingOrders: number
-  pendingReviews: number
-  recentOrders: OrderWithProfile[]
-  topProducts: Product[]
+  totalProducts: number
+  activeProducts: number
+  totalReviews: number
+  averageRating: number
+  totalViews: number | null
+  recentOrders: SellerOrder[]
+  topProducts: Array<SellerProduct & { sold: number; revenue: number }>
 }
 
-export function useDashboardStats() {
+type DbProduct = {
+  id: string
+  name: string
+  slug: string
+  brand: string | null
+  description: string | null
+  price_cents: number
+  currency_code: string | null
+  thumbnail_url: string | null
+  is_active: boolean | null
+  stock_quantity: number | null
+  avg_rating: number | null
+  ar_enabled: boolean | null
+  created_at: string
+  updated_at: string
+}
+
+type OrderItemRow = {
+  order_id: string
+  quantity: number
+  unit_price_cents: number
+  products: DbProduct | null
+  orders: {
+    id: string
+    user_id: string
+    status: SellerOrderStatus | null
+    total_amount_cents: number
+    currency_code: string | null
+    created_at: string
+    profiles?: { full_name: string | null } | null
+  } | null
+}
+
+function cents(centsValue: number | null | undefined) {
+  return (centsValue ?? 0) / 100
+}
+
+function toProduct(row: DbProduct): SellerProduct {
+  return {
+    id: row.id,
+    name: row.name,
+    slug: row.slug,
+    brand: row.brand,
+    description: row.description,
+    price: cents(row.price_cents),
+    price_cents: row.price_cents,
+    currency: row.currency_code ?? "USD",
+    thumbnail_url: row.thumbnail_url,
+    is_active: row.is_active ?? false,
+    stock_quantity: row.stock_quantity ?? 0,
+    avg_rating: row.avg_rating,
+    ar_enabled: row.ar_enabled ?? false,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+  }
+}
+
+function orderNumber(id: string) {
+  return `ORD-${id.slice(0, 8).toUpperCase()}`
+}
+
+function toOrders(rows: OrderItemRow[]): SellerOrder[] {
+  const byOrder = new Map<string, SellerOrder>()
+
+  for (const row of rows) {
+    if (!row.orders) continue
+    const existing = byOrder.get(row.orders.id)
+    const lineTotal = cents(row.unit_price_cents * row.quantity)
+
+    if (existing) {
+      existing.items += row.quantity
+      existing.seller_total += lineTotal
+      continue
+    }
+
+    byOrder.set(row.orders.id, {
+      id: row.orders.id,
+      order_number: orderNumber(row.orders.id),
+      customer: row.orders.profiles?.full_name ?? "Customer",
+      total: cents(row.orders.total_amount_cents),
+      seller_total: lineTotal,
+      currency: row.orders.currency_code ?? "USD",
+      status: row.orders.status ?? "pending",
+      items: row.quantity,
+      created_at: row.orders.created_at,
+    })
+  }
+
+  return Array.from(byOrder.values()).sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  )
+}
+
+function useSellerId() {
+  const { user } = useAuth()
+  return user?.id ?? null
+}
+
+export function useSellerProducts() {
+  const sellerId = useSellerId()
+
   return useQuery({
-    queryKey: ["dashboard-stats"],
+    queryKey: ["seller", sellerId, "products"],
+    enabled: Boolean(sellerId),
     queryFn: async () => {
-      // Get total revenue and orders
-      const { data: ordersData, error: ordersError } = await supabase
-        .from("orders")
-        .select(`
-          *,
-          profiles:user_id (full_name, email)
-        `)
+      if (!sellerId) throw new Error("Not signed in")
+      const { data, error } = await supabase
+        .from("products")
+        .select("id, name, slug, brand, description, price_cents, currency_code, thumbnail_url, is_active, stock_quantity, avg_rating, ar_enabled, created_at, updated_at")
+        .eq("seller_id", sellerId)
         .order("created_at", { ascending: false })
 
-      if (ordersError) throw ordersError
+      if (error) throw error
+      return ((data ?? []) as DbProduct[]).map(toProduct)
+    },
+  })
+}
 
-      const orders = (ordersData ?? []) as unknown as OrderWithProfile[]
+export function useSellerOrders() {
+  const sellerId = useSellerId()
 
-      const totalRevenue = orders
-        .filter((o) => o.payment_status === "paid")
-        .reduce((sum, o) => sum + (o.total || 0), 0)
+  return useQuery({
+    queryKey: ["seller", sellerId, "orders"],
+    enabled: Boolean(sellerId),
+    queryFn: async () => {
+      if (!sellerId) throw new Error("Not signed in")
+      const { data, error } = await supabase
+        .from("order_items")
+        .select("order_id, quantity, unit_price_cents, products!inner(id, name, slug, brand, description, price_cents, currency_code, thumbnail_url, is_active, stock_quantity, avg_rating, ar_enabled, created_at, updated_at, seller_id), orders!inner(id, user_id, status, total_amount_cents, currency_code, created_at, profiles:user_id(full_name))")
+        .eq("products.seller_id", sellerId)
 
-      const pendingOrders = orders.filter((o) => o.status === "pending").length
+      if (error) throw error
+      return toOrders((data ?? []) as unknown as OrderItemRow[])
+    },
+  })
+}
 
-      // Get total products
-      const { count: totalProducts, error: productsError } = await supabase
-        .from("products")
-        .select("*", { count: "exact", head: true })
+export function useSellerReviews() {
+  const sellerId = useSellerId()
 
-      if (productsError) throw productsError
-
-      // Get total users
-      const { count: totalUsers, error: usersError } = await supabase
-        .from("profiles")
-        .select("*", { count: "exact", head: true })
-
-      if (usersError) throw usersError
-
-      // Get pending reviews
-      const { count: pendingReviews, error: reviewsError } = await supabase
+  return useQuery({
+    queryKey: ["seller", sellerId, "reviews"],
+    enabled: Boolean(sellerId),
+    queryFn: async () => {
+      if (!sellerId) throw new Error("Not signed in")
+      const { data, error } = await supabase
         .from("reviews")
-        .select("*", { count: "exact", head: true })
-        .eq("is_approved", false)
-
-      if (reviewsError) throw reviewsError
-
-      // Get top products (by order count)
-      const { data: topProductsData, error: topProductsError } = await supabase
-        .from("products")
-        .select("*")
-        .eq("is_active", true)
+        .select("id, rating, title, body, is_approved, is_verified_purchase, helpful_count, created_at, products:product_id(name), profiles:user_id(full_name)")
+        .eq("seller_id", sellerId)
         .order("created_at", { ascending: false })
-        .limit(5)
 
-      if (topProductsError) throw topProductsError
+      if (error) throw error
+      return ((data ?? []) as Array<{
+        id: string
+        rating: number | null
+        title: string | null
+        body: string | null
+        is_approved: boolean | null
+        is_verified_purchase: boolean | null
+        helpful_count: number | null
+        created_at: string
+        products?: { name: string | null } | null
+        profiles?: { full_name: string | null } | null
+      }>).map((row) => ({
+        id: row.id,
+        customer: row.profiles?.full_name ?? "Customer",
+        product: row.products?.name ?? "Product",
+        rating: row.rating ?? 0,
+        title: row.title,
+        body: row.body,
+        is_approved: row.is_approved ?? false,
+        is_verified_purchase: row.is_verified_purchase ?? false,
+        helpful_count: row.helpful_count ?? 0,
+        created_at: row.created_at,
+      })) satisfies SellerReview[]
+    },
+  })
+}
+
+export function useSellerPayouts() {
+  const sellerId = useSellerId()
+
+  return useQuery({
+    queryKey: ["seller", sellerId, "payouts"],
+    enabled: Boolean(sellerId),
+    queryFn: async () => {
+      if (!sellerId) throw new Error("Not signed in")
+      const { data, error } = await supabase
+        .from("seller_payouts")
+        .select("id, amount_cents, currency, status, payout_method, processed_at, created_at")
+        .eq("seller_id", sellerId)
+        .order("created_at", { ascending: false })
+
+      if (error) throw error
+      return ((data ?? []) as Array<{
+        id: string
+        amount_cents: number
+        currency: string | null
+        status: SellerPayout["status"] | null
+        payout_method: string | null
+        processed_at: string | null
+        created_at: string
+      }>).map((row) => ({
+        id: row.id,
+        amount: cents(row.amount_cents),
+        currency: row.currency ?? "USD",
+        status: row.status ?? "pending",
+        payout_method: row.payout_method,
+        processed_at: row.processed_at,
+        created_at: row.created_at,
+      })) satisfies SellerPayout[]
+    },
+  })
+}
+
+export function useSellerProfile() {
+  const sellerId = useSellerId()
+
+  return useQuery({
+    queryKey: ["seller", sellerId, "profile"],
+    enabled: Boolean(sellerId),
+    queryFn: async () => {
+      if (!sellerId) throw new Error("Not signed in")
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id, full_name, phone_number, store_name, store_description, store_logo_url, seller_commission_rate, is_seller_approved")
+        .eq("id", sellerId)
+        .single()
+
+      if (error) throw error
+      return data as SellerProfile
+    },
+  })
+}
+
+export function useUpdateSellerProfile() {
+  const queryClient = useQueryClient()
+  const sellerId = useSellerId()
+
+  return useMutation({
+    mutationFn: async (updates: Pick<SellerProfile, "store_name" | "store_description" | "phone_number" | "store_logo_url">) => {
+      if (!sellerId) throw new Error("Not signed in")
+      const { error } = await supabase
+        .from("profiles")
+        .update({ ...updates, updated_at: new Date().toISOString() } as never)
+        .eq("id", sellerId)
+      if (error) throw error
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["seller", sellerId, "profile"] })
+    },
+  })
+}
+
+export function useUpdateSellerProduct() {
+  const queryClient = useQueryClient()
+  const sellerId = useSellerId()
+
+  return useMutation({
+    mutationFn: async ({ id, updates }: { id: string; updates: Partial<SellerProduct> }) => {
+      if (!sellerId) throw new Error("Not signed in")
+      const dbUpdates: Record<string, unknown> = { updated_at: new Date().toISOString() }
+      if (updates.is_active !== undefined) dbUpdates.is_active = updates.is_active
+      if (updates.stock_quantity !== undefined) dbUpdates.stock_quantity = updates.stock_quantity
+
+      const { error } = await supabase
+        .from("products")
+        .update(dbUpdates as never)
+        .eq("id", id)
+        .eq("seller_id", sellerId)
+      if (error) throw error
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["seller", sellerId, "products"] })
+      queryClient.invalidateQueries({ queryKey: ["seller", sellerId, "stats"] })
+    },
+  })
+}
+
+export function useSellerStats() {
+  const sellerId = useSellerId()
+  const productsQuery = useSellerProducts()
+  const ordersQuery = useSellerOrders()
+  const reviewsQuery = useSellerReviews()
+
+  return useQuery({
+    queryKey: ["seller", sellerId, "stats", productsQuery.data, ordersQuery.data, reviewsQuery.data],
+    enabled: Boolean(sellerId) && productsQuery.isSuccess && ordersQuery.isSuccess && reviewsQuery.isSuccess,
+    queryFn: async () => {
+      if (!sellerId) throw new Error("Not signed in")
+      const products = productsQuery.data ?? []
+      const orders = ordersQuery.data ?? []
+      const reviews = reviewsQuery.data ?? []
+
+      const deliveredStatuses: SellerOrderStatus[] = ["paid", "shipped", "delivered"]
+      const totalRevenue = orders
+        .filter((order) => deliveredStatuses.includes(order.status))
+        .reduce((sum, order) => sum + order.seller_total, 0)
+      const pendingRevenue = orders
+        .filter((order) => order.status === "pending")
+        .reduce((sum, order) => sum + order.seller_total, 0)
+      const averageRating = reviews.length
+        ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+        : 0
+
+      const soldByProduct = new Map<string, { sold: number; revenue: number }>()
+      const { data: itemRows, error } = await supabase
+        .from("order_items")
+        .select("product_id, quantity, unit_price_cents, products!inner(seller_id)")
+        .eq("products.seller_id", sellerId)
+      if (error) throw error
+
+      for (const item of (itemRows ?? []) as Array<{ product_id: string; quantity: number; unit_price_cents: number }>) {
+        const current = soldByProduct.get(item.product_id) ?? { sold: 0, revenue: 0 }
+        current.sold += item.quantity
+        current.revenue += cents(item.unit_price_cents * item.quantity)
+        soldByProduct.set(item.product_id, current)
+      }
 
       return {
         totalRevenue,
+        pendingRevenue,
         totalOrders: orders.length,
-        totalProducts: totalProducts || 0,
-        totalUsers: totalUsers || 0,
-        pendingOrders,
-        pendingReviews: pendingReviews || 0,
+        pendingOrders: orders.filter((order) => order.status === "pending").length,
+        totalProducts: products.length,
+        activeProducts: products.filter((product) => product.is_active).length,
+        totalReviews: reviews.length,
+        averageRating,
+        totalViews: null,
         recentOrders: orders.slice(0, 5),
-        topProducts: (topProductsData ?? []) as Product[],
-      } as DashboardStats
+        topProducts: products
+          .map((product) => ({
+            ...product,
+            sold: soldByProduct.get(product.id)?.sold ?? 0,
+            revenue: soldByProduct.get(product.id)?.revenue ?? 0,
+          }))
+          .sort((a, b) => b.revenue - a.revenue)
+          .slice(0, 5),
+      } satisfies SellerStats
     },
   })
 }

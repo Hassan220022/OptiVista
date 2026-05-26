@@ -23,6 +23,12 @@ type DbProfile = {
   avatar_url: string | null
   phone_number: string | null
   role: string | null
+  store_name: string | null
+  store_description: string | null
+  store_logo_url: string | null
+  is_seller_approved: boolean | null
+  seller_approved_at: string | null
+  seller_commission_rate: number | null
   created_at: string
   updated_at: string
 }
@@ -84,6 +90,8 @@ export interface Product {
 }
 
 export type OrderStatus = "pending" | "paid" | "shipped" | "delivered" | "cancelled"
+
+export type SellerStatus = "approved" | "pending" | "rejected"
 
 export interface Order {
   id: string
@@ -167,6 +175,27 @@ export interface Profile {
 export interface ProfileWithStats extends Profile {
   orders_count: number
   total_spent: number
+}
+
+export interface AdminSeller {
+  id: string
+  full_name: string | null
+  avatar_url: string | null
+  phone_number: string | null
+  role: string | null
+  store_name: string | null
+  store_description: string | null
+  store_logo_url: string | null
+  is_seller_approved: boolean | null
+  seller_approved_at: string | null
+  seller_commission_rate: number | null
+  created_at: string
+  updated_at: string
+  identifier: string
+  products_count: number
+  orders_count: number
+  revenue: number
+  status: SellerStatus
 }
 
 function centsToCurrency(cents: number | null | undefined) {
@@ -273,6 +302,47 @@ function toProfile(row: DbProfile): Profile {
     role,
     created_at: row.created_at,
     updated_at: row.updated_at,
+  }
+}
+
+function getSellerStatus(role: string | null, isApproved: boolean | null, sellerApprovedAt: string | null): SellerStatus {
+  if (role === "seller" && isApproved === true) return "approved"
+  if (role === "seller" && isApproved === false && sellerApprovedAt !== null) return "rejected"
+  if (role !== "seller") return "rejected"
+  return "pending"
+}
+
+function getSellerIdentifier(row: DbProfile) {
+  return row.store_name || row.full_name || row.phone_number || row.id
+}
+
+function toAdminSeller(
+  row: DbProfile,
+  counts: {
+    productsCountBySeller: Record<string, number>
+    orderCountBySeller: Record<string, number>
+    revenueBySellerCents: Record<string, number>
+  }
+): AdminSeller {
+  return {
+    id: row.id,
+    full_name: row.full_name,
+    avatar_url: row.avatar_url,
+    phone_number: row.phone_number,
+    role: row.role,
+    store_name: row.store_name,
+    store_description: row.store_description,
+    store_logo_url: row.store_logo_url,
+    is_seller_approved: row.is_seller_approved,
+    seller_approved_at: row.seller_approved_at,
+    seller_commission_rate: row.seller_commission_rate,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+    identifier: getSellerIdentifier(row),
+    products_count: counts.productsCountBySeller[row.id] ?? 0,
+    orders_count: counts.orderCountBySeller[row.id] ?? 0,
+    revenue: centsToCurrency(counts.revenueBySellerCents[row.id] ?? 0),
+    status: getSellerStatus(row.role, row.is_seller_approved, row.seller_approved_at),
   }
 }
 
@@ -570,6 +640,118 @@ export function useAdminFeedback(params?: { type?: string }) {
 export function useUpdateFeedbackStatus() {
   return useMutation({
     mutationFn: async ({ id, status }: { id: string; status: string; admin_notes?: string }) => ({ id, status }),
+  })
+}
+
+export function useAdminSellers() {
+  return useQuery({
+    queryKey: ["admin", "sellers"],
+    queryFn: async () => {
+      const [profilesResult, productsResult, orderItemsResult] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select(
+            "id, full_name, avatar_url, phone_number, role, store_name, store_description, store_logo_url, is_seller_approved, seller_approved_at, seller_commission_rate, created_at, updated_at"
+          )
+          .eq("role", "seller")
+          .order("created_at", { ascending: false }),
+        supabase.from("products").select("seller_id"),
+        supabase
+          .from("order_items")
+          .select("order_id, quantity, unit_price_cents, products!inner(seller_id), orders!inner(status)"),
+      ])
+
+      if (profilesResult.error) throw profilesResult.error
+      if (productsResult.error) throw productsResult.error
+      if (orderItemsResult.error) throw orderItemsResult.error
+
+      const products = (productsResult.data ?? []) as Array<{ seller_id: string | null }>
+      const productsCountBySeller = products.reduce<Record<string, number>>((acc, product) => {
+        if (!product.seller_id) return acc
+        acc[product.seller_id] = (acc[product.seller_id] ?? 0) + 1
+        return acc
+      }, {})
+
+      const orderItems = (orderItemsResult.data ?? []) as Array<{
+        order_id: string
+        quantity: number
+        unit_price_cents: number
+        products?: { seller_id: string | null } | null
+        orders?: { status: string | null } | null
+      }>
+
+      const orderIdsBySeller = new Map<string, Set<string>>()
+      const revenueBySellerCents = orderItems.reduce<Record<string, number>>((acc, item) => {
+        const sellerId = item.products?.seller_id
+        if (!sellerId) return acc
+
+        if (["paid", "shipped", "delivered"].includes(item.orders?.status ?? "")) {
+          const lineRevenue = (item.unit_price_cents ?? 0) * (item.quantity ?? 0)
+          acc[sellerId] = (acc[sellerId] ?? 0) + lineRevenue
+        }
+
+        const sellerOrderIds = orderIdsBySeller.get(sellerId)
+        if (sellerOrderIds) {
+          sellerOrderIds.add(item.order_id)
+        } else {
+          orderIdsBySeller.set(sellerId, new Set([item.order_id]))
+        }
+
+        return acc
+      }, {})
+
+      const orderCountBySeller = Object.fromEntries(
+        Array.from(orderIdsBySeller.entries()).map(([sellerId, orderIds]) => [sellerId, orderIds.size])
+      )
+
+      const counts = {
+        productsCountBySeller,
+        orderCountBySeller,
+        revenueBySellerCents,
+      }
+
+      return ((profilesResult.data ?? []) as unknown as DbProfile[]).map((row) => toAdminSeller(row, counts))
+    },
+  })
+}
+
+export function useUpdateSellerApproval() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async ({
+      sellerId,
+      action,
+    }: {
+      sellerId: string
+      action: "approve" | "reject"
+    }) => {
+      const now = new Date().toISOString()
+      const updates =
+        action === "approve"
+          ? {
+              role: "seller",
+              is_seller_approved: true,
+              seller_approved_at: now,
+              updated_at: now,
+            }
+          : {
+              role: "seller",
+              is_seller_approved: false,
+              seller_approved_at: now,
+              updated_at: now,
+            }
+
+      const { error } = await supabase
+        .from("profiles")
+        .update(updates as never)
+        .eq("id", sellerId)
+      if (error) throw error
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "sellers"] })
+      queryClient.invalidateQueries({ queryKey: ["admin", "stats"] })
+    },
   })
 }
 

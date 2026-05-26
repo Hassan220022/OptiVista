@@ -24,29 +24,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [storeName, setStoreName] = useState<string | null>(null)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-
-      if (session?.user) {
-        checkSellerRole(session.user.id)
-      } else {
-        setIsLoading(false)
-      }
-    })
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      (_event, session) => {
         setSession(session)
         setUser(session?.user ?? null)
 
-        if (session?.user) {
-          await checkSellerRole(session.user.id)
-        } else {
+        if (!session?.user) {
           setIsSeller(false)
           setIsApproved(false)
+          setStoreName(null)
           setIsLoading(false)
+          return
         }
+
+        setIsLoading(true)
+        window.setTimeout(() => {
+          void checkSellerRole(session.user.id)
+        }, 0)
       }
     )
 
@@ -123,6 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsSeller(false)
     setIsApproved(false)
     setStoreName(null)
+    setIsLoading(false)
   }
 
   return (

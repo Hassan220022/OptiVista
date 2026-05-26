@@ -15,8 +15,14 @@ export interface Database {
           email: string | null
           full_name: string | null
           avatar_url: string | null
-          phone: string | null
-          role: "shopper" | "admin"
+          phone_number: string | null
+          role: "user" | "seller" | "admin"
+          store_name: string | null
+          store_description: string | null
+          store_logo_url: string | null
+          is_seller_approved: boolean | null
+          seller_approved_at: string | null
+          seller_commission_rate: number | null
           created_at: string
           updated_at: string
         }
@@ -25,8 +31,14 @@ export interface Database {
           email?: string | null
           full_name?: string | null
           avatar_url?: string | null
-          phone?: string | null
-          role?: "shopper" | "admin"
+          phone_number?: string | null
+          role?: "user" | "seller" | "admin"
+          store_name?: string | null
+          store_description?: string | null
+          store_logo_url?: string | null
+          is_seller_approved?: boolean | null
+          seller_approved_at?: string | null
+          seller_commission_rate?: number | null
           created_at?: string
           updated_at?: string
         }
@@ -35,12 +47,19 @@ export interface Database {
           email?: string | null
           full_name?: string | null
           avatar_url?: string | null
-          phone?: string | null
-          role?: "shopper" | "admin"
+          phone_number?: string | null
+          role?: "user" | "seller" | "admin"
+          store_name?: string | null
+          store_description?: string | null
+          store_logo_url?: string | null
+          is_seller_approved?: boolean | null
+          seller_approved_at?: string | null
+          seller_commission_rate?: number | null
           created_at?: string
           updated_at?: string
         }
       }
+
       categories: {
         Row: {
           id: string
@@ -70,209 +89,199 @@ export interface Database {
           created_at?: string
         }
       }
+
       products: {
         Row: {
           id: string
-          sku: string | null
           name: string
           slug: string
-          description: string | null
-          short_description: string | null
+          seller_id: string | null
           brand: string | null
-          base_price: number
-          currency: string
+          description: string | null
+          frame_type: string | null
+          frame_material: string | null
+          frame_color: string | null
+          lens_width_mm: number | null
+          bridge_width_mm: number | null
+          temple_length_mm: number | null
+          price_cents: number
+          currency_code: string | null
+          thumbnail_url: string | null
           is_active: boolean
-          is_ar_enabled: boolean
-          primary_image_url: string | null
+          stock_quantity: number
+          avg_rating: number | null
+          ar_enabled: boolean
           created_at: string
           updated_at: string
         }
         Insert: {
           id?: string
-          sku?: string | null
           name: string
           slug: string
-          description?: string | null
-          short_description?: string | null
+          seller_id?: string | null
           brand?: string | null
-          base_price: number
-          currency?: string
+          description?: string | null
+          frame_type?: string | null
+          frame_material?: string | null
+          frame_color?: string | null
+          lens_width_mm?: number | null
+          bridge_width_mm?: number | null
+          temple_length_mm?: number | null
+          price_cents: number
+          currency_code?: string | null
+          thumbnail_url?: string | null
           is_active?: boolean
-          is_ar_enabled?: boolean
-          primary_image_url?: string | null
+          stock_quantity?: number
+          avg_rating?: number | null
+          ar_enabled?: boolean
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: string
-          sku?: string | null
           name?: string
           slug?: string
-          description?: string | null
-          short_description?: string | null
+          seller_id?: string | null
           brand?: string | null
-          base_price?: number
-          currency?: string
+          description?: string | null
+          frame_type?: string | null
+          frame_material?: string | null
+          frame_color?: string | null
+          lens_width_mm?: number | null
+          bridge_width_mm?: number | null
+          temple_length_mm?: number | null
+          price_cents?: number
+          currency_code?: string | null
+          thumbnail_url?: string | null
           is_active?: boolean
-          is_ar_enabled?: boolean
-          primary_image_url?: string | null
+          stock_quantity?: number
+          avg_rating?: number | null
+          ar_enabled?: boolean
           created_at?: string
           updated_at?: string
         }
       }
+
       orders: {
         Row: {
           id: string
           user_id: string
-          order_number: string
-          status: "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled"
-          subtotal: number
-          shipping_cost: number
-          tax_amount: number
-          discount_amount: number
-          total: number
-          currency: string
-          shipping_address: Json
-          billing_address: Json | null
-          payment_method: string | null
-          payment_status: "pending" | "paid" | "failed" | "refunded"
-          payment_intent_id: string | null
+          status: "pending" | "paid" | "shipped" | "delivered" | "cancelled"
+          total_amount_cents: number
+          currency_code: string | null
+          shipping_address_json: Json | null
+          payment_provider: string | null
+          payment_reference: string | null
           notes: string | null
-          tracking_number: string | null
-          tracking_url: string | null
-          carrier: string | null
-          estimated_delivery: string | null
           created_at: string
           updated_at: string
         }
         Insert: {
           id?: string
           user_id: string
-          order_number: string
-          status?: "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled"
-          subtotal: number
-          shipping_cost?: number
-          tax_amount?: number
-          discount_amount?: number
-          total: number
-          currency?: string
-          shipping_address: Json
-          billing_address?: Json | null
-          payment_method?: string | null
-          payment_status?: "pending" | "paid" | "failed" | "refunded"
-          payment_intent_id?: string | null
+          status?: "pending" | "paid" | "shipped" | "delivered" | "cancelled"
+          total_amount_cents: number
+          currency_code?: string | null
+          shipping_address_json?: Json | null
+          payment_provider?: string | null
+          payment_reference?: string | null
           notes?: string | null
-          tracking_number?: string | null
-          tracking_url?: string | null
-          carrier?: string | null
-          estimated_delivery?: string | null
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: string
           user_id?: string
-          order_number?: string
-          status?: "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled"
-          subtotal?: number
-          shipping_cost?: number
-          tax_amount?: number
-          discount_amount?: number
-          total?: number
-          currency?: string
-          shipping_address?: Json
-          billing_address?: Json | null
-          payment_method?: string | null
-          payment_status?: "pending" | "paid" | "failed" | "refunded"
-          payment_intent_id?: string | null
+          status?: "pending" | "paid" | "shipped" | "delivered" | "cancelled"
+          total_amount_cents?: number
+          currency_code?: string | null
+          shipping_address_json?: Json | null
+          payment_provider?: string | null
+          payment_reference?: string | null
           notes?: string | null
-          tracking_number?: string | null
-          tracking_url?: string | null
-          carrier?: string | null
-          estimated_delivery?: string | null
           created_at?: string
           updated_at?: string
         }
       }
+
       order_items: {
         Row: {
           id: string
           order_id: string
           product_id: string
-          variant_id: string | null
-          product_name: string
-          variant_name: string | null
           quantity: number
-          unit_price: number
-          total_price: number
+          unit_price_cents: number
           created_at: string
+          updated_at: string
         }
         Insert: {
           id?: string
           order_id: string
           product_id: string
-          variant_id?: string | null
-          product_name: string
-          variant_name?: string | null
           quantity: number
-          unit_price: number
-          total_price: number
+          unit_price_cents: number
           created_at?: string
+          updated_at?: string
         }
         Update: {
           id?: string
           order_id?: string
           product_id?: string
-          variant_id?: string | null
-          product_name?: string
-          variant_name?: string | null
           quantity?: number
-          unit_price?: number
-          total_price?: number
+          unit_price_cents?: number
           created_at?: string
+          updated_at?: string
         }
       }
+
       reviews: {
         Row: {
           id: string
-          user_id: string
+          seller_id: string
           product_id: string
+          user_id: string
           order_id: string | null
           rating: number
           title: string | null
           body: string | null
           is_verified_purchase: boolean
+          helpful_count: number
           is_approved: boolean
           created_at: string
           updated_at: string
         }
         Insert: {
           id?: string
-          user_id: string
+          seller_id: string
           product_id: string
+          user_id: string
           order_id?: string | null
           rating: number
           title?: string | null
           body?: string | null
           is_verified_purchase?: boolean
+          helpful_count?: number
           is_approved?: boolean
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: string
-          user_id?: string
+          seller_id?: string
           product_id?: string
+          user_id?: string
           order_id?: string | null
           rating?: number
           title?: string | null
           body?: string | null
           is_verified_purchase?: boolean
+          helpful_count?: number
           is_approved?: boolean
           created_at?: string
           updated_at?: string
         }
       }
+
       feedback: {
         Row: {
           id: string
@@ -302,6 +311,7 @@ export interface Database {
           created_at?: string
         }
       }
+
       ar_assets: {
         Row: {
           id: string
@@ -349,7 +359,83 @@ export interface Database {
           updated_at?: string
         }
       }
+
+      seller_stats: {
+        Row: {
+          id: string
+          seller_id: string
+          date: string
+          total_orders: number
+          total_revenue_cents: number
+          total_products: number
+          total_views: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          seller_id: string
+          date?: string
+          total_orders?: number
+          total_revenue_cents?: number
+          total_products?: number
+          total_views?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          seller_id?: string
+          date?: string
+          total_orders?: number
+          total_revenue_cents?: number
+          total_products?: number
+          total_views?: number
+          created_at?: string
+        }
+      }
+
+      seller_payouts: {
+        Row: {
+          id: string
+          seller_id: string
+          amount_cents: number
+          currency: string
+          status: "pending" | "processing" | "completed" | "failed"
+          payout_method: string | null
+          payout_details: Json | null
+          processed_at: string | null
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          seller_id: string
+          amount_cents: number
+          currency?: string
+          status?: "pending" | "processing" | "completed" | "failed"
+          payout_method?: string | null
+          payout_details?: Json | null
+          processed_at?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          seller_id?: string
+          amount_cents?: number
+          currency?: string
+          status?: "pending" | "processing" | "completed" | "failed"
+          payout_method?: string | null
+          payout_details?: Json | null
+          processed_at?: string | null
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
+
     Views: {
       [_ in never]: never
     }
@@ -370,3 +456,5 @@ export type OrderItem = Database["public"]["Tables"]["order_items"]["Row"]
 export type Review = Database["public"]["Tables"]["reviews"]["Row"]
 export type Feedback = Database["public"]["Tables"]["feedback"]["Row"]
 export type ARAsset = Database["public"]["Tables"]["ar_assets"]["Row"]
+export type SellerPayout = Database["public"]["Tables"]["seller_payouts"]["Row"]
+export type SellerStat = Database["public"]["Tables"]["seller_stats"]["Row"]

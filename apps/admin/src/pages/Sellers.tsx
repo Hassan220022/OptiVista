@@ -25,52 +25,12 @@ import {
   MoreHorizontal,
 } from "lucide-react"
 import { formatDateTime, formatCurrency } from "@/lib/utils"
+import { useAdminSellers, useUpdateSellerApproval, type SellerStatus } from "@/hooks/useAdminApi"
 
-// Mock data - replace with real API
-const mockSellers = [
-  { 
-    id: "1", 
-    store_name: "Premium Eyewear Co", 
-    email: "contact@premiumeyewear.com", 
-    status: "approved", 
-    products: 45, 
-    orders: 234, 
-    revenue: 24500.00,
-    created_at: "2024-01-01T10:00:00Z" 
-  },
-  { 
-    id: "2", 
-    store_name: "Vision Plus", 
-    email: "hello@visionplus.com", 
-    status: "approved", 
-    products: 32, 
-    orders: 156, 
-    revenue: 18200.00,
-    created_at: "2024-01-05T10:00:00Z" 
-  },
-  { 
-    id: "3", 
-    store_name: "Stylish Frames", 
-    email: "info@stylishframes.com", 
-    status: "pending", 
-    products: 0, 
-    orders: 0, 
-    revenue: 0,
-    created_at: "2024-01-14T10:00:00Z" 
-  },
-  { 
-    id: "4", 
-    store_name: "Optical Express", 
-    email: "sales@opticalexpress.com", 
-    status: "rejected", 
-    products: 0, 
-    orders: 0, 
-    revenue: 0,
-    created_at: "2024-01-10T10:00:00Z" 
-  },
-]
-
-const statusConfig: Record<string, { label: string; variant: "default" | "success" | "warning" | "destructive" }> = {
+const statusConfig: Record<
+  SellerStatus,
+  { label: string; variant: "default" | "success" | "warning" | "destructive" }
+> = {
   approved: { label: "Approved", variant: "success" },
   pending: { label: "Pending", variant: "warning" },
   rejected: { label: "Rejected", variant: "destructive" },
@@ -79,15 +39,25 @@ const statusConfig: Record<string, { label: string; variant: "default" | "succes
 export function Sellers() {
   const [searchQuery, setSearchQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
-  const [isLoading] = useState(false)
 
-  const filteredSellers = mockSellers.filter((seller) => {
+  const { data: sellers = [], isLoading, error } = useAdminSellers()
+  const updateSellerApproval = useUpdateSellerApproval()
+
+  const filteredSellers = sellers.filter((seller) => {
     const matchesSearch =
-      seller.store_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      seller.email.toLowerCase().includes(searchQuery.toLowerCase())
+      seller.store_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      seller.identifier.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesStatus = statusFilter === "all" || seller.status === statusFilter
     return matchesSearch && matchesStatus
   })
+
+  const handleApprove = async (id: string) => {
+    await updateSellerApproval.mutateAsync({ sellerId: id, action: "approve" })
+  }
+
+  const handleReject = async (id: string) => {
+    await updateSellerApproval.mutateAsync({ sellerId: id, action: "reject" })
+  }
 
   if (isLoading) {
     return (
@@ -100,11 +70,27 @@ export function Sellers() {
     )
   }
 
+  if (error) {
+    return (
+      <div className="flex flex-col">
+        <Header title="Sellers" description="Manage seller accounts" />
+        <div className="p-6">
+          <Card className="border-red-200 bg-red-50">
+            <CardContent className="pt-6">
+              <p className="text-red-600">Error loading sellers: {error.message}</p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    )
+  }
+
   const sellerStats = {
-    total: mockSellers.length,
-    approved: mockSellers.filter(s => s.status === "approved").length,
-    pending: mockSellers.filter(s => s.status === "pending").length,
-    totalRevenue: mockSellers.reduce((sum, s) => sum + s.revenue, 0),
+    total: sellers.length,
+    approved: sellers.filter((s) => s.status === "approved").length,
+    pending: sellers.filter((s) => s.status === "pending").length,
+    rejected: sellers.filter((s) => s.status === "rejected").length,
+    totalRevenue: sellers.reduce((sum, s) => sum + s.revenue, 0),
   }
 
   return (
@@ -113,7 +99,7 @@ export function Sellers() {
 
       <div className="p-6 space-y-6">
         {/* Stats */}
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-5">
           <Card>
             <CardContent className="pt-6">
               <div className="flex items-center gap-2">
@@ -139,6 +125,15 @@ export function Sellers() {
                 <span className="text-sm text-muted-foreground">Pending Approval</span>
               </div>
               <p className="text-2xl font-bold mt-1 text-yellow-600">{sellerStats.pending}</p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-2">
+                <XCircle className="h-4 w-4 text-red-500" />
+                <span className="text-sm text-muted-foreground">Rejected</span>
+              </div>
+              <p className="text-2xl font-bold mt-1 text-red-600">{sellerStats.rejected}</p>
             </CardContent>
           </Card>
           <Card>
@@ -175,7 +170,7 @@ export function Sellers() {
               <option value="rejected">Rejected</option>
             </Select>
           </div>
-          <Button>
+          <Button disabled title="Seller invitations are not implemented yet">
             <UserPlus className="h-4 w-4 mr-2" />
             Invite Seller
           </Button>
@@ -213,46 +208,50 @@ export function Sellers() {
                             <Store className="h-5 w-5 text-primary" />
                           </div>
                           <div>
-                            <p className="font-medium">{seller.store_name}</p>
-                            <p className="text-sm text-muted-foreground">{seller.email}</p>
+                            <p className="font-medium">{seller.store_name || "Unnamed store"}</p>
+                            <p className="text-sm text-muted-foreground">{seller.identifier}</p>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell>
                         <Badge variant={status.variant}>{status.label}</Badge>
                       </TableCell>
-                      <TableCell>{seller.products}</TableCell>
-                      <TableCell>{seller.orders}</TableCell>
+                      <TableCell>{seller.products_count}</TableCell>
+                      <TableCell>{seller.orders_count}</TableCell>
                       <TableCell>{formatCurrency(seller.revenue)}</TableCell>
                       <TableCell className="text-sm text-muted-foreground">
                         {formatDateTime(seller.created_at)}
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">
-                          <Button variant="ghost" size="icon" title="View">
+                          <Button variant="ghost" size="icon" title="Seller detail view is not implemented yet" disabled>
                             <Eye className="h-4 w-4" />
                           </Button>
                           {seller.status === "pending" && (
                             <>
-                              <Button 
-                                variant="ghost" 
-                                size="icon" 
+                              <Button
+                                variant="ghost"
+                                size="icon"
                                 title="Approve"
                                 className="text-green-600"
+                                onClick={() => handleApprove(seller.id)}
+                                disabled={updateSellerApproval.isPending}
                               >
                                 <CheckCircle className="h-4 w-4" />
                               </Button>
-                              <Button 
-                                variant="ghost" 
-                                size="icon" 
+                              <Button
+                                variant="ghost"
+                                size="icon"
                                 title="Reject"
                                 className="text-red-600"
+                                onClick={() => handleReject(seller.id)}
+                                disabled={updateSellerApproval.isPending}
                               >
                                 <XCircle className="h-4 w-4" />
                               </Button>
                             </>
                           )}
-                          <Button variant="ghost" size="icon">
+                          <Button variant="ghost" size="icon" title="More actions are not implemented yet" disabled>
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </div>

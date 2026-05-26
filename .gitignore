@@ -18,6 +18,7 @@ dist/
 __pycache__/
 *.py[cod]
 supabase/.temp/
+dogfood-output/
 
 # Local MCP configuration — never commit access tokens
 **/.windsurf/mcp/

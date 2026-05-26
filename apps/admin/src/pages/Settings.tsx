@@ -169,7 +169,7 @@ export function Settings() {
                   Require 2FA for admin accounts
                 </p>
               </div>
-              <Button variant="outline" size="sm">Enable</Button>
+              <Button variant="outline" size="sm" disabled title="Two-factor setup is not implemented yet">Enable</Button>
             </div>
             <div className="flex items-center justify-between py-2 border-t">
               <div>
@@ -222,9 +222,9 @@ export function Settings() {
           </CardContent>
         </Card>
 
-        {/* Save Button */}
-        <div className="flex justify-end">
-          <Button>
+        <div className="flex items-center justify-end gap-3">
+          <p className="text-sm text-muted-foreground">Settings persistence is not implemented yet.</p>
+          <Button disabled title="Settings persistence is not implemented yet">
             <Save className="h-4 w-4 mr-2" />
             Save Settings
           </Button>

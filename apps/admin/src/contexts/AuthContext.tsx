@@ -20,30 +20,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      
-      if (session?.user) {
-        checkAdminRole(session.user.id)
-      } else {
-        setIsLoading(false)
-      }
-    })
-
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      (_event, session) => {
         setSession(session)
         setUser(session?.user ?? null)
 
-        if (session?.user) {
-          await checkAdminRole(session.user.id)
-        } else {
+        if (!session?.user) {
           setIsAdmin(false)
           setIsLoading(false)
+          return
         }
+
+        setIsLoading(true)
+        window.setTimeout(() => {
+          void checkAdminRole(session.user.id)
+        }, 0)
       }
     )
 
@@ -109,6 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
     setSession(null)
     setIsAdmin(false)
+    setIsLoading(false)
   }
 
   return (
