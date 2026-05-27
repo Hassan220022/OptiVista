@@ -90,7 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       return { error: null }
-    } catch (err) {
+    } catch {
       return { error: 'An unexpected error occurred' }
     }
   }
@@ -119,6 +119,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {

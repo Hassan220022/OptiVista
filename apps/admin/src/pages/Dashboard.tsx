@@ -7,7 +7,7 @@ import {
   DollarSign,
   Loader2,
 } from "lucide-react"
-import { useDashboardStats } from "@/hooks/useAdminApi"
+import { useDashboardStats, type Order, type Product } from "@/hooks/useAdminApi"
 import { formatCurrency } from "@/lib/utils"
 
 function getStatusColor(status: string) {
@@ -115,7 +115,7 @@ export function Dashboard() {
             <CardContent>
               <div className="space-y-4">
                 {stats?.recent_orders && stats.recent_orders.length > 0 ? (
-                  stats.recent_orders.map((order: any) => (
+                  stats.recent_orders.map((order: Order) => (
                     <div key={order.id} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="h-9 w-9 rounded-full bg-accent flex items-center justify-center">
@@ -156,7 +156,7 @@ export function Dashboard() {
             <CardContent>
               <div className="space-y-4">
                 {stats?.top_products && stats.top_products.length > 0 ? (
-                  stats.top_products.map((product: any, index: number) => (
+                  stats.top_products.map((product: Product, index: number) => (
                     <div key={product.id} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">

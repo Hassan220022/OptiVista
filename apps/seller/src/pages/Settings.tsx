@@ -22,10 +22,14 @@ export function Settings() {
 
   useEffect(() => {
     if (!profile) return
-    setStoreName(profile.store_name ?? "")
-    setStoreDescription(profile.store_description ?? "")
-    setPhoneNumber(profile.phone_number ?? "")
-    setStoreLogoUrl(profile.store_logo_url ?? "")
+    const timer = window.setTimeout(() => {
+      setStoreName(profile.store_name ?? "")
+      setStoreDescription(profile.store_description ?? "")
+      setPhoneNumber(profile.phone_number ?? "")
+      setStoreLogoUrl(profile.store_logo_url ?? "")
+    }, 0)
+
+    return () => window.clearTimeout(timer)
   }, [profile])
 
   if (isLoading) {
