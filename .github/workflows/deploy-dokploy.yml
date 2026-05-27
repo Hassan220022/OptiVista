@@ -109,20 +109,31 @@ jobs:
         run: |
           set -euo pipefail
 
+          # Dokploy accepts deploy requests before Swarm finishes replacing tasks.
+          sleep 120
+
           check_route() {
             local name="$1"
             local url="$2"
+            local marker="$3"
             local status
+            local html
 
-            status=$(curl --retry 12 --retry-delay 10 --retry-all-errors --silent --output /dev/null --write-out "%{http_code}" "$url")
+            html=$(mktemp)
+            status=$(curl --retry 12 --retry-delay 10 --retry-all-errors --silent --location --output "$html" --write-out "%{http_code}" "$url")
             if [ "$status" != "200" ]; then
               echo "${name} route returned ${status}: ${url}"
+              exit 1
+            fi
+
+            if ! grep -q "$marker" "$html"; then
+              echo "${name} route did not contain expected marker: ${marker}"
               exit 1
             fi
 
             echo "${name} route healthy: ${status}"
           }
 
-          check_route "admin" "https://admin.mikawi.org/"
-          check_route "seller" "https://seller.mikawi.org/"
-          check_route "mobile" "https://mobile.mikawi.org/"
+          check_route "admin" "https://admin.mikawi.org/" "OptiVista Admin"
+          check_route "seller" "https://seller.mikawi.org/" "OptiVista Seller"
+          check_route "mobile" "https://mobile.mikawi.org/" "__EXPO_ROUTER_HYDRATE__"
